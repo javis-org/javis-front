@@ -1,13 +1,38 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Container, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function CompanyAddForm() {
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
   const [content, setContent] = useState("");
+  const memberId = localStorage.getItem("memberId");
+  const navi = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const postData = { memberId, title, company, description: content };
+
+    // 데이터를 로컬 스토리지에 저장
+    const savedPosts = JSON.parse(localStorage.getItem("jobPostings")) || [];
+    savedPosts.push(postData);
+    localStorage.setItem("jobPostings", JSON.stringify(savedPosts));
+
+    navi(-1);
+
+    // 서버 통신 주석 처리
+    /*
+    const fetch = async () => {
+      try {
+        await client.post("/jobPostings", postData);
+        navi(-1);
+      } catch (error) {
+        console.log(error);
+        alert(error);
+      }
+    };
+    fetch();
+    */
   };
 
   return (
@@ -21,7 +46,7 @@ export default function CompanyAddForm() {
         }}
       >
         <Typography component="h1" variant="h5" gutterBottom>
-          새 공고 추가
+          새 자소서 추가
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
           <TextField

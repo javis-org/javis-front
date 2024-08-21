@@ -3,19 +3,18 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { loginAtom } from "../../App";
+
 const pages = ["menu1", "menu2", "menu3"];
+
 export default function Header() {
   const navi = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(loginAtom);
   const [anchorEl, setAnchorEl] = useState(null);
-  console.log(isLogin);
   const user = localStorage.getItem("user");
 
   const handleMenu = (event) => {
@@ -40,10 +39,17 @@ export default function Header() {
     } else {
       setIsLogin(false);
     }
-  });
+  }, [setIsLogin]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        sx={{
+          zIndex: 1300,
+          background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)", // 배경 그라데이션 추가
+        }}
+      >
         <Toolbar>
           <Typography
             variant="h6"
@@ -52,27 +58,95 @@ export default function Header() {
               isLogin ? navi("/main") : navi("/");
             }}
             style={{ cursor: "pointer", marginRight: "20px" }}
+            sx={{
+              color: "#ffffff",
+              "&:hover": {
+                color: "#ffcc00", // 호버 시 색상 변경
+              },
+            }}
           >
             자비스
           </Typography>
           <Box sx={{ flexGrow: 1, display: "flex" }}>
-            {isLogin &&
-              pages.map((page) => (
+            {isLogin && (
+              <>
                 <Button
-                  key={page}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  key="menu1"
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    transition: "all 0.3s ease 0s",
+                    "&:hover": {
+                      color: "#ffcc00", // 호버 시 색상 변경
+                      transform: "scale(1.05)", // 살짝 확대되는 애니메이션
+                    },
+                  }}
                   onClick={() => {
-                    navi(`/${page}`);
+                    navi(`/menu1`);
                   }}
                 >
-                  {page}
+                  {" "}
+                  아카이브
                 </Button>
-              ))}
+                <Button
+                  key="menu2"
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    transition: "all 0.3s ease 0s",
+                    "&:hover": {
+                      color: "#ffcc00", // 호버 시 색상 변경
+                      transform: "scale(1.05)", // 살짝 확대되는 애니메이션
+                    },
+                  }}
+                  onClick={() => {
+                    navi(`/menu2`);
+                  }}
+                >
+                  {" "}
+                  AI도움받기
+                </Button>
+                <Button
+                  key="menu1"
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    transition: "all 0.3s ease 0s",
+                    "&:hover": {
+                      color: "#ffcc00", // 호버 시 색상 변경
+                      transform: "scale(1.05)", // 살짝 확대되는 애니메이션
+                    },
+                  }}
+                  onClick={() => {
+                    navi(`/menu3`);
+                  }}
+                >
+                  평가받기
+                </Button>
+              </>
+            )}
           </Box>
           {isLogin && (
             <>
-              <Typography>{user}님</Typography>
-              <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+              <Typography sx={{ color: "#ffffff", marginRight: "20px" }}>
+                {user}님
+              </Typography>
+              <Button
+                onClick={handleLogout}
+                sx={{
+                  color: "white",
+                  backgroundColor: "#ff1744",
+                  "&:hover": {
+                    backgroundColor: "#f01440",
+                    transform: "translateY(-3px)", // 호버 시 살짝 위로 올라가는 애니메이션
+                  },
+                }}
+              >
+                로그아웃
+              </Button>
             </>
           )}
         </Toolbar>

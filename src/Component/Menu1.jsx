@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Typography,
@@ -19,37 +19,48 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
 export default function Menu1() {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "첫 번째 글",
-      content: "이것은 첫 번째 게시물입니다.",
-      company: "첫 번째 회사",
-      timestamp: new Date(),
-    },
-    {
-      id: 2,
-      title: "두 번째 글",
-      content: "이것은 두 번째 게시물입니다.",
-      company: "두 번째 회사",
-      timestamp: new Date(),
-    },
-    {
-      id: 3,
-      title: "세 번째 글",
-      content: "이것은 세 번째 게시물입니다.",
-      company: "세 번째 회사",
-      timestamp: new Date(),
-    },
-  ]);
-
+  const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navi = useNavigate();
+
+  useEffect(() => {
+    const fetchData = () => {
+      try {
+        let savedPosts = JSON.parse(localStorage.getItem("jobPostings")) || [];
+
+        // id가 없는 경우 임의로 고유 id 부여
+        savedPosts = savedPosts.map((post, index) => {
+          return { ...post, id: post.id || `${index}-${new Date().getTime()}` };
+        });
+
+        setPosts(savedPosts);
+        localStorage.setItem("jobPostings", JSON.stringify(savedPosts)); // 업데이트된 id로 로컬 스토리지에 저장
+      } catch (error) {
+        alert("오류");
+        console.error("Error fetching posts:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleDelete = (postId) => {
+    // 로컬 스토리지에서 jobPostings 가져오기
+    const savedPosts = JSON.parse(localStorage.getItem("jobPostings")) || [];
+
+    // 해당 id를 가진 객체를 배열에서 제거
+    const updatedPosts = savedPosts.filter((post) => post.id !== postId);
+
+    // 상태 업데이트 및 로컬 스토리지에 저장
+    setPosts(updatedPosts);
+    localStorage.setItem("jobPostings", JSON.stringify(updatedPosts));
+  };
 
   const filteredPosts = posts.filter(
     (post) =>
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (post.description || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
       post.company.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -117,7 +128,13 @@ export default function Menu1() {
                       right: 15,
                     }}
                   >
-                    <DeleteIcon />
+                    <DeleteIcon
+                      sx={{ zIndex: "1000" }}
+                      onClick={(e) => {
+                        e.stopPropagation(); // 이벤트 전파를 중지하여 카드 클릭 이벤트가 발생하지 않도록 함
+                        handleDelete(post.id); // 삭제 처리
+                      }}
+                    />
                   </IconButton>
                   <ListItem alignItems="flex-start">
                     <ListItemText
@@ -145,7 +162,10 @@ export default function Menu1() {
                             variant="body2"
                             color="text.primary"
                           >
-                            {format(post.timestamp, "yyyy-MM-dd HH:mm:ss")}
+                            {format(
+                              new Date(post.createdAt || Date.now()),
+                              "yyyy-MM-dd HH:mm:ss"
+                            )}
                           </Typography>
                         </>
                       }

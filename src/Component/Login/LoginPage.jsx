@@ -12,22 +12,31 @@ import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginAtom } from "../../App";
+import { client } from "../../api";
 
 export default function LoginPage() {
   const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navi = useNavigate();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // 로그인 처리 로직을 여기에 추가합니다.
-    console.log({ Email, password });
-  };
 
   const [isLogin, setIsLogin] = useRecoilState(loginAtom);
   const handleSignUp = () => {
-    navi("/main");
-    localStorage.setItem("user", Email);
-    setIsLogin(true);
+    const loginData = { email: Email, password: password };
+    const fetchLogin = async () => {
+      try {
+        const res = await client.post("/members/login", loginData);
+        console.log(res.data);
+        localStorage.setItem("memberId", res.data);
+        setIsLogin(true);
+        localStorage.setItem("user", Email);
+        navi("/main");
+      } catch (error) {
+        console.log(error);
+        alert("로그인에 실패하였습니다.");
+      }
+    };
+
+    fetchLogin();
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -45,7 +54,7 @@ export default function LoginPage() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             fullWidth

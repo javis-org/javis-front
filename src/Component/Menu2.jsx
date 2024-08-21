@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import {
   Box,
-  TextField,
   Button,
   Typography,
   Container,
   Modal,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import Textarea from "@mui/joy/Textarea";
+import { client2 } from "../api";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 
 export default function Menu2() {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -16,8 +18,34 @@ export default function Menu2() {
   const [question, setQuestion] = useState("");
   const [Company, setCompany] = useState("");
   const [open, setOpen] = useState(false);
+  const [result, setResult] = useState("");
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleSubmit = async () => {
+    try {
+      handleOpen();
+      const res = await client2.get(
+        `/process_data?input1=${source}&input2=${question}&input3=${Company}`
+      );
+      console.log(res.data);
+      setResult(res.data.output_data);
+      // setResult(aa);
+
+      setIsDisabled(false);
+      handleClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(result).then(() => {
+      alert("클립보드에 복사되었습니다.");
+    });
+  };
+
   return (
     <Container maxWidth="xl" style={{ overflowY: "auto" }}>
       <Box
@@ -36,7 +64,7 @@ export default function Menu2() {
             value={source}
             onChange={(e) => setSource(e.target.value)}
             minRows={5}
-            maxRows={10}
+            maxRows={15}
             variant="outlined"
             sx={{ width: "100%" }}
           />
@@ -49,7 +77,7 @@ export default function Menu2() {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             minRows={5}
-            maxRows={10}
+            maxRows={15}
             variant="outlined"
             sx={{ width: "100%" }}
           />
@@ -62,7 +90,7 @@ export default function Menu2() {
             value={Company}
             onChange={(e) => setCompany(e.target.value)}
             minRows={5}
-            maxRows={10}
+            maxRows={15}
             variant="outlined"
             sx={{ width: "100%" }}
           />
@@ -74,28 +102,39 @@ export default function Menu2() {
           marginBottom: 3,
         }}
       >
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={() => {
-            handleOpen();
-          }}
-        >
+        <Button variant="contained" fullWidth onClick={handleSubmit}>
           <Typography variant="h6">자소서 쓰기</Typography>
         </Button>
       </Box>
-      <Textarea
-        minRows={10}
-        disabled={isDisabled}
-        placeholder="자소서 내용이 입력됩니다...."
-        sx={{
-          width: "100%",
-          padding: 2,
-          fontSize: "1rem",
-          border: "1px solid #ccc",
-          borderRadius: 4,
-        }}
-      />
+      <Box sx={{ position: "relative" }}>
+        <Textarea
+          minRows={15}
+          disabled={isDisabled}
+          value={result}
+          placeholder="자소서 내용이 입력됩니다...."
+          sx={{
+            width: "100%",
+            padding: 2,
+            fontSize: "1rem",
+            border: "1px solid #ccc",
+            borderRadius: 4,
+          }}
+        />
+        <IconButton
+          onClick={copyToClipboard}
+          sx={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            backgroundColor: "#f0f0f0",
+            "&:hover": {
+              backgroundColor: "#e0e0e0",
+            },
+          }}
+        >
+          <ContentPasteIcon />
+        </IconButton>
+      </Box>
       <Modal
         keepMounted
         open={open}
