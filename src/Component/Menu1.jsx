@@ -17,42 +17,36 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { client } from "../api";
+import { useRecoilValue } from "recoil";
+import { memberIdValue } from "../App";
 
 export default function Menu1() {
+  const memberId = useRecoilValue(memberIdValue);
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navi = useNavigate();
+  console.log(memberId);
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       try {
-        let savedPosts = JSON.parse(localStorage.getItem("jobPostings")) || [];
-
-        // id가 없는 경우 임의로 고유 id 부여
-        savedPosts = savedPosts.map((post, index) => {
-          return { ...post, id: post.id || `${index}-${new Date().getTime()}` };
-        });
-
-        setPosts(savedPosts);
-        localStorage.setItem("jobPostings", JSON.stringify(savedPosts)); // 업데이트된 id로 로컬 스토리지에 저장
+        const data = await client.get(`/jobPostings?memberId=${memberId}`);
+        // console.log(data.data);
+        setPosts(data.data);
       } catch (error) {
-        alert("오류");
-        console.error("Error fetching posts:", error);
+        console.log(error);
       }
     };
     fetchData();
   }, []);
 
   const handleDelete = (postId) => {
-    // 로컬 스토리지에서 jobPostings 가져오기
-    const savedPosts = JSON.parse(localStorage.getItem("jobPostings")) || [];
-
-    // 해당 id를 가진 객체를 배열에서 제거
-    const updatedPosts = savedPosts.filter((post) => post.id !== postId);
-
-    // 상태 업데이트 및 로컬 스토리지에 저장
-    setPosts(updatedPosts);
-    localStorage.setItem("jobPostings", JSON.stringify(updatedPosts));
+    const deleteData = async () => {
+      //  서버 쪽이 구현이 안되어 있음
+      // await client.delete(`/jobPostings/${postId}`);
+    };
+    deleteData();
   };
 
   const filteredPosts = posts.filter(

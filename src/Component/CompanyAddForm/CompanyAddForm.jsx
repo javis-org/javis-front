@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { client } from "../../api";
 
 export default function CompanyAddForm() {
   const [title, setTitle] = useState("");
@@ -21,10 +22,13 @@ export default function CompanyAddForm() {
     navi(-1);
 
     // 서버 통신 주석 처리
-    /*
+
     const fetch = async () => {
       try {
-        await client.post("/jobPostings", postData);
+        console.log(postData);
+        await client.post(
+          `/jobPostings?memberId=${memberId}&title=${title}&company=${company}&description=${content}`
+        );
         navi(-1);
       } catch (error) {
         console.log(error);
@@ -32,7 +36,6 @@ export default function CompanyAddForm() {
       }
     };
     fetch();
-    */
   };
 
   return (

@@ -28,6 +28,7 @@ export default function LoginPage() {
         console.log(res.data);
         localStorage.setItem("memberId", res.data);
         setIsLogin(true);
+
         localStorage.setItem("user", Email);
         navi("/main");
       } catch (error) {

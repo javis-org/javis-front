@@ -17,6 +17,10 @@ export const loginAtom = atom({
   key: "loginAtom",
   default: false,
 });
+export const memberIdValue = atom({
+  key: "memberIdValue",
+  default: localStorage.getItem("memberId"),
+});
 
 export default function App() {
   const [isLogin, setIsLogin] = useRecoilState(loginAtom);
