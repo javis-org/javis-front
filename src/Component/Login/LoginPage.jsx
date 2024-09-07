@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { loginAtom } from "../../App";
+import { loginAtom } from "../../Recoil.jsx";
 import { client } from "../../api";
 
 export default function LoginPage() {

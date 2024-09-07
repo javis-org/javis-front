@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import { useRecoilState } from "recoil";
-import { loginAtom } from "../../App";
+import { loginAtom } from "../../Recoil.jsx";
 
 const pages = ["menu1", "menu2", "menu3"];
 
