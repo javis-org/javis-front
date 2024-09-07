@@ -5,21 +5,16 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Menu, MenuItem } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { loginAtom } from "../../Recoil.jsx";
 
-const pages = ["menu1", "menu2", "menu3"];
 
 export default function Header() {
   const navi = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(loginAtom);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [, setAnchorEl] = useState(null);
   const user = localStorage.getItem("user");
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClose = () => {
     setAnchorEl(null);

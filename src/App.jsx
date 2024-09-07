@@ -4,20 +4,17 @@ import Header from "./Component/common/Header";
 import LoginPage from "./Component/Login/LoginPage";
 import SignUp from "./Component/Login/SignUp";
 import MainPage from "./Component/MainPage";
-import { atom } from "recoil";
 import CompanyAddForm from "./Component/CompanyAddForm/CompanyAddForm";
 import ItemList from "./Component/Item/ItemList";
 import Menu2 from "./Component/Menu2";
 import Menu3 from "./Component/Menu3";
 import Base from "./Component/Base";
-import {loginAtom} from "./Recoil.jsx";
 
 const user = localStorage.getItem("user");
 
 
 
 export default function App() {
-  const [isLogin, setIsLogin] = useRecoilState(loginAtom);
   console.log("user", user);
 
   return (

@@ -19,7 +19,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const navi = useNavigate();
 
-  const [isLogin, setIsLogin] = useRecoilState(loginAtom);
+  const [, setIsLogin] = useRecoilState(loginAtom);
   const handleSignUp = () => {
     const loginData = { email: Email, password: password };
     const fetchLogin = async () => {
