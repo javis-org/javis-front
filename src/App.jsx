@@ -5,13 +5,8 @@ import LoginPage from "./Component/Login/LoginPage";
 import SignUp from "./Component/Login/SignUp";
 import CompanyAddForm from "./Component/CompanyAddForm/CompanyAddForm";
 import ItemList from "./Component/Item/ItemList";
-
 import Base from "./Component/Base";
-
 const user = localStorage.getItem("user");
-
-
-
 export default function App() {
   console.log("user", user);
 
