@@ -19,7 +19,6 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { client } from "../api";
 import { useRecoilValue } from "recoil";
-import { memberIdValue } from "../App";
 
 export default function Menu1() {
   const memberId = useRecoilValue(memberIdValue);
