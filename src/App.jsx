@@ -4,26 +4,17 @@ import Header from "./Component/common/Header";
 import LoginPage from "./Component/Login/LoginPage";
 import SignUp from "./Component/Login/SignUp";
 import MainPage from "./Component/MainPage";
-import { atom } from "recoil";
 import CompanyAddForm from "./Component/CompanyAddForm/CompanyAddForm";
 import ItemList from "./Component/Item/ItemList";
-import Menu1 from "./Component/Menu1";
 import Menu2 from "./Component/Menu2";
 import Menu3 from "./Component/Menu3";
+import Base from "./Component/Base";
 
 const user = localStorage.getItem("user");
 
-export const loginAtom = atom({
-  key: "loginAtom",
-  default: false,
-});
-export const memberIdValue = atom({
-  key: "memberIdValue",
-  default: localStorage.getItem("memberId"),
-});
+
 
 export default function App() {
-  const [isLogin, setIsLogin] = useRecoilState(loginAtom);
   console.log("user", user);
 
   return (
@@ -35,7 +26,7 @@ export default function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/main" element={<MainPage />} />
           {/* 메뉴 1 */}
-          <Route path="/menu1" element={<Menu1 />} />
+          <Route path="/menu1" element={<Base />} />
           <Route path="/menu1/companyAddForm" element={<CompanyAddForm />} />
           <Route path="/menu1/item/:id" element={<ItemList />} />
           {/* 메뉴2 */}
