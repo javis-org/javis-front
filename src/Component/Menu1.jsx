@@ -21,7 +21,7 @@ import { client } from "../api";
 import { useRecoilValue } from "recoil";
 
 export default function Menu1() {
-  const memberId = useRecoilValue(memberIdValue);
+  const memberId = useRecoilValue();
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navi = useNavigate();
