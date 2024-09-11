@@ -7,11 +7,12 @@ import {
   Avatar,
   Link,
 } from "@mui/material";
+// 테스트
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { loginAtom } from "../../App";
+import { loginAtom } from "../../Recoil.jsx";
 import { client } from "../../api";
 
 export default function LoginPage() {
@@ -19,7 +20,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const navi = useNavigate();
 
-  const [isLogin, setIsLogin] = useRecoilState(loginAtom);
+  const [, setIsLogin] = useRecoilState(loginAtom);
   const handleSignUp = () => {
     const loginData = { email: Email, password: password };
     const fetchLogin = async () => {
