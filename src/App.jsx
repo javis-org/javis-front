@@ -9,7 +9,7 @@ import Base from "./Component/Base";
 const user = localStorage.getItem("user");
 export default function App() {
   console.log("user", user);
-
+  console.log("test");
   return (
     <RecoilRoot>
       <Router>
@@ -22,7 +22,6 @@ export default function App() {
           <Route path="/menu1" element={<Base />} />
           <Route path="/menu1/companyAddForm" element={<CompanyAddForm />} />
           <Route path="/menu1/item/:id" element={<ItemList />} />
-
         </Routes>
       </Router>
     </RecoilRoot>
