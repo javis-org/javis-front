@@ -18,15 +18,15 @@ const Base = () => {
     <Box
       sx={{
         display: "flex",
-        height: "100%",
+        height : "100%",
         // width: "100%",
         padding: "10px",
 
       }}
     >
-    <LeftContainer />
+      <LeftContainer/>
 
-     <MidContainer />
+      <MidContainer/>
 
       {/* Right Sidebar */}
       {/*<Box*/}
