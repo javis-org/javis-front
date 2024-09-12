@@ -7,6 +7,7 @@ import CompanyAddForm from "./Component/CompanyAddForm/CompanyAddForm";
 import ItemList from "./Component/Item/ItemList";
 import Base from "./Component/Base";
 const user = localStorage.getItem("user");
+import "./index.css"
 export default function App() {
   console.log("user", user);
   console.log("test");
