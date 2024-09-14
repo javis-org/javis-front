@@ -1,32 +1,22 @@
-import {
-  Box,
-  Typography,
-  Button,
-  Card,
-  CardContent,
+import { Box, Typography, Button, Card, CardContent } from "@mui/material";
 
-} from "@mui/material";
-
-import {LeftContainer} from "./LeftContainer.jsx";
-import {MidContainer} from "./MidContainer.jsx";
-
+import { LeftContainer } from "./LeftContainer.jsx";
+import { MidContainer } from "./MidContainer.jsx";
 
 // MUI Styles using `sx` prop
 const Base = () => {
-
   return (
     <Box
       sx={{
         display: "flex",
         height: "100%",
         // width: "100%",
-        padding: "10px",
-
+        padding: "10px 10px 0px 10px",
       }}
     >
-    <LeftContainer />
+      <LeftContainer />
 
-     <MidContainer />
+      <MidContainer />
 
       {/* Right Sidebar */}
       {/*<Box*/}

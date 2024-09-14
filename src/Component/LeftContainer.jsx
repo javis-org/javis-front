@@ -1,148 +1,121 @@
-import { useState } from 'react';
-import { Box, Button, Card, CardContent, Typography, Accordion, AccordionSummary, Divider, Menu, MenuItem } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore.js";
-import MoreVertIcon from "@mui/icons-material/MoreVert.js";
+import { Box, Button, Typography } from "@mui/material";
+
+import { IntroductionList } from "./LeftContainer/IntroductionList.jsx";
+import { useEffect, useState } from "react";
+import { memberIdValue } from "../Recoil.jsx";
+import { useRecoilValue } from "recoil";
+import { client } from "../api.js";
+
+const data2 = [
+  {
+    title: "2024-3 디프만",
+    items: [
+      {
+        title: "새로운 기술을 배운 경험",
+        text: "최근에 새로운 기술을 배워 프로젝트에 적용했습니다. 이 과정에서 많은 어려움을 겪었지만, 최종적으로는 성공적으로 적용할 수 있었습니다.",
+      },
+      {
+        title: "팀 프로젝트의 성과",
+        text: "팀 프로젝트에서 맡은 역할을 통해 팀워크의 중요성을 다시 한 번 느꼈습니다. 프로젝트가 성공적으로 완료되어 매우 보람 있었습니다.",
+      },
+    ],
+  },
+  {
+    title: "2023-2 디프만",
+    items: [
+      {
+        title: "학교 수업이나 대외 활동을...",
+        text: "저는 프로젝트를 진행하며.... 했습니다. 이를 통해 ... 느꼈습니다.",
+      },
+      {
+        title: "동료와의 갈등 경험을 ....",
+        text: "저는 1000번 이상의 갈등 경험을... 겪었습니다",
+      },
+    ],
+  },
+  {
+    title: "2024-4 디프만",
+    items: [
+      {
+        title: "업무 개선 프로젝트",
+        text: "업무 개선을 위한 프로젝트를 주도하며 팀원들과 함께 새로운 프로세스를 도입했습니다. 이로 인해 효율성이 크게 향상되었습니다.",
+      },
+      {
+        title: "고객 피드백을 통한 개선",
+        text: "고객 피드백을 분석하여 제품의 기능을 개선하였습니다. 고객 만족도가 증가하였고, 프로젝트의 성공적인 완료를 경험했습니다.",
+      },
+    ],
+  },
+];
 
 export const LeftContainer = () => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
+  const [data, setData] = useState(data2);
+  const memberId = useRecoilValue(memberIdValue);
 
-    const handleMoreVertClick = (event) => {
-        event.stopPropagation(); // 이벤트 전파를 막아 아코디언이 열리거나 닫히지 않게 함
-        setAnchorEl(event.currentTarget); // MoreVertIcon을 클릭한 위치에 메뉴가 열리도록 설정
+  useEffect(() => {
+    const fetchData = async () => {
+      // const response = await client.get(`jobPostings?memberId=${memberId}`);
+      // setData(response.data);
+      setData(data2);
+      // console.log(response.data);
     };
-
-    const handleClose = (event) => {
-        event.stopPropagation(); // 이벤트 전파를 막아 아코디언이 열리거나 닫히지 않게 함
-
-        setAnchorEl(null); // 메뉴를 닫기 위한 함수
-    };
-
-    const handleDelete = () => {
-        console.log("삭제 버튼 클릭됨");
-        handleClose(); // 삭제 처리 후 메뉴 닫기
-    };
-
-    const handleAccordionClick = (event) => {
-        event.stopPropagation(); // 메뉴가 열려도 아코디언의 기본 동작이 발생하지 않도록 함
-    };
-
-    return (
-        <>
-            {/* Left Sidebar */}
-            <Box
-                sx={{
-                    minWidth:"350px",
-                    width: "20%",
-                    padding: "10px",
-
-                }}
-            >
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginTop: "20px",
-                        marginBottom: "25px",
-
-                    }}
-                >
-                    <Typography variant="h5">✏️ 내 자기소개서</Typography>
-                    <Button
-                        sx={{
-                            borderRadius: "20px",
-                            textTransform: "none",
-                        }}
-                        variant="contained"
-                    >
-                        자기소개서 추가
-                    </Button>
-                </Box>
-
-                <Card
-                    sx={{
-                        borderRadius: "10px",
-                        // padding: "10px",
-                        boxShadow: "none",
-                        mb: 2,
-                        backgroundColor: "#f7f6fa",
-
-                    }}
-                >
-                    <CardContent sx={{ padding: "0px" }}>
-                        <Accordion defaultExpanded sx={{ mb: 1 }}>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1-content"
-                                id="panel1-header"
-                                sx={{ flexDirection: "row-reverse" }}
-                                onClick={handleAccordionClick} // 아코디언 클릭 이벤트 추가
-                            >
-                                <Typography variant="body1" sx={{ mr: 1 }}>
-                                    📁
-                                </Typography>
-                                <Typography variant="body1">2023-2 디프만</Typography>
-                                {/* MoreVertIcon과 Menu 연결 */}
-                                <MoreVertIcon
-                                    sx={{ ml: "auto" }}
-                                    onClick={handleMoreVertClick}
-                                />
-                                {/* Menu (드롭다운 메뉴) */}
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'right',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <MenuItem onClick={handleDelete}>삭제</MenuItem>
-                                </Menu>
-                            </AccordionSummary>
-                            <Divider />
-                            <Box
-                                sx={{
-                                    padding: "10px",
-                                    borderRadius: "8px",
-                                    overflow: "hidden",
-                                    whiteSpace: "nowrap",
-                                    textOverflow: "ellipsis",
-                                    mt: 1,
-                                }}
-                            >
-                                학교 수업이나 대외 활동을 통해 경험한...
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    mt: 2,
-                                    mb: 2,
-                                }}
-                            >
-                                <Button
-                                    variant="text"
-                                    sx={{
-                                        border: "1px dashed #c0c0c0",
-                                        borderRadius: "8px",
-                                        width: "96%",
-                                        background: "#f6f6f9",
-                                        textTransform: "none",
-                                    }}
-                                >
-                                    + 문항 추가
-                                </Button>
-                            </Box>
-                        </Accordion>
-                    </CardContent>
-                </Card>
-            </Box>
-        </>
-    );
-}
+    fetchData();
+  }, []);
+  return (
+    <>
+      {/* Left Sidebar */}
+      <Box
+        sx={{
+          minWidth: "350px",
+          width: "20%",
+          padding: "10px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: "20px",
+            marginBottom: "25px",
+          }}
+        >
+          <Typography variant="h5">✏️ 내 자기소개서</Typography>
+          <Button
+            sx={{
+              borderRadius: "20px",
+              textTransform: "none",
+            }}
+            variant="contained"
+          >
+            자기소개서 추가
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            height: "80vh",
+            overflowY: "auto",
+            paddingRight: "10px", // Add some space on the right
+            "&::-webkit-scrollbar": {
+              width: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#888", // Scrollbar thumb color
+              borderRadius: "10px", // Rounded corners for the thumb
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              backgroundColor: "#555", // Thumb color when hovered
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#f1f1f1", // Background of the scrollbar track
+            },
+          }}
+        >
+          {data.map((item, index) => (
+            <IntroductionList item={[item]} key={index} />
+          ))}
+        </Box>
+      </Box>
+    </>
+  );
+};

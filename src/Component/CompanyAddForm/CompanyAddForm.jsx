@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Box, TextField, Button, Container, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { client } from "../../api";
+import React, {useState} from "react";
+import {Box, TextField, Button, Container, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import {client} from "../../api";
 
 export default function CompanyAddForm() {
   const [title, setTitle] = useState("");
@@ -12,7 +12,7 @@ export default function CompanyAddForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const postData = { memberId, title, company, description: content };
+    const postData = {memberId, title, company, description: content};
 
     // 데이터를 로컬 스토리지에 저장
     const savedPosts = JSON.parse(localStorage.getItem("jobPostings")) || [];
@@ -42,16 +42,16 @@ export default function CompanyAddForm() {
     <Container component="main" maxWidth="sm">
       <Box
         sx={{
-          marginTop: 8,
-          display: "flex",
+          marginTop    : 8,
+          display      : "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems   : "center",
         }}
       >
         <Typography component="h1" variant="h5" gutterBottom>
           새 자소서 추가
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{width: "100%"}}>
           <TextField
             fullWidth
             label="제목"
@@ -79,7 +79,7 @@ export default function CompanyAddForm() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{mt: 3, mb: 2}}
           >
             제출
           </Button>

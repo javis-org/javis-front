@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import {
   Container,
   Typography,
@@ -15,10 +15,10 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
-import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
-import { client } from "../api";
-import { useRecoilValue } from "recoil";
+import {format} from "date-fns";
+import {useNavigate} from "react-router-dom";
+import {client} from "../api";
+import {useRecoilValue} from "recoil";
 
 export default function Menu1() {
   const memberId = useRecoilValue();
@@ -61,10 +61,10 @@ export default function Menu1() {
     <Container component="main" maxWidth="md">
       <Box
         sx={{
-          marginTop: 8,
-          display: "flex",
+          marginTop    : 8,
+          display      : "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems   : "center",
         }}
       >
         <Typography component="h1" variant="h4" gutterBottom>
@@ -78,11 +78,11 @@ export default function Menu1() {
           variant="outlined"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ mb: 3 }}
+          sx={{mb: 3}}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon />
+                <SearchIcon/>
               </InputAdornment>
             ),
           }}
@@ -90,7 +90,7 @@ export default function Menu1() {
         <Button
           variant="contained"
           fullWidth
-          sx={{ mb: 3 }}
+          sx={{mb: 3}}
           onClick={() => {
             navi("/menu1/CompanyAddForm");
           }}
@@ -98,16 +98,16 @@ export default function Menu1() {
           글 작성
         </Button>
         {/* 게시물 목록 */}
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{width: "100%"}}>
           <Typography component="h2" variant="h5" gutterBottom>
             게시물 목록
           </Typography>
           <List>
             {filteredPosts.map((post) => (
-              <Box key={post.id} sx={{ position: "relative", marginBottom: 2 }}>
+              <Box key={post.id} sx={{position: "relative", marginBottom: 2}}>
                 <Paper
-                  sx={{ padding: 2 }}
-                  style={{ cursor: "pointer" }}
+                  sx={{padding: 2}}
+                  style={{cursor: "pointer"}}
                   onClick={() => {
                     navi(`/menu1/item/${post.id}`);
                   }}
@@ -117,12 +117,12 @@ export default function Menu1() {
                     aria-label="delete"
                     sx={{
                       position: "absolute",
-                      top: 8,
-                      right: 15,
+                      top     : 8,
+                      right   : 15,
                     }}
                   >
                     <DeleteIcon
-                      sx={{ zIndex: "1000" }}
+                      sx={{zIndex: "1000"}}
                       onClick={(e) => {
                         e.stopPropagation(); // 이벤트 전파를 중지하여 카드 클릭 이벤트가 발생하지 않도록 함
                         handleDelete(post.id); // 삭제 처리
@@ -149,7 +149,7 @@ export default function Menu1() {
                           >
                             {post.company}
                           </Typography>
-                          <Divider sx={{ my: 1 }} />
+                          <Divider sx={{my: 1}}/>
                           <Typography
                             component="span"
                             variant="body2"

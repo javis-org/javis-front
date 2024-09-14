@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 // 테스트
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { loginAtom } from "../../Recoil.jsx";
-import { client } from "../../api";
+import {useState} from "react";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
+import {useRecoilState} from "recoil";
+import {loginAtom} from "../../Recoil.jsx";
+import {client} from "../../api";
 
 export default function LoginPage() {
   const [Email, setEmail] = useState("");
@@ -22,7 +22,7 @@ export default function LoginPage() {
 
   const [, setIsLogin] = useRecoilState(loginAtom);
   const handleSignUp = () => {
-    const loginData = { email: Email, password: password };
+    const loginData = {email: Email, password: password};
     const fetchLogin = async () => {
       try {
         const res = await client.post("/members/login", loginData);
@@ -44,19 +44,19 @@ export default function LoginPage() {
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          marginTop: 8,
-          display: "flex",
+          marginTop    : 8,
+          display      : "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems   : "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
+        <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
+          <LockOutlinedIcon/>
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box noValidate sx={{ mt: 1 }}>
+        <Box noValidate sx={{mt: 1}}>
           <TextField
             margin="normal"
             fullWidth
@@ -83,7 +83,7 @@ export default function LoginPage() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{mt: 3, mb: 2}}
             onClick={() => {
               handleSignUp();
             }}
@@ -93,7 +93,7 @@ export default function LoginPage() {
           <Link
             component={RouterLink}
             to="/signUp"
-            style={{ display: "flex", justifyContent: "center" }}
+            style={{display: "flex", justifyContent: "center"}}
           >
             회원가입
           </Link>
