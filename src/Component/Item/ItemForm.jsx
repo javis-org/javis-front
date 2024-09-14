@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, Divider, TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import TinyMCEEditor from "./TinyMCEEditor";
+import QuilEditor from "../MainContainer/QuillEditor.jsx";
 
 const StyledLabel = styled.label`
   display: block;
@@ -52,7 +52,7 @@ function ItemForm({ data, index, onEdit, onDelete }) {
         sx={{ mb: 1 }}
       />
       <StyledLabel>{`A${index + 1}`}</StyledLabel>
-      <TinyMCEEditor />
+      <QuilEditor />
       <Divider sx={{ marginTop: "20px" }} />
     </Box>
   );

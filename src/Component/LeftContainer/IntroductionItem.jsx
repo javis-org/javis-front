@@ -29,9 +29,12 @@ export const IntroductionItem = ({ section }) => {
     event.stopPropagation();
   };
 
+  // Check if section and section.items are valid
+  const items = section?.items || [];
+
   return (
     <>
-      {section.items.map((item, itemIndex) => (
+      {items.map((item, itemIndex) => (
         <Box
           key={itemIndex}
           sx={{
@@ -57,7 +60,7 @@ export const IntroductionItem = ({ section }) => {
           }}
         >
           <Box sx={{ display: "inline-block", mr: "5px" }}>📜</Box>
-          <Box sx={{ display: "inline-block" }}>{item.title}</Box>
+          <Box sx={{ display: "inline-block" }}>{item.title || "No Title"}</Box>
           <Box
             className="more-vert-icon"
             sx={{

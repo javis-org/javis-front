@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 import {
   TextField,
   Button,
@@ -8,8 +8,9 @@ import {
   Avatar,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useNavigate } from "react-router-dom";
-import { client } from "../../api";
+import {useNavigate} from "react-router-dom";
+import {client} from "../../api";
+
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,9 +21,9 @@ export default function SignUp() {
     // 회원가입 처리 로직을 여기에 추가합니다.
 
     const signUpData = {
-      email: email,
+      email   : email,
       password: password,
-      name: name,
+      name    : name,
     };
     const handleSignUp = async () => {
       try {
@@ -36,7 +37,7 @@ export default function SignUp() {
       }
     };
     handleSignUp();
-    console.log({ name, email, password });
+    console.log({name, email, password});
   };
   const navi = useNavigate();
 
@@ -44,7 +45,7 @@ export default function SignUp() {
     <>
       <Button
         variant="contained"
-        sx={{ marginTop: "10px", marginLeft: "10px" }}
+        sx={{marginTop: "10px", marginLeft: "10px"}}
         onClick={() => navi(-1)}
       >
         뒤로가기
@@ -52,14 +53,14 @@ export default function SignUp() {
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
-            display: "flex",
+            marginTop    : 8,
+            display      : "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems   : "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
+          <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
+            <LockOutlinedIcon/>
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign Up
@@ -68,7 +69,7 @@ export default function SignUp() {
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            sx={{mt: 1}}
           >
             <TextField
               margin="normal"
@@ -109,7 +110,7 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{mt: 3, mb: 2}}
             >
               회원가입
             </Button>

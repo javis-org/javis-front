@@ -1,8 +1,12 @@
 import { Box, Button, Typography } from "@mui/material";
 
 import { IntroductionList } from "./LeftContainer/IntroductionList.jsx";
+import { useEffect, useState } from "react";
+import { memberIdValue } from "../Recoil.jsx";
+import { useRecoilValue } from "recoil";
+import { client } from "../api.js";
 
-const data = [
+const data2 = [
   {
     title: "2024-3 디프만",
     items: [
@@ -45,6 +49,18 @@ const data = [
 ];
 
 export const LeftContainer = () => {
+  const [data, setData] = useState(data2);
+  const memberId = useRecoilValue(memberIdValue);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // const response = await client.get(`jobPostings?memberId=${memberId}`);
+      // setData(response.data);
+      setData(data2);
+      // console.log(response.data);
+    };
+    fetchData();
+  }, []);
   return (
     <>
       {/* Left Sidebar */}
@@ -75,10 +91,30 @@ export const LeftContainer = () => {
             자기소개서 추가
           </Button>
         </Box>
-
-        {data.map((item, index) => (
-          <IntroductionList item={[item]} key={index} />
-        ))}
+        <Box
+          sx={{
+            height: "80vh",
+            overflowY: "auto",
+            paddingRight: "10px", // Add some space on the right
+            "&::-webkit-scrollbar": {
+              width: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#888", // Scrollbar thumb color
+              borderRadius: "10px", // Rounded corners for the thumb
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              backgroundColor: "#555", // Thumb color when hovered
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#f1f1f1", // Background of the scrollbar track
+            },
+          }}
+        >
+          {data.map((item, index) => (
+            <IntroductionList item={[item]} key={index} />
+          ))}
+        </Box>
       </Box>
     </>
   );

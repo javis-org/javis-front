@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {Box, Button, Container} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import ItemForm from "./ItemForm";
 
 export default function ItemList() {
@@ -21,7 +21,7 @@ export default function ItemList() {
   // 질문 추가 핸들러
   const handleAddField = () => {
     // 새로운 폼 데이터 객체 생성
-    const newField = { text: "" };
+    const newField = {text: ""};
     setFields([...fields, newField]);
   };
 
@@ -34,7 +34,7 @@ export default function ItemList() {
   // 질문 수정 핸들러
   const handleEditField = (index, newText) => {
     const updatedFields = fields.map((field, i) =>
-      i === index ? { ...field, text: newText } : field
+      i === index ? {...field, text: newText} : field
     );
     setFields(updatedFields);
   };
@@ -45,16 +45,16 @@ export default function ItemList() {
     <Container component="main" maxWidth="md">
       <Box
         sx={{
-          marginTop: 8,
-          display: "flex",
+          marginTop    : 8,
+          display      : "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems   : "center",
         }}
       >
         <Button
           onClick={() => navi(-1)}
           variant="contained"
-          style={{ marginTop: "0px", marginRight: "auto" }}
+          style={{marginTop: "0px", marginRight: "auto"}}
         >
           뒤로가기
         </Button>
@@ -68,7 +68,7 @@ export default function ItemList() {
           />
         ))}
         <Button fullWidth variant="contained" onClick={handleAddField}>
-          <span style={{ fontWeight: "700" }}>+</span>
+          <span style={{fontWeight: "700"}}>+</span>
         </Button>
       </Box>
     </Container>
