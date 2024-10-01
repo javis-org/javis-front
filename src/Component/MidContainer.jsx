@@ -1,7 +1,10 @@
 import { Box, Button, Card, Typography } from "@mui/material";
 import QuillEditor from "./MainContainer/QuillEditor.jsx";
+import { useState } from "react";
 
 export const MidContainer = () => {
+  const [save, setSave] = useState("");
+  const [textLength, setTextLength] = useState(0);
   return (
     <>
       {/* Main Content */}
@@ -35,7 +38,7 @@ export const MidContainer = () => {
                   gutterBottom
                   sx={{ color: "gray" }}
                 >
-                  24년 9월 12일 08시 07분 | 저장 완료
+                  24년 9월 12일 08시 07분 | {save}
                 </Typography>
               </div>
             </Box>
@@ -50,7 +53,7 @@ export const MidContainer = () => {
                     verticalAlign: "middle",
                   }}
                 >
-                  1000자/5000자(공백 포함)
+                  {textLength}자/5000자(공백 포함)
                 </Typography>
               </Box>
               <Button
@@ -68,7 +71,11 @@ export const MidContainer = () => {
           </Box>
 
           <Typography variant="body1" gutterBottom>
-            <QuillEditor />
+            <QuillEditor
+              save={save}
+              setSave={setSave}
+              setTextLength={setTextLength}
+            />
           </Typography>
           <Box
             sx={{
