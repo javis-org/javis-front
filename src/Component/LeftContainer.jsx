@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
-
 import { IntroductionList } from "./LeftContainer/IntroductionList.jsx";
-import { useEffect, useState } from "react";
-import { memberIdValue } from "../Recoil.jsx";
 import { useRecoilValue } from "recoil";
-import { client } from "../api.js";
+import { memberIdValue } from "../Recoil.jsx";
+import { Add } from "@mui/icons-material";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
 const data2 = [
   {
@@ -48,74 +49,77 @@ const data2 = [
   },
 ];
 
-export const LeftContainer = () => {
+// 수정: 구조 분해 할당으로 `isExpanded`를 받아옴
+export const LeftContainer = ({ isExpanded, handleToggleMenu }) => {
   const [data, setData] = useState(data2);
-  const memberId = useRecoilValue(memberIdValue);
 
   useEffect(() => {
     const fetchData = async () => {
       // const response = await client.get(`jobPostings?memberId=${memberId}`);
       // setData(response.data);
       setData(data2);
-      // console.log(response.data);
     };
     fetchData();
   }, []);
+
   return (
-    <>
-      {/* Left Sidebar */}
+    <Box
+      sx={{
+        transition: "width 0.3s ease", // 애니메이션 효과 추가
+        minWidth: isExpanded ? "350px" : "50px", // 접혔을 때와 펼쳤을 때의 너비 설정
+        width: isExpanded ? "20%" : "50px",
+        padding: "10px",
+        overflow: "hidden", // 접혔을 때 내용을 숨기기 위해
+      }}
+    >
       <Box
         sx={{
-          minWidth: "350px",
-          width: "20%",
-          padding: "10px",
+          display: "flex",
+          alignItems: "center",
+          marginTop: "20px",
+          marginBottom: "25px",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: "20px",
-            marginBottom: "25px",
-          }}
-        >
-          <Typography variant="h5">✏️ 내 자기소개서</Typography>
-          <Button
-            sx={{
-              borderRadius: "20px",
-              textTransform: "none",
-            }}
-            variant="contained"
-          >
-            자기소개서 추가
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            height: "80vh",
-            overflowY: "auto",
-            paddingRight: "10px", // Add some space on the right
-            "&::-webkit-scrollbar": {
-              width: "8px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#888", // Scrollbar thumb color
-              borderRadius: "10px", // Rounded corners for the thumb
-            },
-            "&::-webkit-scrollbar-thumb:hover": {
-              backgroundColor: "#555", // Thumb color when hovered
-            },
-            "&::-webkit-scrollbar-track": {
-              backgroundColor: "#f1f1f1", // Background of the scrollbar track
-            },
-          }}
-        >
-          {data.map((item, index) => (
-            <IntroductionList item={[item]} key={index} />
-          ))}
-        </Box>
+        {isExpanded && ( // 접혔을 때는 텍스트를 숨기기
+          <Typography variant="h5" sx={{ marginRight: "10px" }}>
+            ✏️ 내 자기소개서
+          </Typography>
+        )}
+        <Button sx={{ marginLeft: "auto" }} onClick={handleToggleMenu}>
+          {isExpanded ? <MenuOpenIcon /> : <MenuIcon />}
+        </Button>
       </Box>
-    </>
+      {isExpanded && ( // 접혔을 때는 목록도 숨기기z\
+        <>
+          <Box
+            sx={{
+              height: "80vh",
+              overflowY: "auto",
+              paddingRight: "10px",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#888",
+                borderRadius: "10px",
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                backgroundColor: "#555",
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "#f1f1f1",
+              },
+            }}
+          >
+            <Button>
+              <Add fontSize="small" /> {isExpanded && "추가"}
+            </Button>
+            {data.map((item, index) => (
+              <IntroductionList item={[item]} key={index} />
+            ))}
+          </Box>
+        </>
+      )}
+    </Box>
   );
 };
