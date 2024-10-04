@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import "./quillCustom.css"; // 사용자 정의 CSS 파일 추가
 
 function sleep(ms) {
@@ -72,6 +71,7 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
         onChange={handleChange}
         modules={QuilEditor.modules}
         formats={QuilEditor.formats}
+        theme={"bubble"}
       />
     </div>
   );
