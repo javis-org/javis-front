@@ -13,6 +13,7 @@ export const MidContainer = () => {
           width: "100%",
           padding: "10px",
           overflowY: "auto",
+          overflow: "visible",
           mr: "10px",
         }}
       >
@@ -20,6 +21,7 @@ export const MidContainer = () => {
           sx={{
             borderRadius: "20px",
             border: "1px solid #e0e0e0",
+            overflow: "visible",
             p: 4,
           }}
         >

@@ -40,6 +40,7 @@ export const LeftContainer = ({ isExpanded, handleToggleMenu }) => {
         minWidth: isExpanded ? "350px" : "50px", // 접혔을 때와 펼쳤을 때의 너비 설정
         width: isExpanded ? "20%" : "50px",
         padding: "10px",
+        background: "#f7f6fa",
         overflow: "hidden", // 접혔을 때 내용을 숨기기 위해
       }}
     >
