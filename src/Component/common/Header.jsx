@@ -10,6 +10,7 @@ import { isExpandValue, loginAtom } from "../../Recoil.jsx";
 import Javis from "../../assets/Javis.png";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen.js";
 import MenuIcon from "@mui/icons-material/Menu.js";
+import { IconButton } from "@mui/material";
 
 export default function Header() {
   const [isExpanded, setIsExpanded] = useRecoilState(isExpandValue);
@@ -19,7 +20,7 @@ export default function Header() {
   const navi = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(loginAtom);
   const [, setAnchorEl] = useState(null);
-  const pages = ["내 자소서", "내 공고"];
+  const pages = [" 내정보", "내 자소서", "내 공고"];
   const user = localStorage.getItem("user");
 
   const handleClose = () => {
@@ -43,7 +44,7 @@ export default function Header() {
   }, [setIsLogin]);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} style={{ zIndex: "100" }}>
       <AppBar
         position="static"
         sx={{
@@ -61,9 +62,6 @@ export default function Header() {
             justifyContent: "space-between",
           }}
         >
-          <Button sx={{ marginLeft: "auto" }} onClick={handleExpandToggle}>
-            {isExpanded ? <MenuOpenIcon /> : <MenuIcon />}
-          </Button>
           <Box
             onClick={() => {
               isLogin ? navi("/main") : navi("/");
@@ -74,6 +72,16 @@ export default function Header() {
               cursor: "pointer",
             }}
           >
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={handleExpandToggle}
+            >
+              <MenuIcon />
+            </IconButton>
             <img
               src={Javis}
               alt="로고"

@@ -37,10 +37,11 @@ export const LeftContainer = ({ isExpanded }) => {
     <Box
       sx={{
         transition: "width 0.3s ease", // 애니메이션 효과 추가
-        minWidth: isExpanded ? "350px" : "50px", // 접혔을 때와 펼쳤을 때의 너비 설정
+        minWidth: isExpanded ? "300px" : "50px", // 접혔을 때와 펼쳤을 때의 너비 설정
         width: isExpanded ? "20%" : "50px",
-        padding: "10px",
-        background: "#f7f6fa",
+        padding: "10px 0px 10px 10px",
+
+        // background: "#f7f6fa",
         display: isExpanded ? "block" : "none",
         overflow: "hidden", // 접혔을 때 내용을 숨기기 위해
       }}
