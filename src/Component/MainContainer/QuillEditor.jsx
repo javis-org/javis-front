@@ -8,8 +8,9 @@ function sleep(ms) {
 
 const QuilEditor = ({ save, setSave, setTextLength }) => {
   const [editorHtml, setEditorHtml] = useState("");
-  const [fontSize, setFontSize] = useState("16px"); // 기본 폰트 크기 설정
+  const [fontSize, setFontSize] = useState("24px"); // 기본 폰트 크기 설정
   const quilRef = useRef();
+  console.log("fontSize", fontSize);
 
   // 글자 크기 변경 핸들러
   const handleFontSizeChange = (e) => {
@@ -21,6 +22,23 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
       editorRoot.style.fontSize = e.target.value; // Quill의 전체 글자 크기 변경
     }
   };
+
+  useEffect(() => {
+    // Quill 인스턴스가 완전히 로드된 후 포커스 적용
+    setTimeout(() => {
+      if (quilRef.current) {
+        const editorInstance = quilRef.current.getEditor();
+        editorInstance.focus(); // 에디터에 포커스
+        console.log("Focus applied");
+      }
+    }, 100); // 약간의 지연을 줘서 Quill이 완전히 로드된 후 포커스 적용
+  }, []);
+
+  useEffect(() => {
+    const editorInstance = quilRef.current.getEditor();
+    const editorRoot = editorInstance.root;
+    editorRoot.style.fontSize = fontSize;
+  }, [fontSize]);
 
   useEffect(() => {
     const delayDebounceTimer = setTimeout(async () => {
@@ -60,9 +78,9 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
         onChange={handleFontSizeChange}
       >
         <option value="16px">작게</option>
-        <option value="20px">보통</option>
-        <option value="24px">크게</option>
-        <option value="30px">아주 크게</option>
+        <option value="24px">보통</option>
+        <option value="30px">크게</option>
+        <option value="34px">아주 크게</option>
       </select>
 
       <ReactQuill
