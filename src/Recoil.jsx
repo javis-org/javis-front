@@ -9,6 +9,10 @@ export const memberIdValue = atom({
   key: "memberIdValue",
   default: localStorage.getItem("memberId"),
 });
+export const isExpandValue = atom({
+  key: "isExpandValue",
+  default: false,
+});
 
 export const selfIntroductionList = selector({
   key: "selfIntroductionList",

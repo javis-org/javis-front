@@ -9,7 +9,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { client } from "../api.js";
 
 // 수정: 구조 분해 할당으로 `isExpanded`를 받아옴
-export const LeftContainer = ({ isExpanded, handleToggleMenu }) => {
+export const LeftContainer = ({ isExpanded }) => {
   const [data, setData] = useState([]);
   const memberId = useRecoilValue(memberIdValue);
   useEffect(() => {
@@ -41,6 +41,7 @@ export const LeftContainer = ({ isExpanded, handleToggleMenu }) => {
         width: isExpanded ? "20%" : "50px",
         padding: "10px",
         background: "#f7f6fa",
+        display: isExpanded ? "block" : "none",
         overflow: "hidden", // 접혔을 때 내용을 숨기기 위해
       }}
     >
@@ -55,11 +56,9 @@ export const LeftContainer = ({ isExpanded, handleToggleMenu }) => {
         {isExpanded && ( // 접혔을 때는 텍스트를 숨기기
           <Typography variant="h5" sx={{ marginRight: "10px" }}>
             ✏️ 내 자기소개서
+            <Button>검색</Button>
           </Typography>
         )}
-        <Button sx={{ marginLeft: "auto" }} onClick={handleToggleMenu}>
-          {isExpanded ? <MenuOpenIcon /> : <MenuIcon />}
-        </Button>
       </Box>
       {isExpanded && ( // 접혔을 때는 목록도 숨기기z\
         <>

@@ -59,10 +59,10 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
         value={fontSize}
         onChange={handleFontSizeChange}
       >
-        <option value="12px">작게</option>
-        <option value="16px">보통</option>
-        <option value="20px">크게</option>
-        <option value="24px">아주 크게</option>
+        <option value="16px">작게</option>
+        <option value="20px">보통</option>
+        <option value="24px">크게</option>
+        <option value="30px">아주 크게</option>
       </select>
 
       <ReactQuill
