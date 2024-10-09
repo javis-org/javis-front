@@ -5,36 +5,36 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 
 export default [
-  {ignores: ["dist"]},
+  { ignores: ["dist"] },
   {
-    files          : ["**/*.{js,jsx}"],
+    files: ["**/*.{js,jsx}"],
     languageOptions: {
-      ecmaVersion  : 2020,
-      globals      : globals.browser,
+      ecmaVersion: 2020,
+      globals: globals.browser,
       parserOptions: {
-        ecmaVersion : "latest",
-        ecmaFeatures: {jsx: true},
-        sourceType  : "module",
+        ecmaVersion: "latest",
+        ecmaFeatures: { jsx: true },
+        sourceType: "module",
       },
     },
-    settings       : {react: {version: "18.3"}},
-    plugins        : {
+    settings: { react: { version: "18.3" } },
+    plugins: {
       react,
-      "react-hooks"  : reactHooks,
+      "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
     },
-    rules          : {
+    rules: {
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs["jsx-runtime"].rules,
       ...reactHooks.configs.recommended.rules,
-      "react/jsx-no-target-blank"           : "off",
-      "no-unused-vars"                      : ["warn"],
+      "react/jsx-no-target-blank": "off",
+      "no-unused-vars": ["warn"],
       "react-refresh/only-export-components": [
         "warn",
-        {allowConstantExport: true},
+        { allowConstantExport: true },
       ],
-      "react/prop-types"                    : "off",
+      "react/prop-types": "off",
     },
   },
 ];
