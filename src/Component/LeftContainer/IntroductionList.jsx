@@ -6,15 +6,15 @@ import {
   Card,
   CardContent,
   Divider,
+  InputAdornment,
   Menu,
   MenuItem,
   TextField,
   Typography,
-  InputAdornment,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState, memo } from "react";
+import { memo, useState } from "react";
 import { IntroductionItem } from "./IntroductionItem.jsx";
 
 const IntroductionList = ({ item, index }) => {

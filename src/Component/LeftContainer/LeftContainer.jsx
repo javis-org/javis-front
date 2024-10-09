@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
-import IntroductionList from "./LeftContainer/IntroductionList.jsx";
+import IntroductionList from "./IntroductionList.jsx";
 import { useRecoilValue } from "recoil";
-import { memberIdValue } from "../Recoil.jsx";
+import { memberIdValue } from "../../Recoil.jsx";
 import { Add } from "@mui/icons-material";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { client } from "../api.js";
+import { client } from "../../api.js";
 
 // 수정: 구조 분해 할당으로 `isExpanded`를 받아옴
 export const LeftContainer = ({ isExpanded }) => {

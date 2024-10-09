@@ -5,13 +5,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { isExpandValue, loginAtom } from "../../Recoil.jsx";
 import Javis from "../../assets/Javis.png";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen.js";
-import MenuIcon from "@mui/icons-material/Menu.js";
+import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
-
+const pages = [" 내정보", "내 자소서", "내 공고"];
+const url = ["info", "statement", "recruits-page"];
 export default function Header() {
   const [isExpanded, setIsExpanded] = useRecoilState(isExpandValue);
   const handleExpandToggle = () => {
@@ -20,9 +20,8 @@ export default function Header() {
   const navi = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(loginAtom);
   const [, setAnchorEl] = useState(null);
-  const pages = [" 내정보", "내 자소서", "내 공고"];
-  const user = localStorage.getItem("user");
 
+  const user = localStorage.getItem("user");
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -49,23 +48,19 @@ export default function Header() {
         position="static"
         sx={{
           zIndex: 1300,
-          // background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)", // 배경 그라데이션 추가
           background: "black",
         }}
       >
         <Toolbar
           sx={{
-            minHeight: "64px", // 기본 Toolbar 높이 설정
-            height: "64px", // Toolbar의 고정된 높이
+            minHeight: "64px",
+            height: "64px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
           }}
         >
           <Box
-            onClick={() => {
-              isLogin ? navi("/main") : navi("/");
-            }}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -86,16 +81,20 @@ export default function Header() {
               src={Javis}
               alt="로고"
               style={{
-                height: "40px", // 이미지 높이 고정
-                width: "auto", // 가로 크기 비율 유지
+                height: "40px",
+                width: "auto",
                 marginRight: "10px",
+              }}
+              onClick={() => {
+                isLogin ? navi("/main") : navi("/");
               }}
             />
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
+              {pages.map((page, index) => (
                 <Button
                   key={page}
                   sx={{ my: 2, color: "white", display: "block" }}
+                  onClick={() => navi(`${url[index]}`)}
                 >
                   {page}
                 </Button>
@@ -119,7 +118,7 @@ export default function Header() {
                   backgroundColor: "#ff1744",
                   "&:hover": {
                     backgroundColor: "#f01440",
-                    transform: "translateY(-3px)", // 호버 시 살짝 위로 올라가는 애니메이션
+                    transform: "translateY(-3px)",
                   },
                 }}
               >
