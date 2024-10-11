@@ -1,4 +1,12 @@
-import { Box, Card, Tooltip, Typography, Grid, Chip } from "@mui/material";
+import {
+  Box,
+  Card,
+  Chip,
+  Grid,
+  styled,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 export const CardItem = ({
   title = "ㅁ자신의 가치관 또는 인생관에 영향을 미친 경험을 소개하고, 이를 통해 배우거나 느낀 점을 구체적으로 기술하시오.",
@@ -18,11 +26,28 @@ export const CardItem = ({
     "문제 해결",
   ],
 }) => {
+  const CustomCard = styled(Card)`
+    min-height: 80px;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 20px;
+
+    &:hover {
+      outline: 2px solid black;
+    }
+  `;
   const TooltipText = () => (
     <Box>
       <Typography variant="body2">시간: {date}</Typography>
-      <Typography variant="body2">제목: {title}</Typography>
       <Grid container>
+        <Grid item xs={1.5}>
+          <Typography variant="body2">제목:</Typography>
+        </Grid>
+        <Grid item xs={10.5}>
+          <Typography variant="body2" sx={{ wordBreak: "break-word" }}>
+            {title}
+          </Typography>
+        </Grid>
         <Grid item xs={1.5}>
           <Typography variant="body2">태그:</Typography>
         </Grid>
@@ -46,11 +71,12 @@ export const CardItem = ({
 
   return (
     <Tooltip title={<TooltipText />}>
-      <Card
+      <CustomCard
         sx={{
           minHeight: "80px",
           padding: "20px",
           cursor: "pointer",
+          borderRadius: "17px",
         }}
       >
         <Box sx={{ fontSize: "12px", color: "gray" }}>{date}</Box>
@@ -96,7 +122,7 @@ export const CardItem = ({
             />
           ))}
         </Box>
-      </Card>
+      </CustomCard>
     </Tooltip>
   );
 };
