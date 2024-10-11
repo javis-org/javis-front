@@ -1,4 +1,4 @@
-import { CardItem } from "../common/CardItem.jsx";
+import { CardItem } from "../common/Card/CardItem.jsx";
 import { Box } from "@mui/material";
 
 export const CardList = () => {

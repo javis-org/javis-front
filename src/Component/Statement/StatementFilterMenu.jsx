@@ -1,6 +1,6 @@
 import { Box, Button, styled } from "@mui/material";
-import { Add } from "@mui/icons-material";
 import { useState } from "react";
+import { AddCardComponent } from "../common/Card/AddCardComponent.jsx";
 const CustomButton = styled(Button)`
   color: ${(props) => (props.isSelected ? "black" : "gray")};
   font-weight: bold;
@@ -29,6 +29,7 @@ export const StatementFilterMenu = () => {
     <Box sx={{ display: "flex" }}>
       {menus.map((menu, index) => (
         <CustomButton
+          key={index}
           onClick={() => setSelectedMenu(menu)}
           isSelected={selectedMenu === menu}
         >
@@ -36,9 +37,7 @@ export const StatementFilterMenu = () => {
           <CountBox isSelected={selectedMenu === menu}>12</CountBox>
         </CustomButton>
       ))}
-      <Button sx={{ marginLeft: "auto", fontSize: "16px" }}>
-        <Add /> 카드추가
-      </Button>
+      <AddCardComponent />
     </Box>
   );
 };
