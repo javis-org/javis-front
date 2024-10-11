@@ -14,7 +14,7 @@ const StatementAddCardBody = () => {
   const handleTagChange = (event, newTags) => {
     setSelectedTags(newTags);
   };
-
+  console.log("selectedType", selectedType.length);
   return (
     <Box>
       <Typography
@@ -48,6 +48,7 @@ const StatementAddCardBody = () => {
         </Box>
       </Box>
       <Button
+        disabled={selectedType.length === 0}
         variant="contained"
         sx={{ marginTop: "10px", width: "100%" }}
         onClick={() => navigate("/statement/editor")}

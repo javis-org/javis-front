@@ -8,6 +8,9 @@ import StatementAddCardBody from "../../Statement/StatementAddModalComponent/Sta
 export const AddCardComponent = () => {
   const [show, setShow] = useState(false);
 
+  const handleClose = () => {
+    setShow(false);
+  };
   const handleOpen = () => {
     setShow(true);
   };
@@ -15,12 +18,25 @@ export const AddCardComponent = () => {
   return (
     <>
       <Button
-        sx={{ marginLeft: "auto", fontSize: "16px" }}
+        size="small"
+        sx={{
+          marginLeft: "auto",
+          fontSize: "14px",
+          color: "white",
+          marginTop: "5px",
+          marginBottom: "5px",
+          backgroundColor: "black",
+          "&:hover": {
+            backgroundColor: "darkgray", // 호버 시 색상 변경
+          },
+        }}
         onClick={handleOpen}
       >
         <Add /> 카드추가
       </Button>
+
       <ModalComponent
+        headerCloseBtn={handleClose}
         show={show}
         backdroup={"true"}
         body={<StatementAddCardBody />}
