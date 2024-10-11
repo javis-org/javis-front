@@ -1,12 +1,13 @@
 import { Box, Button, Card, Typography } from "@mui/material";
 import QuillEditor from "./QuillEditor.jsx";
 import { useState } from "react";
+import { BaseComponent } from "../common/BaseComponent.jsx";
 
 export const EditorContainer = () => {
   const [save, setSave] = useState("");
   const [textLength, setTextLength] = useState(0);
   return (
-    <>
+    <BaseComponent>
       <Card
         sx={{
           borderRadius: "20px",
@@ -84,6 +85,6 @@ export const EditorContainer = () => {
           </Button>
         </Box>
       </Card>
-    </>
+    </BaseComponent>
   );
 };
