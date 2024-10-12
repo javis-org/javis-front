@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, TextField, Button, Container, Typography } from "@mui/material";
+import { useState } from "react";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { client } from "../../api";
 
@@ -27,7 +27,7 @@ export default function CompanyAddForm() {
       try {
         console.log(postData);
         await client.post(
-          `/jobPostings?memberId=${memberId}&title=${title}&company=${company}&description=${content}`
+          `/jobPostings?memberId=${memberId}&title=${title}&company=${company}&description=${content}`,
         );
         navi(-1);
       } catch (error) {

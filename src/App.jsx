@@ -1,12 +1,17 @@
 import { RecoilRoot } from "recoil";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Header from "./Component/common/Header";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./Component/Header/Header.jsx";
 import LoginPage from "./Component/Login/LoginPage";
 import SignUp from "./Component/Login/SignUp";
-import CompanyAddForm from "./Component/CompanyAddForm/CompanyAddForm";
-import ItemList from "./Component/Item/ItemList";
-import Base from "./Component/Base";
+
+import "./index.css";
+import { InfoPage } from "./Component/Info/InfoPage.jsx";
+import { RecruitsPage } from "./Component/Recruits/RecruitsPage.jsx";
+import { MyStatementPage } from "./Component/Statement/StatementPage.jsx";
+import { EditorContainer } from "./Component/Editor/EditorContainer.jsx";
+
 const user = localStorage.getItem("user");
+
 export default function App() {
   console.log("user", user);
   console.log("test");
@@ -16,12 +21,17 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<LoginPage />} />
-          <Route path="/signUp" element={<SignUp />} />
-          <Route path="/main" element={<Base />} />
-          {/* 메뉴 1 */}
-          <Route path="/menu1" element={<Base />} />
-          <Route path="/menu1/companyAddForm" element={<CompanyAddForm />} />
-          <Route path="/menu1/item/:id" element={<ItemList />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/main" element={<InfoPage />} />
+
+          {/*  /!* 내 정보 *!/*/}
+          <Route path={"/info"} element={<InfoPage />} />
+
+          {/*  /!*내 자기소개서*!/*/}
+          <Route path={"/statement"} element={<MyStatementPage />} />
+          <Route path={"/statement/editor"} element={<EditorContainer />} />
+          {/*  /!*  내 공고*!/*/}
+          <Route path={"/recruits-page"} element={<RecruitsPage />} />
         </Routes>
       </Router>
     </RecoilRoot>
