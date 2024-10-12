@@ -4,7 +4,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 /**
  * ModalComponent는 일반적인 모달을 생성하는 컴포넌트입니다.
@@ -20,6 +22,7 @@ import {
  * @param {string} [confirmVariant="primary"] - 확인 버튼의 색상 변형입니다. (기본값: "primary")
  * @param {boolean|string} [backdrop="static"] - 외부 클릭 시 모달을 닫을지 여부입니다. (기본값: "static")
  * @param {boolean} [centered=false] - 모달을 화면 정중앙에 배치할지 여부를 결정하는 상태입니다. (기본값: false)
+ * @param {()=>void} [headerCloseBtn] - 모달을 닫는 상단 버튼입니다.
  */
 const ModalComponent = ({
   title,
@@ -33,6 +36,7 @@ const ModalComponent = ({
   confirmVariant = "primary",
   backdrop = "",
   centered = false,
+  headerCloseBtn = false,
 }) => (
   <Dialog
     open={show}
@@ -47,9 +51,43 @@ const ModalComponent = ({
       },
     }}
   >
-    {title && <DialogTitle>{title}</DialogTitle>}
+    {title && (
+      <DialogTitle sx={{ m: 0, p: 2 }}>
+        {title}
+        {headerCloseBtn && (
+          <IconButton
+            aria-label="close"
+            onClick={headerCloseBtn}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
+      </DialogTitle>
+    )}
 
-    <DialogContent dividers>{body}</DialogContent>
+    <DialogContent dividers>
+      {body}{" "}
+      {headerCloseBtn && !title && (
+        <IconButton
+          aria-label="close"
+          onClick={headerCloseBtn}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
+    </DialogContent>
 
     {(handleClose || onConfirm) && (
       <DialogActions>
