@@ -8,7 +8,7 @@ function sleep(ms) {
 
 const QuilEditor = ({ save, setSave, setTextLength }) => {
   const [editorHtml, setEditorHtml] = useState("");
-  const [fontSize, setFontSize] = useState("24px"); // 기본 폰트 크기 설정
+  const [fontSize, setFontSize] = useState("16px"); // 기본 폰트 크기 설정
   const quilRef = useRef();
   console.log("fontSize", fontSize);
 
@@ -77,10 +77,10 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
         value={fontSize}
         onChange={handleFontSizeChange}
       >
-        <option value="16px">작게</option>
-        <option value="24px">보통</option>
-        <option value="30px">크게</option>
-        <option value="34px">아주 크게</option>
+        <option value="12px">작게</option>
+        <option value="16px">보통</option>
+        <option value="20px">크게</option>
+        <option value="25px">아주 크게</option>
       </select>
 
       <ReactQuill

@@ -1,4 +1,4 @@
-import { Box, Button, Card, Typography } from "@mui/material";
+import { Box, Button, Card, TextField, Typography } from "@mui/material";
 import QuillEditor from "./QuillEditor.jsx";
 import { useState } from "react";
 import { BaseComponent } from "../common/BaseComponent.jsx";
@@ -6,6 +6,7 @@ import { BaseComponent } from "../common/BaseComponent.jsx";
 export const EditorContainer = () => {
   const [save, setSave] = useState("");
   const [textLength, setTextLength] = useState(0);
+
   return (
     <BaseComponent>
       <Card
@@ -49,18 +50,22 @@ export const EditorContainer = () => {
                 {textLength}자/5000자(공백 포함)
               </Typography>
             </Box>
-            <Button
-              variant="contained"
-              sx={{ background: "purple", borderRadius: "20px" }}
-            >
-              임시 저장
-            </Button>
           </Box>
         </Box>
         <Box sx={{ mb: 6 }}>
-          <Typography variant="h6" gutterBottom sx={{ fontWeight: "700" }}>
-            학교 수업이나 대외활동 등을 통해 경험한 프로젝트
-          </Typography>
+          <TextField
+            placeholder={"제목을 입력해주세요"}
+            variant="standard"
+            sx={{
+              width: "100%", // 너비 100%
+              height: "60px", // 높이 지정
+              fontSize: "18px", // 글자 크기
+              "& .MuiInputBase-input": {
+                padding: "10px", // 입력 필드 내부 패딩 조정
+                fontSize: "18px", // 입력 글자 크기 조정
+              },
+            }}
+          />
         </Box>
 
         <Typography variant="body1" gutterBottom>
