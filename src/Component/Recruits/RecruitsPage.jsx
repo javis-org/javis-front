@@ -3,7 +3,9 @@ import { BaseComponent } from "../common/BaseComponent.jsx";
 import { PageContent } from "../common/PageContent.jsx";
 import { PeriodFilter } from "./PeriodFilter.jsx";
 import { Box } from "@mui/material";
-import { RecruitCard } from "./RecruitCard.jsx"; // MUI의 Box 컴포넌트 사용
+import { RecruitCard } from "./RecruitCard.jsx";
+import { StatementFilterMenu } from "../Statement/StatementFilterMenu.jsx";
+import RecruitAddCardBody from "./RecruitAddCardBody.jsx";
 
 export const RecruitsPage = () => {
   return (
@@ -28,9 +30,16 @@ export const RecruitsPage = () => {
         </div>
         <PageTitle title={"내 공고"} />
       </Box>
+
       <PageContent>
+        <Box sx={{ marginTop: "50px", marginBottom: "20px" }}>
+          <StatementFilterMenu
+            modalBody={<RecruitAddCardBody />}
+            menus={["경험", "자기소개서", "면접 질문"]}
+            select={"경험"}
+          />
+        </Box>
         <PeriodFilter />
-        {/*  List*/}
         <RecruitCard />
         <RecruitCard />
         <RecruitCard />

@@ -16,7 +16,7 @@ const StatementAddCardBody = () => {
   };
   console.log("selectedType", selectedType.length);
   return (
-    <Box>
+    <Box sx={{ width: "450px" }}>
       <Typography
         color="textPrimary"
         component="div"

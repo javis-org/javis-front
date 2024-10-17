@@ -1,6 +1,7 @@
 import { Box, Button, styled } from "@mui/material";
 import { useState } from "react";
 import { AddCardComponent } from "../common/Card/AddCardComponent.jsx";
+
 const CustomButton = styled(Button)`
   color: ${(props) => (props.isSelected ? "black" : "gray")};
   font-weight: bold;
@@ -22,9 +23,15 @@ const CountBox = styled(Box)`
   background-color: ${(props) => (props.isSelected ? "black" : "gray")};
   color: white;
 `;
-export const StatementFilterMenu = () => {
-  const [selectedMenu, setSelectedMenu] = useState("경험정리");
-  const menus = ["경험정리", "자기소개서", "면접 질문"];
+
+/**
+ * StatementFilterMenu 컴포넌트
+ * @param {Object} props - 컴포넌트에 전달되는 속성들
+ * @param {Array} menus - 필터 메뉴 목록 (예: ['전체', '승인', '반려'])
+ * @param {Function} props.select - 사용자가 필터를 선택했을 때 호출되는 함수, 선택된 메뉴 항목을 전달함
+ */
+export const StatementFilterMenu = ({ menus, select, modalBody }) => {
+  const [selectedMenu, setSelectedMenu] = useState(select);
   return (
     <Box sx={{ display: "flex" }}>
       {menus.map((menu, index) => (
@@ -37,7 +44,7 @@ export const StatementFilterMenu = () => {
           <CountBox isSelected={selectedMenu === menu}>12</CountBox>
         </CustomButton>
       ))}
-      <AddCardComponent />
+      <AddCardComponent modalBody={modalBody} />
     </Box>
   );
 };
