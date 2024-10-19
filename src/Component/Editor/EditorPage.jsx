@@ -3,7 +3,7 @@ import QuillEditor from "./QuillEditor.jsx";
 import { useState } from "react";
 import { BaseComponent } from "../common/BaseComponent.jsx";
 
-export const EditorContainer = () => {
+export const EditorPage = () => {
   const [save, setSave] = useState("");
   const [textLength, setTextLength] = useState(0);
 

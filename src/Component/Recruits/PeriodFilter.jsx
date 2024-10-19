@@ -14,7 +14,7 @@ export const PeriodFilter = () => {
       periods.push({ label: `${year} 상반기`, value: `${year}-H1` });
       periods.push({ label: `${year} 하반기`, value: `${year}-H2` });
     }
-    return periods;
+    return periods.reverse();
   };
 
   // 변경 핸들러

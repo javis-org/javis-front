@@ -10,13 +10,19 @@ import {
   Typography,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useNavigate } from "react-router-dom";
+import { generateSupportStatuses } from "../../Recoil.jsx";
+import { useRecoilValue } from "recoil";
 
 export const RecruitCard = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [status, setStatus] = useState("지원 준비");
+  const navi = useNavigate();
+  const supportStatus = useRecoilValue(generateSupportStatuses); // `setSupportStatus` 대신 `useRecoilValue`만 사용
 
   // Dots menu 열기 핸들러
   const handleClick = (event) => {
+    event.stopPropagation(); // 이벤트 전파 중지
     setAnchorEl(event.currentTarget);
   };
 
@@ -33,7 +39,14 @@ export const RecruitCard = () => {
 
   // 상태 변경 핸들러
   const handleStatusChange = (event) => {
+    event.stopPropagation(); // 이벤트 전파 중지
     setStatus(event.target.value);
+  };
+
+  // Box 클릭 핸들러
+  const handleCardClick = (event) => {
+    event.stopPropagation(); // 클릭 시 전파 방지
+    navi("1");
   };
 
   return (
@@ -48,7 +61,9 @@ export const RecruitCard = () => {
           marginBottom: "16px",
           backgroundColor: "#fff",
           justifyContent: "space-between",
+          cursor: "pointer",
         }}
+        onClick={handleCardClick} // capture 단계에서 이벤트 제어
       >
         {/* Left Section */}
         <Box
@@ -104,8 +119,10 @@ export const RecruitCard = () => {
           {/* 지원 상태 선택 (Select) */}
           <FormControl sx={{ marginRight: "16px", minWidth: 120 }}>
             <Select
+              variant={"outlined"}
               value={status}
               onChange={handleStatusChange}
+              onClick={(event) => event.stopPropagation()} // Select 클릭 시 전파 방지
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               sx={{
@@ -115,19 +132,21 @@ export const RecruitCard = () => {
                 minWidth: "120px", // Select 컴포넌트의 최소 너비 설정
               }}
             >
-              <MenuItem value="지원 준비">지원 준비</MenuItem>
-              <MenuItem value="지원 완료">지원 완료</MenuItem>
-              <MenuItem value="서류 통과">서류 통과</MenuItem>
-              <MenuItem value="서류 탈락">서류 탈락</MenuItem>
-              <MenuItem value="면접 통과">면접 통과</MenuItem>
-              <MenuItem value="면접 탈락">면접 탈락</MenuItem>
-              <MenuItem value="최종 합격">최종 합격</MenuItem>
-              <MenuItem value="최종 탈락">최종 탈락</MenuItem>
+              {supportStatus.map((status, index) => (
+                <MenuItem value={status} key={index}>
+                  {status}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
 
           {/* Dots Menu */}
-          <IconButton onClick={handleClick}>
+          <IconButton
+            onClick={(event) => {
+              event.stopPropagation(); // 박스 클릭 이벤트로 전파되지 않도록 방지
+              handleClick(event);
+            }}
+          >
             <MoreVertIcon />
           </IconButton>
           <Menu
@@ -143,8 +162,14 @@ export const RecruitCard = () => {
               horizontal: "right",
             }}
           >
-            <MenuItem onClick={handleDelete}>🗑️삭제</MenuItem>{" "}
-            {/* 삭제 메뉴 항목 */}
+            <MenuItem
+              onClick={(event) => {
+                event.stopPropagation(); // 메뉴 클릭 시 전파 방지
+                handleDelete();
+              }}
+            >
+              🗑️삭제
+            </MenuItem>
           </Menu>
         </Box>
       </Box>

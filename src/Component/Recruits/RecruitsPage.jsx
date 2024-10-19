@@ -28,18 +28,17 @@ export const RecruitsPage = () => {
         >
           💼
         </div>
-        <PageTitle title={"내 공고"} />
+        <PageTitle title={"내 공고"} variant={"h5"} />
       </Box>
 
       <PageContent>
-        <Box sx={{ marginTop: "50px", marginBottom: "20px" }}>
-          <StatementFilterMenu
-            modalBody={<RecruitAddCardBody />}
-            menus={["경험", "자기소개서", "면접 질문"]}
-            select={"경험"}
-          />
+        <Box sx={{ marginTop: "40px", marginBottom: "20px", display: "flex" }}>
+          <PeriodFilter />
+          <Box sx={{ marginLeft: "auto" }}>
+            <StatementFilterMenu modalBody={<RecruitAddCardBody />} />
+          </Box>
         </Box>
-        <PeriodFilter />
+
         <RecruitCard />
         <RecruitCard />
         <RecruitCard />

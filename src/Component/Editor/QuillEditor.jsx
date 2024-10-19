@@ -90,6 +90,7 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
         modules={QuilEditor.modules}
         formats={QuilEditor.formats}
         theme={"bubble"}
+        placeholder="내용을 입력해주세요" // placeholder 추가
       />
     </div>
   );
