@@ -26,24 +26,25 @@ const CountBox = styled(Box)`
 
 /**
  * StatementFilterMenu 컴포넌트
- * @param {Object} props - 컴포넌트에 전달되는 속성들
- * @param {Array} menus - 필터 메뉴 목록 (예: ['전체', '승인', '반려'])
+ * @param {Object} props - 컴포넌트에 전달되는 속성들 // 없을 경우 안보임
+ * @param {Array} menus - 필터 메뉴 목록 (예: ['전체', '승인', '반려']) 없을 경우 안보임
  * @param {Function} props.select - 사용자가 필터를 선택했을 때 호출되는 함수, 선택된 메뉴 항목을 전달함
  */
-export const StatementFilterMenu = ({ menus, select, modalBody }) => {
+export const StatementFilterMenu = ({ menus = [], select, modalBody }) => {
   const [selectedMenu, setSelectedMenu] = useState(select);
   return (
     <Box sx={{ display: "flex" }}>
-      {menus.map((menu, index) => (
-        <CustomButton
-          key={index}
-          onClick={() => setSelectedMenu(menu)}
-          isSelected={selectedMenu === menu}
-        >
-          {menu}
-          <CountBox isSelected={selectedMenu === menu}>12</CountBox>
-        </CustomButton>
-      ))}
+      {menus.length > 0 &&
+        menus.map((menu, index) => (
+          <CustomButton
+            key={index}
+            onClick={() => setSelectedMenu(menu)}
+            isSelected={selectedMenu === menu}
+          >
+            {menu}
+            <CountBox isSelected={selectedMenu === menu}>12</CountBox>
+          </CustomButton>
+        ))}
       <AddCardComponent modalBody={modalBody} />
     </Box>
   );

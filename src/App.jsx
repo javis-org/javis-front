@@ -8,7 +8,8 @@ import "./index.css";
 import { InfoPage } from "./Component/Info/InfoPage.jsx";
 import { RecruitsPage } from "./Component/Recruits/RecruitsPage.jsx";
 import { MyStatementPage } from "./Component/Statement/StatementPage.jsx";
-import { EditorContainer } from "./Component/Editor/EditorContainer.jsx";
+import { EditorPage } from "./Component/Editor/EditorPage.jsx";
+import { RecruitItemPage } from "./Component/Recruits/RecruitItemPage/RecruitItemPage.jsx";
 
 const user = localStorage.getItem("user");
 
@@ -29,9 +30,14 @@ export default function App() {
 
           {/*  /!*내 자기소개서*!/*/}
           <Route path={"/statement"} element={<MyStatementPage />} />
-          <Route path={"/statement/editor"} element={<EditorContainer />} />
+          <Route path={"/statement/editor/:id"} element={<EditorPage />} />
           {/*  /!*  내 공고*!/*/}
           <Route path={"/recruits-page"} element={<RecruitsPage />} />
+          <Route path={"/recruits-page/:id"} element={<RecruitItemPage />} />
+          <Route
+            path={"/recruits-page/:id/editor/:item"}
+            element={<EditorPage />}
+          />
         </Routes>
       </Router>
     </RecoilRoot>
