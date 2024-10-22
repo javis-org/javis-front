@@ -10,6 +10,8 @@ import { isExpandValue, loginAtom } from "../../Recoil.jsx";
 import Javis from "../../assets/Javis.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+
 const pages = [" 내정보", "내 자소서", "내 공고"];
 const url = ["info", "statement", "recruits-page"];
 export default function Header() {
@@ -106,6 +108,11 @@ export default function Header() {
             {isLogin && <>{/* 메뉴 버튼 추가 가능 */}</>}
           </Box>
 
+          <Box>
+            <IconButton>
+              <SearchIcon sx={{ color: "white" }} />
+            </IconButton>
+          </Box>
           {isLogin && (
             <>
               <Typography sx={{ color: "#ffffff", marginRight: "20px" }}>
