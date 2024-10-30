@@ -7,6 +7,7 @@ import { Add } from "@mui/icons-material";
 import { client } from "../../api.js";
 import SearchIcon from "@mui/icons-material/Search.js";
 import MenuIcon from "@mui/icons-material/Menu.js";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export const LeftContainer = () => {
   const [data, setData] = useState([]);
@@ -55,10 +56,34 @@ export const LeftContainer = () => {
         <MenuIcon />
       </IconButton>
 
+      {/* 접혀 있을 때 Search Icon 고정 */}
+      {!isExpanded && (
+        <>
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: "60px", // MenuIcon 아래에 위치
+              left: "10px",
+            }}
+          >
+            <SearchIcon />
+          </IconButton>
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: "110px", // SearchIcon 아래에 위치
+              left: "10px",
+            }}
+          >
+            <AccountCircleIcon />
+          </IconButton>
+        </>
+      )}
+
       {/* 사이드바 내용 */}
       <Box
         sx={{
-          paddingTop: "20px", // MenuIcon 아래부터 시작
+          paddingTop: isExpanded ? "20px" : "80px", // 접혔을 때 SearchIcon 아래에서 시작
           paddingLeft: "10px",
           paddingRight: "10px",
           overflow: "hidden",
