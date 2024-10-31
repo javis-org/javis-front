@@ -1,4 +1,3 @@
-import React from "react";
 import { Autocomplete, Button, ButtonGroup, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
@@ -7,9 +6,10 @@ export const ServiceStatusButtonGroup = ({
   options,
   selectedOption,
   onChange,
+  disabled = false,
 }) => {
   return (
-    <ButtonGroup fullWidth color="success" size="large">
+    <ButtonGroup fullWidth color="success" size="large" disabled={disabled}>
       {options.map((option) => (
         <Button
           key={option}
@@ -22,7 +22,8 @@ export const ServiceStatusButtonGroup = ({
     </ButtonGroup>
   );
 };
-export const AutoCompleteInput = ({ options, value, setValue }) => {
+
+export const AutoCompleteInput = ({ options, value, setValue, disabled }) => {
   return (
     <Autocomplete
       value={value}
@@ -33,11 +34,12 @@ export const AutoCompleteInput = ({ options, value, setValue }) => {
       renderInput={(params) => (
         <TextField {...params} margin="normal" fullWidth />
       )}
+      disabled={disabled}
     />
   );
 };
 
-export const DatePickerInput = ({ value, onChange, label }) => {
+export const DatePickerInput = ({ value, onChange, label, disabled }) => {
   return (
     <DatePicker
       format="YYYY/MM/DD"
@@ -47,6 +49,7 @@ export const DatePickerInput = ({ value, onChange, label }) => {
       renderInput={(params) => (
         <TextField {...params} margin="normal" fullWidth />
       )}
+      disabled={disabled}
     />
   );
 };
