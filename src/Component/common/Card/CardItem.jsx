@@ -3,15 +3,19 @@ import {
   Box,
   Card,
   Chip,
+  FormControl,
   IconButton,
   Menu,
   MenuItem,
+  Select,
   styled,
   Tooltip,
   Typography,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { generateSupportStatuses } from "../../../Recoil.jsx";
 
 const CustomCard = styled(Card)`
   min-height: 80px;
@@ -31,51 +35,23 @@ export const CardItem = ({
     { tag: "최적화", type: "competency" },
     { tag: "DB", type: "competency" },
     { tag: "웹 접근성 준수", type: "competency" },
-    { tag: "API", type: "competency" },
-    { tag: "코드 품질", type: "competency" },
-    { tag: "설계", type: "competency" },
-    { tag: "배포", type: "competency" },
-    { tag: "생산성", type: "competency" },
-    { tag: "보안", type: "competency" },
-    { tag: "테스트", type: "competency" },
-    { tag: "디자인시스템", type: "competency" },
-    { tag: "UI/UX", type: "competency" },
-    { tag: "도메인", type: "competency" },
-    { tag: "이해도", type: "competency" },
-    { tag: "자동화", type: "competency" },
-    { tag: "기타", type: "competency" },
-    { tag: "라이브러리", type: "competency" },
-    { tag: "리더십", type: "personal" },
-    { tag: "성장", type: "personal" },
-    { tag: "일정", type: "personal" },
-    { tag: "멘탈 관리", type: "personal" },
-    { tag: "실패 경험", type: "personal" },
-    { tag: "도전", type: "personal" },
-    { tag: "갈등경험", type: "personal" },
-    { tag: "문제해결", type: "personal" },
-    { tag: "분석력", type: "personal" },
-    { tag: "성공 경험", type: "personal" },
-    { tag: "책임감", type: "personal" },
-    { tag: "커리어 계획", type: "personal" },
-    { tag: "창의성", type: "personal" },
-    { tag: "소통", type: "personal" },
-    { tag: "협업 능력", type: "personal" },
   ],
+  mode,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const iconButtonRef = useRef(null); // ref 사용
+  const iconButtonRef = useRef(null);
 
   const navi = useNavigate();
 
   const handleClick = (event) => {
     event.stopPropagation();
-    setAnchorEl(iconButtonRef.current); // ref에서 anchorEl 설정
+    setAnchorEl(iconButtonRef.current);
   };
 
   const handleClose = (event) => {
-    event.stopPropagation(); // 메뉴 클릭 시 이벤트 전파 방지
+    event.stopPropagation();
     console.log("삭제됨");
-    setAnchorEl(null); // 메뉴를 닫으면 앵커를 null로 설정
+    setAnchorEl(null);
   };
 
   const handleClickCard = (id) => {
@@ -100,8 +76,16 @@ export const CardItem = ({
   const truncatedText =
     text.length > 200 ? text.substring(0, 50) + "..." : text;
 
+  const [status, setStatus] = useState("지원 준비");
+
+  // 상태 변경 핸들러
+  const handleStatusChange = (event) => {
+    event.stopPropagation(); // 이벤트 전파 중지
+    setStatus(event.target.value);
+  };
+  const supportStatus = useRecoilValue(generateSupportStatuses);
   return (
-    <Tooltip title={<TooltipText />}>
+    <>
       <CustomCard
         onClick={() => {
           handleClickCard(1);
@@ -111,86 +95,169 @@ export const CardItem = ({
           padding: "20px",
           cursor: "pointer",
           borderRadius: "17px",
-          position: "relative", // position을 relative로 변경
+          position: "relative",
         }}
       >
-        <Box sx={{ fontSize: "12px", color: "gray" }}>{date}</Box>
+        {/* 상단에 검정색 배경과 텍스트 배치 */}
+        {mode && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "30px", // 텍스트가 잘 보이도록 높이 설정
+              backgroundColor: "black",
+              borderTopLeftRadius: "17px",
+              borderTopRightRadius: "17px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "5px 0",
+            }}
+          >
+            {mode === "searchState" ? "내 자소서 / 경험정리" : "서류마감 D-DAY"}
+          </Box>
+        )}
 
         {/* Dots Menu 아이콘 추가 */}
         <IconButton
-          ref={iconButtonRef} // ref 설정
+          ref={iconButtonRef}
           onClick={handleClick}
-          sx={{ position: "absolute", top: 10, right: 10 }} // IconButton을 오른쪽 위에 고정
+          sx={{ position: "absolute", top: 10, right: 10 }}
         >
           <MoreVertIcon />
         </IconButton>
         <Menu
-          anchorEl={anchorEl} // 메뉴의 앵커를 아이콘 버튼으로 설정
+          anchorEl={anchorEl}
           open={Boolean(anchorEl)}
-          onClose={handleClose} // 메뉴 외부 클릭 시 닫히도록 설정
+          onClose={handleClose}
           anchorOrigin={{
-            vertical: "bottom", // 버튼 바로 아래에 메뉴가 표시되도록 설정
+            vertical: "bottom",
             horizontal: "right",
           }}
           transformOrigin={{
-            vertical: "top", // 메뉴가 버튼 아래에서부터 변환되도록 설정
+            vertical: "top",
             horizontal: "right",
           }}
         >
           <MenuItem onClick={handleClose}>🗑️삭제</MenuItem>
         </Menu>
 
-        <Box
-          sx={{
-            marginTop: "10px",
-            fontWeight: "700",
-            fontSize: "18px",
-            flexWrap: "nowrap",
-            display: "flex",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {truncatedTitle}
-        </Box>
-        <Box
-          sx={{
-            marginTop: "10px",
-            fontWeight: "400",
-            fontSize: "14px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {truncatedText}
-        </Box>
-        {/* 태그 한 줄로 */}
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "nowrap",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            marginTop: "10px",
-          }}
-        >
-          {tags.map((tagObj, index) => (
-            <Chip
-              key={index}
-              label={tagObj.tag}
+        {mode === "searchRecruit" ? (
+          <Box sx={{ marginTop: "35px" }}>
+            <Box
               sx={{
-                backgroundColor:
-                  tagObj.type === "competency" ? "#e3f2ff" : "#f6e2ff",
-                color: tagObj.type === "competency" ? "#57788c" : "#b659b9",
-                marginRight: "5px",
-                marginBottom: "10px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
-            />
-          ))}
-        </Box>
+            >
+              {/* 좌측에 Chip 배치 */}
+              <Chip
+                label="1차 면접 D-2"
+                color="primary"
+                sx={{
+                  backgroundColor: "#000", // Black background for the chip
+                  color: "#00FF7F", // Light green text color
+                  fontWeight: "bold",
+                }}
+              />
+
+              {/* 우측에 Select 배치 */}
+              <FormControl sx={{ minWidth: 120 }}>
+                <Select
+                  variant="outlined"
+                  value={status}
+                  onChange={handleStatusChange}
+                  onClick={(event) => event.stopPropagation()} // Select 클릭 시 전파 방지
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                  sx={{
+                    ".MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                    },
+                    minWidth: "120px", // Select 컴포넌트의 최소 너비 설정
+                  }}
+                >
+                  {supportStatus.map((status, index) => (
+                    <MenuItem value={status} key={index}>
+                      {status}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+
+            {/* 공고 제목을 별도의 줄로 배치 */}
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "bold", marginTop: "10px" }}
+            >
+              공고 제목
+            </Typography>
+          </Box>
+        ) : (
+          <Tooltip title={<TooltipText />}>
+            <Box sx={{ fontSize: "12px", color: "gray", marginTop: "35px" }}>
+              {date}
+            </Box>
+            <Box
+              sx={{
+                marginTop: "10px",
+                fontWeight: "700",
+                fontSize: "18px",
+                flexWrap: "nowrap",
+                display: "flex",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {truncatedTitle}
+            </Box>
+            <Box
+              sx={{
+                marginTop: "10px",
+                fontWeight: "400",
+                fontSize: "14px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {truncatedText}
+            </Box>
+            {/* 태그 한 줄로 */}
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "nowrap",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                marginTop: "10px",
+              }}
+            >
+              {tags.map((tagObj, index) => (
+                <Chip
+                  key={index}
+                  label={tagObj.tag}
+                  sx={{
+                    backgroundColor:
+                      tagObj.type === "competency" ? "#e3f2ff" : "#f6e2ff",
+                    color: tagObj.type === "competency" ? "#57788c" : "#b659b9",
+                    marginRight: "5px",
+                    marginBottom: "10px",
+                  }}
+                />
+              ))}
+            </Box>
+          </Tooltip>
+        )}
       </CustomCard>
-    </Tooltip>
+    </>
   );
 };

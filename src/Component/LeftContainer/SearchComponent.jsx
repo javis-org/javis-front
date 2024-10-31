@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Chip,
+  Divider,
   Grid,
   IconButton,
   InputAdornment,
@@ -122,13 +123,26 @@ export const SearchComponent = () => {
           display: "flex",
           fontSize: "20px",
           fontWeight: "700",
+          position: "sticky",
+          top: 0,
+          backgroundColor: "white",
+          zIndex: 1000,
+          paddingTop: "10px",
         }}
       >
         검색
       </Box>
 
       {/* TextField와 선택된 태그 표시 */}
-      <Box sx={{ marginTop: "10px" }}>
+      <Box
+        sx={{
+          marginTop: "10px",
+          position: "sticky",
+          top: "40px",
+          zIndex: 999,
+          background: "white",
+        }}
+      >
         <TextField
           variant="outlined"
           fullWidth
@@ -209,10 +223,25 @@ export const SearchComponent = () => {
               position: "absolute",
               top: "100px",
               width: "calc(100% - 40px)",
-              minHeight: "100px",
+              maxHeight: "250px",
+              overflowY: "auto",
               padding: "10px",
               boxShadow: 3,
               zIndex: 10,
+              "&::-webkit-scrollbar": {
+                width: "8px",
+                backgroundColor: "#333", // 스크롤바 배경색
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "#1c1c1c", // 스크롤바 트랙 색상
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#555",
+                borderRadius: "8px",
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                backgroundColor: "#777",
+              },
             }}
           >
             <Box sx={{ paddingBottom: "10px" }}>
@@ -274,10 +303,35 @@ export const SearchComponent = () => {
             </Box>
           </Card>
         )}
+      </Box>
 
-        {/* item 검색 결과가 나타나는 자리 */}
+      {/* item 검색 결과가 나타나는 자리 */}
+      <Box
+        sx={{
+          padding: "0 5px",
+          paddingBottom: "10px",
+          overflowY: "auto",
+          // maxHeight: "calc(100% - 60px)",
+          paddingTop: "20px",
+          height: "650px",
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "#555",
+            borderRadius: "8px",
+          },
+        }}
+      >
         <Box sx={{ marginTop: "20px" }}>
-          <CardList />
+          내 자소서
+          <CardList mode={"searchState"} />
+        </Box>
+        <Divider sx={{ marginTop: "30px" }} />
+        <Box sx={{ marginTop: "20px" }}>
+          내 공고
+          <CardList mode={"searchRecruit"} />
         </Box>
       </Box>
     </Box>
