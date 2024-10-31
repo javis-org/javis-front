@@ -35,7 +35,7 @@ const tags = [
   { tag: "소통", type: "personal" },
   { tag: "협업 능력", type: "personal" },
 ];
-export const CardList = () => {
+export const CardList = ({ mode }) => {
   return (
     <Box
       sx={{
@@ -54,7 +54,7 @@ export const CardList = () => {
         },
       }}
     >
-      <CardItem PersonalTags={["리더십", "성장"]} />
+      <CardItem PersonalTags={["리더십", "성장"]} mode={mode} />
       <CardItem
         tags={[
           { tag: "기타", type: "competency" },
@@ -63,9 +63,10 @@ export const CardList = () => {
           { tag: "성장", type: "personal" },
           { tag: "일정", type: "personal" },
         ]}
+        mode={mode}
       />
-      <CardItem />
-      <CardItem />
+      <CardItem mode={mode} />
+      <CardItem mode={mode} />
 
       {/* CardItem을 여러 개 추가 */}
     </Box>

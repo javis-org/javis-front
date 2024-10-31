@@ -23,6 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
  * @param {boolean|string} [backdrop="static"] - 외부 클릭 시 모달을 닫을지 여부입니다. (기본값: "static")
  * @param {boolean} [centered=false] - 모달을 화면 정중앙에 배치할지 여부를 결정하는 상태입니다. (기본값: false)
  * @param {()=>void} [headerCloseBtn] - 모달을 닫는 상단 버튼입니다.
+ * @param {string} [maxWidth] xs,sm,md,lg,xl
  */
 const ModalComponent = ({
   title,
@@ -37,6 +38,7 @@ const ModalComponent = ({
   backdrop = "",
   centered = false,
   headerCloseBtn = false,
+  maxWidth = "sm",
 }) => (
   <Dialog
     open={show}
@@ -48,6 +50,7 @@ const ModalComponent = ({
       sx: {
         position: "relative",
         margin: centered ? "auto" : "initial",
+        maxWidth: "xl",
         minWidth: "300px", // 모달 너비 설정
       },
     }}

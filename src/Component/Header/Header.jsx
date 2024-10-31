@@ -6,17 +6,12 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { isExpandValue, loginAtom } from "../../Recoil.jsx";
+import { loginAtom } from "../../Recoil.jsx";
 import Javis from "../../assets/Javis.png";
-import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton } from "@mui/material";
+
 const pages = [" 내정보", "내 자소서", "내 공고"];
 const url = ["info", "statement", "recruits-page"];
 export default function Header() {
-  const [isExpanded, setIsExpanded] = useRecoilState(isExpandValue);
-  const handleExpandToggle = () => {
-    setIsExpanded(!isExpanded);
-  };
   const navi = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(loginAtom);
   const [, setAnchorEl] = useState(null);
@@ -67,16 +62,6 @@ export default function Header() {
               cursor: "pointer",
             }}
           >
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={handleExpandToggle}
-            >
-              <MenuIcon />
-            </IconButton>
             <img
               src={Javis}
               alt="로고"

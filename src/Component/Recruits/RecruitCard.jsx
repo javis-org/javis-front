@@ -27,7 +27,8 @@ export const RecruitCard = () => {
   };
 
   // Dots menu 닫기 핸들러
-  const handleClose = () => {
+  const handleClose = (event) => {
+    event.stopPropagation();
     setAnchorEl(null);
   };
 
