@@ -9,7 +9,7 @@ import RecruitAddCardBody from "./RecruitAddCardBody.jsx";
 
 export const RecruitsPage = () => {
   return (
-    <BaseComponent>
+    <BaseComponent className={"test"}>
       {/* 이모지와 제목을 한 줄로 배치 */}
       <Box
         sx={{
