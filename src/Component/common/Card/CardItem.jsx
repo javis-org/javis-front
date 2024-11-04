@@ -110,7 +110,7 @@ export const CardItem = ({
               backgroundColor: "black",
               borderTopLeftRadius: "17px",
               borderTopRightRadius: "17px",
-              display: "flex",
+              display: mode ? "flex" : "none",
               alignItems: "center",
               justifyContent: "center",
               color: "white",
@@ -127,7 +127,12 @@ export const CardItem = ({
         <IconButton
           ref={iconButtonRef}
           onClick={handleClick}
-          sx={{ position: "absolute", top: 10, right: 10 }}
+          sx={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            display: !mode && "none",
+          }}
         >
           <MoreVertIcon />
         </IconButton>
@@ -202,7 +207,13 @@ export const CardItem = ({
           </Box>
         ) : (
           <Tooltip title={<TooltipText />}>
-            <Box sx={{ fontSize: "12px", color: "gray", marginTop: "35px" }}>
+            <Box
+              sx={{
+                fontSize: "12px",
+                color: "gray",
+                marginTop: mode ? "35px" : "none",
+              }}
+            >
               {date}
             </Box>
             <Box
