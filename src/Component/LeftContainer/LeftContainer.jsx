@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import IntroductionList from "./IntroductionList.jsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isExpandValue, memberIdValue } from "../../Recoil.jsx";
@@ -43,7 +49,12 @@ export const LeftContainer = () => {
 
   return (
     <>
-      <Box sx={{ position: "relative", width: isExpanded ? "300px" : "60px" }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: isExpanded ? "300px" : "60px",
+        }}
+      >
         {/* Menu Icon을 사이드바 바깥 오른쪽에 위치 */}
         <IconButton
           onClick={handleExpandToggle}
@@ -55,9 +66,13 @@ export const LeftContainer = () => {
             backgroundColor: "white",
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
             transition: "right 0.3s ease",
+
+            ":hover": {
+              backgroundColor: "#f1f2f3",
+            },
           }}
         >
-          <MenuIcon />
+          <MenuIcon sx={{}} />
         </IconButton>
 
         {/* 접혀 있을 때 아이콘들 고정 */}
@@ -71,7 +86,9 @@ export const LeftContainer = () => {
               }}
               onClick={() => setOpenSearch(true)}
             >
-              <SearchIcon />
+              <SearchIcon
+                sx={{ color: "white", fontSize: "30px", fontWeight: "700" }}
+              />
             </IconButton>
             <IconButton
               sx={{
@@ -80,7 +97,7 @@ export const LeftContainer = () => {
                 left: "10px",
               }}
             >
-              <AccountCircleIcon sx={{ fontSize: "32px" }} />
+              <AccountCircleIcon sx={{ fontSize: "32px", color: "white" }} />
             </IconButton>
             <IconButton
               sx={{
@@ -112,7 +129,8 @@ export const LeftContainer = () => {
             paddingLeft: "10px",
             paddingRight: "10px",
             overflow: "hidden",
-            backgroundColor: "#f7f6fa",
+            backgroundColor: "#4d4d4d",
+            borderRight: "1px solid gray",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -131,25 +149,52 @@ export const LeftContainer = () => {
                 marginBottom: "20px",
               }}
             >
-              <Button startIcon={<SearchIcon />} sx={{ width: "100%" }}>
+              <Button
+                startIcon={<SearchIcon />}
+                sx={{ width: "100%", color: "white" }}
+                onClick={() => setOpenSearch(true)}
+              >
                 검색
               </Button>
             </Box>
+          )}
+          {isExpanded && (
+            <ButtonGroup fullWidth>
+              <Button
+                variant="contained"
+                sx={{ color: "#00ff87", background: "black" }}
+              >
+                <Box sx={{ marginRight: "5px" }}>✏️</Box>내 자소서
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ color: "#00ff87", background: "black" }}
+              >
+                <Box sx={{ marginRight: "5px" }}>💼</Box>내 공고
+              </Button>
+            </ButtonGroup>
           )}
 
           {/* 제목 */}
           {isExpanded && (
             <Typography
               variant="h6"
-              sx={{ marginBottom: "10px", width: "100%", textAlign: "center" }}
+              sx={{
+                marginTop: "30px",
+                marginBottom: "10px",
+                width: "100%",
+                textAlign: "center",
+                color: "white",
+              }}
             >
-              ✏️ 내 자기소개서
+              ✏️ 자기소개서
             </Typography>
           )}
 
           {/* 목록 */}
           {isExpanded && (
             <Box
+              className="side"
               sx={{
                 flexGrow: 1,
                 width: "100%",
@@ -173,7 +218,7 @@ export const LeftContainer = () => {
             >
               <Button
                 onClick={handleAddCompany}
-                sx={{ width: "100%", marginBottom: "10px" }}
+                sx={{ width: "100%", marginBottom: "10px", color: "white" }}
               >
                 <Add fontSize="small" /> 추가
               </Button>

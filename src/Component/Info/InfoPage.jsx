@@ -13,6 +13,7 @@ const CustomButton = styled(Button)`
   background-color: black;
   color: white;
   margin-top: 30px;
+  margin-bottom: -10px;
   &:hover {
     background: gray;
     color: black;
