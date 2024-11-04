@@ -16,13 +16,14 @@ import MenuIcon from "@mui/icons-material/Menu.js";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ModalComponent from "../common/ModalComponent.jsx";
 import { SearchComponent } from "./SearchComponent.jsx";
+import { CardList } from "../Statement/CardList.jsx";
 
 export const LeftContainer = () => {
   const [data, setData] = useState([]);
   const memberId = useRecoilValue(memberIdValue);
   const [isExpanded, setIsExpanded] = useRecoilState(isExpandValue);
   const [openSearch, setOpenSearch] = useState(false);
-
+  const [selected, setSelected] = useState("statement");
   const handleExpandToggle = () => {
     setIsExpanded(!isExpanded);
   };
@@ -158,17 +159,22 @@ export const LeftContainer = () => {
               </Button>
             </Box>
           )}
+
           {isExpanded && (
             <ButtonGroup fullWidth>
               <Button
                 variant="contained"
                 sx={{ color: "#00ff87", background: "black" }}
+                onClick={() => {
+                  setSelected("statement");
+                }}
               >
                 <Box sx={{ marginRight: "5px" }}>✏️</Box>내 자소서
               </Button>
               <Button
                 variant="contained"
                 sx={{ color: "#00ff87", background: "black" }}
+                onClick={() => setSelected("recruits")}
               >
                 <Box sx={{ marginRight: "5px" }}>💼</Box>내 공고
               </Button>
@@ -176,56 +182,98 @@ export const LeftContainer = () => {
           )}
 
           {/* 제목 */}
-          {isExpanded && (
-            <Typography
-              variant="h6"
-              sx={{
-                marginTop: "30px",
-                marginBottom: "10px",
-                width: "100%",
-                textAlign: "center",
-                color: "white",
-              }}
-            >
-              💼 내 공고
-            </Typography>
-          )}
-          {/* 목록 */}
-          {isExpanded && (
-            <Box
-              className="side"
-              sx={{
-                flexGrow: 1,
-                width: "100%",
-                overflowY: "auto",
-                padding: "0 20px",
-                paddingRight: "10px",
-                "&::-webkit-scrollbar": {
-                  width: "8px",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  backgroundColor: "#888",
-                  borderRadius: "10px",
-                },
-                "&::-webkit-scrollbar-thumb:hover": {
-                  backgroundColor: "#555",
-                },
-                "&::-webkit-scrollbar-track": {
-                  backgroundColor: "#f1f1f1",
-                },
-              }}
-            >
-              <Button
-                onClick={handleAddCompany}
-                sx={{ width: "100%", marginBottom: "10px", color: "white" }}
-              >
-                <Add fontSize="small" /> 추가
-              </Button>
-              {data.map((item, index) => (
-                <IntroductionList item={item} key={item.id} index={index} />
-              ))}
-            </Box>
-          )}
+          {isExpanded &&
+            (selected === "statement" ? (
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    marginTop: "30px",
+                    marginBottom: "10px",
+                    width: "100%",
+                    textAlign: "center",
+                    color: "white",
+                  }}
+                >
+                  💼 내 자소서
+                </Typography>
+                <Box
+                  className="side"
+                  sx={{
+                    flexGrow: 1,
+                    width: "100%",
+                    overflowY: "auto",
+                    padding: "0 20px",
+                    paddingRight: "10px",
+                    "&::-webkit-scrollbar": {
+                      width: "8px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888",
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "#f1f1f1",
+                    },
+                  }}
+                >
+                  <CardList />
+                </Box>
+              </>
+            ) : (
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    marginTop: "30px",
+                    marginBottom: "10px",
+                    width: "100%",
+                    textAlign: "center",
+                    color: "white",
+                  }}
+                >
+                  💼 내 공고
+                </Typography>
+
+                {/* 목록 */}
+                <Box
+                  className="side"
+                  sx={{
+                    flexGrow: 1,
+                    width: "100%",
+                    overflowY: "auto",
+                    padding: "0 20px",
+                    paddingRight: "10px",
+                    "&::-webkit-scrollbar": {
+                      width: "8px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888",
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "#f1f1f1",
+                    },
+                  }}
+                >
+                  <Button
+                    onClick={handleAddCompany}
+                    sx={{ width: "100%", marginBottom: "10px", color: "white" }}
+                  >
+                    <Add fontSize="small" /> 추가
+                  </Button>
+                  {data.map((item, index) => (
+                    <IntroductionList item={item} key={item.id} index={index} />
+                  ))}
+                </Box>
+              </>
+            ))}
         </Box>
       </Box>
       <ModalComponent
