@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -187,10 +187,9 @@ export const LeftContainer = () => {
                 color: "white",
               }}
             >
-              ✏️ 자기소개서
+              💼 내 공고
             </Typography>
           )}
-
           {/* 목록 */}
           {isExpanded && (
             <Box
