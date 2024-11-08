@@ -1,25 +1,41 @@
-import { useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import IntroductionList from "./IntroductionList.jsx";
-import { useRecoilValue } from "recoil";
-import { memberIdValue } from "../../Recoil.jsx";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isExpandValue, memberIdValue } from "../../Recoil.jsx";
 import { Add } from "@mui/icons-material";
 import { client } from "../../api.js";
+import SearchIcon from "@mui/icons-material/Search.js";
+import MenuIcon from "@mui/icons-material/Menu.js";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ModalComponent from "../common/ModalComponent.jsx";
+import { SearchComponent } from "./SearchComponent.jsx";
+import { CardList } from "../Statement/CardList.jsx";
 
-// 수정: 구조 분해 할당으로 `isExpanded`를 받아옴
-export const LeftContainer = ({ isExpanded }) => {
+export const LeftContainer = () => {
   const [data, setData] = useState([]);
   const memberId = useRecoilValue(memberIdValue);
+  const [isExpanded, setIsExpanded] = useRecoilState(isExpandValue);
+  const [openSearch, setOpenSearch] = useState(false);
+  const [selected, setSelected] = useState("statement");
+  const handleExpandToggle = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await client.get(`jobPostings?memberId=${memberId}`);
       setData(response.data);
-      // setData(data2);
     };
     fetchData();
   }, [memberId]);
 
-  console.log(data);
   const handleAddCompany = () => {
     setData([
       ...data,
@@ -31,65 +47,240 @@ export const LeftContainer = ({ isExpanded }) => {
       },
     ]);
   };
-  return (
-    <Box
-      sx={{
-        transition: "width 0.3s ease", // 애니메이션 효과 추가
-        minWidth: isExpanded ? "300px" : "50px", // 접혔을 때와 펼쳤을 때의 너비 설정
-        width: isExpanded ? "20%" : "50px",
-        padding: "10px 0px 10px 10px",
 
-        // background: "#f7f6fa",
-        display: isExpanded ? "block" : "none",
-        overflow: "hidden", // 접혔을 때 내용을 숨기기 위해
-      }}
-    >
+  return (
+    <>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          marginTop: "20px",
-          marginBottom: "25px",
+          position: "relative",
+          width: isExpanded ? "300px" : "60px",
         }}
       >
-        {isExpanded && ( // 접혔을 때는 텍스트를 숨기기
-          <Typography variant="h5" sx={{ marginRight: "10px" }}>
-            ✏️ 내 자기소개서
-            <Button>검색</Button>
-          </Typography>
+        {/* Menu Icon을 사이드바 바깥 오른쪽에 위치 */}
+        <IconButton
+          onClick={handleExpandToggle}
+          sx={{
+            position: "absolute",
+            top: "10px",
+            right: isExpanded ? "-50px" : "10px", // 펼쳐졌을 때는 오른쪽 바깥에 위치
+            zIndex: 1000,
+            backgroundColor: "white",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+            transition: "right 0.3s ease",
+
+            ":hover": {
+              backgroundColor: "#f1f2f3",
+            },
+          }}
+        >
+          <MenuIcon sx={{}} />
+        </IconButton>
+
+        {/* 접혀 있을 때 아이콘들 고정 */}
+        {!isExpanded && (
+          <>
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "60px", // MenuIcon 아래에 위치
+                left: "10px",
+              }}
+              onClick={() => setOpenSearch(true)}
+            >
+              <SearchIcon
+                sx={{ color: "white", fontSize: "30px", fontWeight: "700" }}
+              />
+            </IconButton>
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "110px", // SearchIcon 아래에 위치
+                left: "10px",
+              }}
+            >
+              <AccountCircleIcon sx={{ fontSize: "32px", color: "white" }} />
+            </IconButton>
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "170px", // AccountCircleIcon 아래에 위치
+                left: "10px",
+                color: "black", // 색상을 진한 검정색으로 설정
+              }}
+            >
+              ✏️
+            </IconButton>
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "230px",
+                left: "10px",
+                color: "black", // 색상을 진한 검정색으로 설정
+              }}
+            >
+              💼
+            </IconButton>
+          </>
         )}
-      </Box>
-      {isExpanded && ( // 접혔을 때는 목록도 숨기기z\
-        <>
-          <Box
-            sx={{
-              height: "80vh",
-              overflowY: "auto",
-              paddingRight: "10px",
-              "&::-webkit-scrollbar": {
-                width: "8px",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "#888",
-                borderRadius: "10px",
-              },
-              "&::-webkit-scrollbar-thumb:hover": {
-                backgroundColor: "#555",
-              },
-              "&::-webkit-scrollbar-track": {
-                backgroundColor: "#f1f1f1",
-              },
-            }}
-          >
-            <Button onClick={handleAddCompany}>
-              <Add fontSize="small" /> {isExpanded && "추가"}
-            </Button>
-            {data.map((item, index) => (
-              <IntroductionList item={item} key={item.id} index={index} />
+
+        {/* 사이드바 내용 */}
+        <Box
+          sx={{
+            paddingTop: isExpanded ? "20px" : "80px", // 접혔을 때 SearchIcon 아래에서 시작
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            overflow: "hidden",
+            backgroundColor: "#4d4d4d",
+            borderRight: "1px solid gray",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            height: "100vh",
+            transition: "width 0.3s ease",
+          }}
+        >
+          {/* 검색 버튼과 제목 */}
+          {isExpanded && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                marginBottom: "20px",
+              }}
+            >
+              <Button
+                startIcon={<SearchIcon />}
+                sx={{ width: "100%", color: "white" }}
+                onClick={() => setOpenSearch(true)}
+              >
+                검색
+              </Button>
+            </Box>
+          )}
+
+          {isExpanded && (
+            <ButtonGroup fullWidth>
+              <Button
+                variant="contained"
+                sx={{ color: "#00ff87", background: "black" }}
+                onClick={() => {
+                  setSelected("statement");
+                }}
+              >
+                <Box sx={{ marginRight: "5px" }}>✏️</Box>내 자소서
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ color: "#00ff87", background: "black" }}
+                onClick={() => setSelected("recruits")}
+              >
+                <Box sx={{ marginRight: "5px" }}>💼</Box>내 공고
+              </Button>
+            </ButtonGroup>
+          )}
+
+          {/* 제목 */}
+          {isExpanded &&
+            (selected === "statement" ? (
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    marginTop: "30px",
+                    marginBottom: "10px",
+                    width: "100%",
+                    textAlign: "center",
+                    color: "white",
+                  }}
+                >
+                  💼 내 자소서
+                </Typography>
+                <Box
+                  className="side"
+                  sx={{
+                    flexGrow: 1,
+                    width: "100%",
+                    overflowY: "auto",
+                    padding: "0 20px",
+                    paddingRight: "10px",
+                    "&::-webkit-scrollbar": {
+                      width: "8px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888",
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "#f1f1f1",
+                    },
+                  }}
+                >
+                  <CardList />
+                </Box>
+              </>
+            ) : (
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    marginTop: "30px",
+                    marginBottom: "10px",
+                    width: "100%",
+                    textAlign: "center",
+                    color: "white",
+                  }}
+                >
+                  💼 내 공고
+                </Typography>
+
+                {/* 목록 */}
+                <Box
+                  className="side"
+                  sx={{
+                    flexGrow: 1,
+                    width: "100%",
+                    overflowY: "auto",
+                    padding: "0 20px",
+                    paddingRight: "10px",
+                    "&::-webkit-scrollbar": {
+                      width: "8px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888",
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "#f1f1f1",
+                    },
+                  }}
+                >
+                  <Button
+                    onClick={handleAddCompany}
+                    sx={{ width: "100%", marginBottom: "10px", color: "white" }}
+                  >
+                    <Add fontSize="small" /> 추가
+                  </Button>
+                  {data.map((item, index) => (
+                    <IntroductionList item={item} key={item.id} index={index} />
+                  ))}
+                </Box>
+              </>
             ))}
-          </Box>
-        </>
-      )}
-    </Box>
+        </Box>
+      </Box>
+      <ModalComponent
+        show={openSearch}
+        headerCloseBtn={() => setOpenSearch(false)}
+        body={<SearchComponent />}
+      />
+    </>
   );
 };

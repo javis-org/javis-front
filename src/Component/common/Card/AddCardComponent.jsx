@@ -3,9 +3,7 @@ import { Add } from "@mui/icons-material";
 import ModalComponent from "../ModalComponent.jsx";
 import { useState } from "react";
 
-import StatementAddCardBody from "../../Statement/StatementAddModalComponent/StatementAddCardBody.jsx";
-
-export const AddCardComponent = () => {
+export const AddCardComponent = ({ modalBody }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
@@ -39,7 +37,7 @@ export const AddCardComponent = () => {
         headerCloseBtn={handleClose}
         show={show}
         backdroup={"true"}
-        body={<StatementAddCardBody />}
+        body={modalBody}
       />
     </>
   );

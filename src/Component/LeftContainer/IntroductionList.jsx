@@ -9,6 +9,7 @@ import {
   InputAdornment,
   Menu,
   MenuItem,
+  styled,
   TextField,
   Typography,
 } from "@mui/material";
@@ -53,16 +54,24 @@ const IntroductionList = ({ item, index }) => {
     setIsAdd(true);
   };
 
+  const CustomCardContent = styled(CardContent)`
+    padding: 0 !important; /* 전체 패딩 제거 */
+    &.MuiCardContent-root {
+      padding-bottom: 0 !important; /* paddingBottom 제거 */
+    }
+  `;
+
   return (
     <>
       <Card
         sx={{
           borderRadius: "10px",
           boxShadow: "none",
-          backgroundColor: "#f7f6fa",
+          marginBottom: "20px",
+          // backgroundColor: "#4d4d4d",
         }}
       >
-        <CardContent sx={{ padding: "0px" }}>
+        <CustomCardContent className="side">
           <Accordion defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -84,12 +93,12 @@ const IntroductionList = ({ item, index }) => {
                 open={open && currentIndex === index}
                 onClose={handleClose}
                 anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
+                  vertical: "bottom", // MoreVertIcon 바로 아래에 메뉴가 뜨도록 설정
+                  horizontal: "center", // MoreVertIcon 중앙에 맞춰 메뉴가 뜨도록 설정
                 }}
                 transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: "top", // 메뉴가 위에서 아래로 펼쳐지도록 설정
+                  horizontal: "center", // 중앙을 기준으로 메뉴가 펼쳐지도록 설정
                 }}
               >
                 <MenuItem onClick={handleChangeName}>이름 변경</MenuItem>
@@ -120,8 +129,8 @@ const IntroductionList = ({ item, index }) => {
                       <InputAdornment
                         position="start"
                         sx={{
-                          fontWeight: "bold", // 글씨를 진하게
-                          color: "#000", // 검정색으로 설정 (필요에 따라 색상 조정)
+                          fontWeight: "bold",
+                          color: "#000",
                         }}
                       >
                         📜
@@ -130,9 +139,9 @@ const IntroductionList = ({ item, index }) => {
                   }}
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      height: "40px", // 높이를 40px로 설정
-                      fontSize: "14px", // 폰트 크기
-                      padding: "0 10px", // 텍스트 필드 내부 패딩 조
+                      height: "40px",
+                      fontSize: "14px",
+                      padding: "0 10px",
                     },
                   }}
                 />
@@ -162,10 +171,11 @@ const IntroductionList = ({ item, index }) => {
               </Button>
             </Box>
           </Accordion>
-        </CardContent>
+        </CustomCardContent>
       </Card>
     </>
   );
 };
+
 // React.memo로 IntroductionList 컴포넌트를 최적화
 export default memo(IntroductionList);
