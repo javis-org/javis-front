@@ -51,7 +51,7 @@ export const InfoPage = () => {
 
           <InfoCard title="수상">
             <AwardsInfo />
-            <CustomButton fullWidth>
+            <CustomButton fullWidth >
               <Add sx={{ color: "green", fontWeight: "bold" }} /> 추가하기
             </CustomButton>
           </InfoCard>
