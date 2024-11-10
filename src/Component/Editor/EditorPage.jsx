@@ -68,13 +68,13 @@ export const EditorPage = () => {
           />
         </Box>
 
-        <Typography variant="body1" gutterBottom>
+        <Box>
           <QuillEditor
             save={save}
             setSave={setSave}
             setTextLength={setTextLength}
           />
-        </Typography>
+        </Box>
         <Box
           sx={{
             display: "flex",

@@ -89,8 +89,8 @@ export function RecruitItemPage() {
           menus={["경험", "자기소개서", "면접 질문"]}
           select={"경험"}
         />
+        <CardList />
       </PageContent>
-      <CardList />
     </BaseComponent>
   );
 }

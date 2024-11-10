@@ -1,3 +1,5 @@
+import { Box } from "@mui/material";
+
 export const PageContent = ({ children }) => {
-  return <div style={{ marginTop: "40px" }}>{children}</div>;
+  return <Box sx={{ marginTop: "40px", width: "100%" }}>{children}</Box>;
 };

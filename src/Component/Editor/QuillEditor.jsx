@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
+import { Box } from "@mui/material";
+
 import "./quillCustom.css"; // 사용자 정의 CSS 파일 추가
 
 function sleep(ms) {
@@ -69,7 +71,7 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
   };
 
   return (
-    <div>
+    <Box>
       {/* 글자 크기 선택 드롭다운 */}
       <label htmlFor="fontSizeSelect">글자 크기: </label>
       <select
@@ -92,7 +94,7 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
         theme={"bubble"}
         placeholder="내용을 입력해주세요" // placeholder 추가
       />
-    </div>
+    </Box>
   );
 };
 
