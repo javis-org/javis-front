@@ -32,16 +32,15 @@ export const RecruitsPage = () => {
       </Box>
 
       <PageContent>
-        <Box sx={{ marginTop: "40px", marginBottom: "20px", display: "flex" }}>
-          <PeriodFilter />
-          <Box sx={{ marginLeft: "auto" }}>
-            <StatementFilterMenu modalBody={<RecruitAddCardBody />} />
-          </Box>
+        <PeriodFilter />
+        <Box sx={{ marginLeft: "auto" }}>
+          <StatementFilterMenu modalBody={<RecruitAddCardBody />} />
         </Box>
-
-        <RecruitCard />
-        <RecruitCard />
-        <RecruitCard />
+        <Box sx={{ marginTop: "40px" }}>
+          <RecruitCard />
+          <RecruitCard />
+          <RecruitCard />
+        </Box>
       </PageContent>
     </BaseComponent>
   );

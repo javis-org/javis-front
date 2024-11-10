@@ -35,15 +35,17 @@ const tags = [
   { tag: "소통", type: "personal" },
   { tag: "협업 능력", type: "personal" },
 ];
-export const CardList = ({ mode }) => {
+export const CardList = ({ mode, side }) => {
   return (
     <Box
       sx={{
         marginTop: "20px",
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", // 카드 최소 크기 250px
-        gap: "10px", // 카드 사이의 간격
-        width: "100%", // 부모 div의 크기에 맞게 전체 크기 설정
+        gridTemplateColumns: side
+          ? "repeat(1)"
+          : "repeat(4, minmax(230px, 1fr))",
+        gap: "10px",
+        width: "100%",
       }}
     >
       <CardItem PersonalTags={["리더십", "성장"]} mode={mode} />
@@ -57,6 +59,8 @@ export const CardList = ({ mode }) => {
         ]}
         mode={mode}
       />
+      <CardItem mode={mode} />
+      <CardItem mode={mode} />
       <CardItem mode={mode} />
       <CardItem mode={mode} />
 
