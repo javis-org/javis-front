@@ -55,7 +55,7 @@ export const CardItem = ({
   };
 
   const handleClickCard = (id) => {
-    navi(`editor/${id}`);
+    navi(`/statement/editor/${id}`);
   };
 
   const TooltipText = () => (
