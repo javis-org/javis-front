@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Card, CardContent, styled } from "@mui/material";
 import { BaseComponent } from "../common/BaseComponent.jsx";
 import { PageContent } from "../common/PageContent.jsx";
@@ -9,19 +9,20 @@ import { AcademicInformation } from "./AcademicInformation.jsx";
 import { AwardsInfo } from "./AwardsInfo.jsx";
 import { Add } from "@mui/icons-material";
 
-const CustomButton = styled(Button)`
-  background-color: black;
-  color: white;
-  margin-top: 30px;
-  margin-bottom: -10px;
-  &:hover {
-    background: gray;
-    color: black;
-  }
-`;
 
-const InfoCard = ({ title, children }) => (
-  <Card style={{ marginBottom: "16px" }}>
+const CustomButton = styled(Button)`
+background-color: black;
+color: white;
+margin-top: 30px;
+margin-bottom: -10px;
+&:hover {
+  background: gray;
+  color: black;
+  }
+  `;
+
+  const InfoCard = ({ title, children }) => (
+    <Card style={{ marginBottom: "16px" }}>
     <CardContent>
       <div style={{ marginTop: "10px" }}>{children}</div>
     </CardContent>
@@ -29,6 +30,13 @@ const InfoCard = ({ title, children }) => (
 );
 
 export const InfoPage = () => {
+  const [awards,setAwards] = useState([<AwardsInfo key={1} />]);
+  
+  const handleAddAward = () => {
+    setAwards([...awards,<AwardsInfo key={awards.length+1} />])
+  }
+
+
   return (
     <BaseComponent>
       <PageContent>
@@ -50,8 +58,9 @@ export const InfoPage = () => {
           </InfoCard>
 
           <InfoCard title="수상">
-            <AwardsInfo />
-            <CustomButton fullWidth >
+            {/* <AwardsInfo /> */}
+            {awards.map((award) => award)}
+            <CustomButton fullWidth onClick={handleAddAward}>
               <Add sx={{ color: "green", fontWeight: "bold" }} /> 추가하기
             </CustomButton>
           </InfoCard>

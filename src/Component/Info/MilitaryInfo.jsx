@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, TextField, Typography } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"; // dayjs 어댑터 사용
@@ -47,6 +47,11 @@ export const MilitaryInfo = () => {
     "병역 면제",
   ];
   console.log(retireMilitary);
+
+
+  useEffect(() => {
+    // setServiceStatus(localStorage.getItem("savedServiceStatus"));
+  },[]);
 
   return (
     <>

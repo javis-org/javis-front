@@ -10,13 +10,19 @@ export const BasicInfo = () => {
   const [state, setState] = useState(true);
 
   // 각 필드에 대한 상태 변수 추가
-  const [koreanName, setKoreanName] = useState(localStorage.getItem("savedKoreanName"));
-  const [englishName, setEnglishName] = useState(localStorage.getItem("savedEnglishName"));
-  const [chineseName, setChineseName] = useState(localStorage.getItem("savedChineseName"));
+  const [koreanName, setKoreanName] = useState("");
+  const [englishName, setEnglishName] = useState("");
+  const [chineseName, setChineseName] = useState("");
 
   const changeState = () => {
     setState(!state);
   };
+
+  useEffect(() => {
+    setKoreanName(localStorage.getItem("savedKoreanName"));
+    setEnglishName(localStorage.getItem("savedEnglishName"));
+    setChineseName(localStorage.getItem("savedChineseName"));
+  },[]);
 
   return (
     <>
