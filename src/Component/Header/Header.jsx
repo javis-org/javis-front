@@ -1,13 +1,13 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { loginAtom } from "../../Recoil.jsx";
 import Javis from "../../assets/Javis.png";
+import { Typography } from "@mui/material";
 
 const pages = [" 내정보", "내 자소서", "내 공고"];
 const url = ["info", "statement", "recruits-page"];
@@ -16,7 +16,11 @@ export default function Header() {
   const [isLogin, setIsLogin] = useRecoilState(loginAtom);
   const [, setAnchorEl] = useState(null);
 
-  const user = localStorage.getItem("user");
+  const [user, setUser] = useState("이름");
+  useEffect(() => {
+    setUser(localStorage.getItem("user"));
+  }, []);
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -93,7 +97,7 @@ export default function Header() {
 
           {isLogin && (
             <>
-              <Typography sx={{ color: "#ffffff", marginRight: "20px" }}>
+              <Typography style={{ color: "#ffffff", marginRight: "20px" }}>
                 {user}님
               </Typography>
               <Button
