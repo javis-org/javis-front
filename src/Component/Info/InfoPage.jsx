@@ -30,10 +30,16 @@ margin-bottom: -10px;
 );
 
 export const InfoPage = () => {
-  const [awards,setAwards] = useState([<AwardsInfo key={1} />]);
+  const [awards,setAwards] = useState([{awardId:0}]);  //수상칸을 배열을 생성해 저장
   
+  //추가하기 버튼 클릭시 awards 배열에 <AwardsInfo /> 컨포넌트 push
   const handleAddAward = () => {
-    setAwards([...awards,<AwardsInfo key={awards.length+1} />])
+    const newId = awards.length > 0 ? awards[awards.length - 1].awardId + 1 : 0;
+    setAwards([...awards, { awardId: newId }]);
+  }
+  //제거하기 버튼 클릭시 awards 배열에 특정 awradId 값을 제거
+  const handleRemoveAward = (awardId) => {
+    setAwards((prevAwards) => prevAwards.filter(award => award.awardId !== awardId));
   }
 
 
@@ -58,8 +64,9 @@ export const InfoPage = () => {
           </InfoCard>
 
           <InfoCard title="수상">
-            {/* <AwardsInfo /> */}
-            {awards.map((award) => award)}
+            {awards.map((award) => (
+                <AwardsInfo awardId={award.awardId} handleRemoveAward={handleRemoveAward}/>
+            ))}
             <CustomButton fullWidth onClick={handleAddAward}>
               <Add sx={{ color: "green", fontWeight: "bold" }} /> 추가하기
             </CustomButton>

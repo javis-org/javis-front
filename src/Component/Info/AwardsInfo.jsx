@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import dayjs from "dayjs";
 import { InfoTitle } from "./InfoTitle.jsx";
 
-export const AwardsInfo = () => {
+export const AwardsInfo = ( {awardId, handleRemoveAward }) => {
   // 완료 버튼 상태 관리
   const [state, setState] = useState(true);
   const changeState = () => {
@@ -22,7 +22,7 @@ export const AwardsInfo = () => {
 
   return (
     <>
-      <InfoTitle title={"수상"} state={state} setState={changeState} />
+      <InfoTitle title={"수상"} state={state} setState={changeState} componentId={awardId} handleRemoveAward={() => handleRemoveAward(awardId)}/>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Grid container spacing={2} alignItems="center">
           {/* 수상명 */}
