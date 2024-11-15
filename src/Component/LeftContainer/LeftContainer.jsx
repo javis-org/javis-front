@@ -54,7 +54,6 @@ export const LeftContainer = () => {
         position: "relative",
         width: isExpanded ? "300px" : "60px",
         height: "100%", // 전체 뷰포트 높이에 맞춤
-        overflow: "hidden",
         boxSizing: "border-box", // 패딩과의 충돌 방지
         display: "flex", // 추가
         flexDirection: "column", // 추가
@@ -66,7 +65,7 @@ export const LeftContainer = () => {
         sx={{
           position: "absolute",
           top: "10px",
-          right: isExpanded ? "10px" : "10px",
+          right: isExpanded ? "-50px" : "10px",
           zIndex: 1000,
           backgroundColor: "white",
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
