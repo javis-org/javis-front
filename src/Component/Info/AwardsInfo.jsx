@@ -2,7 +2,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Grid, TextField, Typography } from "@mui/material";
 import { DatePickerInput } from "../common/InputComponent.jsx";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { InfoTitle } from "./InfoTitle.jsx";
 
@@ -11,14 +11,38 @@ export const AwardsInfo = ( {awardId, handleRemoveAward }) => {
   const [state, setState] = useState(true);
   const changeState = () => {
     setState(!state);
+    if(!state){
+      const data={
+        awardName: awardName,
+        awardingInstitution: awardingInstitution,
+        awardDate: awardDate,
+        remarks: remarks,
+        awardDetails: awardDetails
+      }
+      localStorage.setItem(`awardsInfo_${awardId}`,JSON.stringify(data));
+    }
   };
-
+  
   // 각 필드의 상태 변수 추가
   const [awardName, setAwardName] = useState("");
   const [awardingInstitution, setAwardingInstitution] = useState("");
   const [awardDate, setAwardDate] = useState(dayjs(null));
   const [remarks, setRemarks] = useState("");
   const [awardDetails, setAwardDetails] = useState("");
+
+  //페이지 호출시 저장된값 불러오기
+  useEffect(()=> {
+    try{
+      const savedData = JSON.parse(localStorage.getItem(`awardsInfo_${awardId}`));
+      setAwardName(savedData.awardName);
+      setAwardingInstitution(savedData.awardingInstitution);
+      setAwardDate(dayjs(savedData.awardDate));
+      setRemarks(savedData.remarks);
+      setAwardDetails(savedData.awardDetails);
+    }catch(e){
+
+    }
+  },[])
 
   return (
     <>

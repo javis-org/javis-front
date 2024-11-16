@@ -32,7 +32,7 @@ margin-bottom: -10px;
 export const InfoPage = () => {
   const [awards,setAwards] = useState([{awardId:0}]);  //수상칸을 배열을 생성해 저장
   
-  //추가하기 버튼 클릭시 awards 배열에 <AwardsInfo /> 컨포넌트 push
+  //추가하기 버튼 클릭시 awards awardId값을 추가
   const handleAddAward = () => {
     const newId = awards.length > 0 ? awards[awards.length - 1].awardId + 1 : 0;
     setAwards([...awards, { awardId: newId }]);
