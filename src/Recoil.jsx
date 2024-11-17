@@ -26,3 +26,32 @@ export const selfIntroductionList = selector({
     }
   },
 });
+
+// 2024년부터 현재 연도 + 1년까지 상반기, 하반기 생성
+const currentYear = new Date().getFullYear();
+
+export const generatePeriods = atom({
+  key: "generatePeriods", // atom의 고유한 key
+  default: (() => {
+    const periods = [];
+    for (let year = 2024; year <= currentYear + 1; year++) {
+      periods.push({ label: `${year} 상반기`, value: `${year}-H1` });
+      periods.push({ label: `${year} 하반기`, value: `${year}-H2` });
+    }
+    return periods.reverse();
+  })(),
+});
+
+export const generateSupportStatuses = atom({
+  key: "generateSupportStatuses",
+  default: (() => [
+    "지원 준비",
+    "지원 완료",
+    "서류 통과",
+    "서류 탈락",
+    "면접 통과",
+    "면접 탈락",
+    "최종 합격",
+    "최종 탈락",
+  ])(),
+});

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
+import { Box } from "@mui/material";
+
 import "./quillCustom.css"; // 사용자 정의 CSS 파일 추가
 
 function sleep(ms) {
@@ -8,7 +10,7 @@ function sleep(ms) {
 
 const QuilEditor = ({ save, setSave, setTextLength }) => {
   const [editorHtml, setEditorHtml] = useState("");
-  const [fontSize, setFontSize] = useState("24px"); // 기본 폰트 크기 설정
+  const [fontSize, setFontSize] = useState("16px"); // 기본 폰트 크기 설정
   const quilRef = useRef();
   console.log("fontSize", fontSize);
 
@@ -69,7 +71,7 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
   };
 
   return (
-    <div>
+    <Box>
       {/* 글자 크기 선택 드롭다운 */}
       <label htmlFor="fontSizeSelect">글자 크기: </label>
       <select
@@ -77,10 +79,10 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
         value={fontSize}
         onChange={handleFontSizeChange}
       >
-        <option value="16px">작게</option>
-        <option value="24px">보통</option>
-        <option value="30px">크게</option>
-        <option value="34px">아주 크게</option>
+        <option value="12px">작게</option>
+        <option value="16px">보통</option>
+        <option value="20px">크게</option>
+        <option value="25px">아주 크게</option>
       </select>
 
       <ReactQuill
@@ -90,8 +92,9 @@ const QuilEditor = ({ save, setSave, setTextLength }) => {
         modules={QuilEditor.modules}
         formats={QuilEditor.formats}
         theme={"bubble"}
+        placeholder="내용을 입력해주세요" // placeholder 추가
       />
-    </div>
+    </Box>
   );
 };
 

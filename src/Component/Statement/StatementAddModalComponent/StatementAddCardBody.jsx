@@ -16,7 +16,7 @@ const StatementAddCardBody = () => {
   };
   console.log("selectedType", selectedType.length);
   return (
-    <Box>
+    <Box sx={{ width: "450px" }}>
       <Typography
         color="textPrimary"
         component="div"
@@ -51,7 +51,7 @@ const StatementAddCardBody = () => {
         disabled={selectedType.length === 0}
         variant="contained"
         sx={{ marginTop: "10px", width: "100%" }}
-        onClick={() => navigate("/statement/editor")}
+        onClick={() => navigate("/statement/editor/2")}
       >
         선택 완료
       </Button>

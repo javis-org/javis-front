@@ -1,9 +1,9 @@
 import {
   Button,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -23,6 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
  * @param {boolean|string} [backdrop="static"] - 외부 클릭 시 모달을 닫을지 여부입니다. (기본값: "static")
  * @param {boolean} [centered=false] - 모달을 화면 정중앙에 배치할지 여부를 결정하는 상태입니다. (기본값: false)
  * @param {()=>void} [headerCloseBtn] - 모달을 닫는 상단 버튼입니다.
+ * @param {string} [maxWidth] xs,sm,md,lg,xl
  */
 const ModalComponent = ({
   title,
@@ -37,17 +38,20 @@ const ModalComponent = ({
   backdrop = "",
   centered = false,
   headerCloseBtn = false,
+  maxWidth = "sm",
 }) => (
   <Dialog
     open={show}
     onClose={handleClose}
     disableEscapeKeyDown={backdrop === "static"} // "static"일 경우 키보드로 모달을 닫지 않음
-    fullWidth
-    maxWidth="sm" // 원하는 크기로 설정
+    fullWidth={false} // 전체 너비 사용 안함
+    // maxWidth="xs" // 모달 너비를 작게 설정
     PaperProps={{
       sx: {
         position: "relative",
         margin: centered ? "auto" : "initial",
+        maxWidth: "xl",
+        minWidth: "300px", // 모달 너비 설정
       },
     }}
   >
@@ -71,8 +75,15 @@ const ModalComponent = ({
       </DialogTitle>
     )}
 
-    <DialogContent dividers>
-      {body}{" "}
+    <DialogContent
+      dividers
+      sx={{
+        display: "flex",
+        justifyContent: "center", // 콘텐츠 중앙 정렬
+        alignItems: "center", // 수직 중앙 정렬
+      }}
+    >
+      {body}
       {headerCloseBtn && !title && (
         <IconButton
           aria-label="close"
