@@ -2,16 +2,17 @@ import axios from "axios";
 
 export const client = axios.create({
   baseURL: import.meta.env.VITE_BASEURL,
-  withCredentials: false,
+  withCredentials: true,
   headers: {
     "ngrok-skip-browser-warning": true,
+    "Content-Type": "application/json",
   },
 });
 export const client2 = axios.create({
   baseURL: null,
-  withCredentials: false,
+  withCredentials: true,
   headers: {
-    "ngrok-skip-browser-warning": true,
+    "Content-Type": "application/json",
   },
 });
 
