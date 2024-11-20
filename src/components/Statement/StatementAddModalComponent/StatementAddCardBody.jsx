@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { TagSelector } from "./TagSelector.jsx";
 import { TextTypeSelector } from "./TextTypeSelector.jsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { client } from "../../../api.js";
 
-const StatementAddCardBody = () => {
+const StatementAddCardBody = ({ mode }) => {
   const navigate = useNavigate();
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedType, setSelectedType] = useState([]);
@@ -19,6 +19,9 @@ const StatementAddCardBody = () => {
     setSelectedTags(newTags);
   };
 
+  const { id } = useParams();
+  // console.log(id, "공고id");
+  console.log("mode", mode);
   const handleAddCard = async () => {
     console.log("selectedTags", selectedTags);
     console.log("type", selectedType[0].tag);
@@ -26,8 +29,9 @@ const StatementAddCardBody = () => {
       const response = await client.post("/Card", {
         title: "제목없음",
         tags: selectedTags,
-        mode: "statement",
+        mode,
         type: selectedType[0].tag,
+        recruitId: mode === "recruit" && id,
       });
 
       navigate(`/statement/editor/${response.data.cardId}`);

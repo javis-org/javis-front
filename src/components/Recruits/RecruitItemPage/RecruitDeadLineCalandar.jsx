@@ -6,10 +6,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"; // dayjs 어댑터 사용
 import dayjs from "dayjs";
 
-export const RecruitDeadLineCalandar = () => {
+export const RecruitDeadLineCalandar = ({
+  selectedDate,
+  setSelectedDate,
+  updateDeadline,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null); // Control menu visibility
-  const [selectedDate, setSelectedDate] = useState(dayjs("2024-10-20")); // Default selected date using dayjs
 
+  const today = dayjs(); // 오늘 날짜
   const handleClickOpen = (event) => {
     setAnchorEl(event.currentTarget); // Open the menu anchored to the button
   };
@@ -21,6 +25,7 @@ export const RecruitDeadLineCalandar = () => {
   const handleDateChange = (date) => {
     setSelectedDate(date); // Update selected date
     handleClose();
+    updateDeadline(date);
   };
 
   return (
@@ -64,6 +69,7 @@ export const RecruitDeadLineCalandar = () => {
             <DatePicker
               format="YYYY/MM/DD" // 연도/월/일 포맷
               value={selectedDate}
+              minDate={today} // 오늘 이전 날짜 비활성화
               onChange={handleDateChange}
               renderInput={(params) => <TextField {...params} fullWidth />}
             />

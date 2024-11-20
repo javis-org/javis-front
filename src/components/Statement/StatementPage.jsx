@@ -14,14 +14,16 @@ export const MyStatementPage = () => {
   const handleUpdate = () => {
     setUpdate(!update);
   };
+  const mode = "statement";
   useEffect(() => {
     const fetchData = async () => {
-      const response = await client.get("/Card/count");
+      const response = await client.get(`/Card/count?mode=${mode}`);
       setMenus(response.data);
       console.log("갯수", response.data);
     };
     fetchData();
   }, [update]);
+
   return (
     <BaseComponent>
       <PageTitle title={"내 자소서"} />
@@ -30,9 +32,10 @@ export const MyStatementPage = () => {
           menus={menus}
           selectMenu={selectMenu}
           setSelectMenu={setSelectMenu}
-          modalBody={<StatementAddCardBody />}
+          modalBody={<StatementAddCardBody mode={mode} />}
         />
         <CardList
+          mode={mode}
           selectMenu={selectMenu}
           update={update}
           handleUpdate={handleUpdate}

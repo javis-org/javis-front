@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { generateSupportStatuses } from "../../../Recoil.jsx";
 import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown.js";
 import CheckIcon from "@mui/icons-material/Check.js";
+import { client } from "../../../api.js";
+import { useParams } from "react-router-dom";
 
-export const SupportStatusSelector = () => {
+export const SupportStatusSelector = ({ status }) => {
   const supportStatuses = useRecoilValue(generateSupportStatuses); // 지원 상태 리스트 가져오기
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedSupportStatus, setSelectedSupportStatus] =
-    useState("지원 준비");
-
+  const [selectedSupportStatus, setSelectedSupportStatus] = useState(status);
+  const { id } = useParams();
+  useEffect(() => {
+    setSelectedSupportStatus(status);
+  }, [status]);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget); // 클릭한 아이콘을 기준으로 메뉴 띄움
   };
@@ -19,8 +23,17 @@ export const SupportStatusSelector = () => {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (status) => {
+  const updateStatus = async (status) => {
+    try {
+      await client.put(`/Recruit/state/${id}`, { state: status });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleMenuItemClick = async (status) => {
     setSelectedSupportStatus(status); // 선택된 값 설정
+    await updateStatus(status);
     setAnchorEl(null); // 메뉴 닫기
   };
 

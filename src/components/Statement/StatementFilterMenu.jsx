@@ -1,5 +1,6 @@
 import { Box, Button, styled } from "@mui/material";
 import { AddCardComponent } from "../common/Card/AddCardComponent.jsx";
+import { useState } from "react";
 
 const CustomButton = styled(Button)`
   color: ${(props) => (props.isSelected ? "black" : "gray")};
@@ -35,6 +36,13 @@ export const StatementFilterMenu = ({
   setSelectMenu,
   modalBody,
 }) => {
+  const [show, setShow] = useState(false);
+  const handleOpen = () => {
+    setShow(true);
+  };
+  const handleClose = () => {
+    setShow(false);
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <Box sx={{ visibility: menus.length === 0 ? "hidden" : "visible" }}>
@@ -52,7 +60,12 @@ export const StatementFilterMenu = ({
             </CustomButton>
           ))}
       </Box>
-      <AddCardComponent modalBody={modalBody} />
+      <AddCardComponent
+        modalBody={modalBody}
+        show={show}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+      />
     </Box>
   );
 };

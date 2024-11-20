@@ -100,6 +100,7 @@ export const CardItem = ({
     setStatus(event.target.value);
   };
   const supportStatus = useRecoilValue(generateSupportStatuses);
+  console.log("mode체킈:", mode);
   return (
     <>
       <CustomCard
@@ -115,7 +116,7 @@ export const CardItem = ({
         }}
       >
         {/* 상단에 검정색 배경과 텍스트 배치 */}
-        {(mode === "search" || mode === "recruit") && (
+        {"mode" === "search" && (
           <Box
             sx={{
               position: "absolute",

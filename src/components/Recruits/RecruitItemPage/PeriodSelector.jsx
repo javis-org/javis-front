@@ -1,24 +1,43 @@
 import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown.js";
 import CheckIcon from "@mui/icons-material/Check.js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { generatePeriods } from "../../../Recoil.jsx";
+import { client } from "../../../api.js";
+import { useParams } from "react-router-dom";
 
-export const PeriodSelector = () => {
+export const PeriodSelector = ({ yearHalf }) => {
   const periods = useRecoilValue(generatePeriods); // useRecoilValue로 atom 값 가져오기
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedPeriod, setSelectedPeriod] = useState("2025 상반기");
+  const [selectedPeriod, setSelectedPeriod] = useState("");
+  const { id } = useParams();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget); // 클릭한 아이콘을 기준으로 메뉴 띄움
   };
 
+  useEffect(() => {
+    if (yearHalf) {
+      setSelectedPeriod(yearHalf);
+    }
+  }, [yearHalf]);
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (event, period) => {
+  const updateYearHalf = async (newYearHaf) => {
+    try {
+      await client.put(`/Recruit/yearHalf/${id}`, {
+        yearHalf: newYearHaf,
+      });
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  };
+  const handleMenuItemClick = async (event, period) => {
     setSelectedPeriod(period.label); // 선택된 값 설정
+    await updateYearHalf(period.label);
     setAnchorEl(null); // 메뉴 닫기
   };
 
