@@ -4,6 +4,7 @@ import { InfoTitle } from "./InfoTitle.jsx";
 import { DatePickerInput } from "../common/InputComponent.jsx";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import { useEffect } from "react";
 import dayjs from "dayjs";
 
 export const AcademicInformation = () => {
@@ -11,6 +12,21 @@ export const AcademicInformation = () => {
   const [state, setState] = useState(true);
   const changeState = () => {
     setState(!state);
+
+    if(!state){
+      const data={
+        schoolName:schoolName,
+        studyStartDate:studyStartDate,
+        studyEndDate:studyEndDate,
+        graduationStatus:graduationStatus,
+        totalCredits:totalCredits,
+        majorCredits:majorCredits,
+        acquiredCredits:acquiredCredits,
+        acquiredMajorCredits:acquiredMajorCredits,
+        remarks:remarks
+      }
+      localStorage.setItem("academicInfo",JSON.stringify(data));
+    }
   };
 
   // 각 필드에 대한 상태 변수 추가
@@ -23,6 +39,25 @@ export const AcademicInformation = () => {
   const [acquiredCredits, setAcquiredCredits] = useState("");
   const [acquiredMajorCredits, setAcquiredMajorCredits] = useState("");
   const [remarks, setRemarks] = useState("");
+
+
+  useEffect(() => {
+    try{
+      const savedData = JSON.parse(localStorage.getItem(`academicInfo`));
+      
+      setSchoolName(savedData.schoolName);
+      setStudyStartDate(dayjs(savedData.studyStartDate));
+      setStudyEndDate(dayjs(savedData.studyEndDate));
+      setGraduationStatus(savedData.graduationStatus);
+      setTotalCredits(savedData.totalCredits);
+      setMajorCredits(savedData.majorCredits);
+      setAcquiredCredits(savedData.acquiredCredits);
+      setAcquiredMajorCredits(savedData.acquiredMajorCredits);
+      setRemarks(savedData.remarks)
+    }catch(e){
+
+    }
+  },[]);
 
   return (
     <>

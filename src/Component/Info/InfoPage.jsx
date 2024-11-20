@@ -31,10 +31,15 @@ margin-bottom: -10px;
 );
 
 export const InfoPage = () => {
+  //수상칸
   const [awards, setAwards] = useState(() => {
-    //초기값 할당
     const savedAwards = JSON.parse(localStorage.getItem("awards"));
     return savedAwards ? savedAwards : [{ awardId: uuidv4() }];
+  });  
+
+  const [clubs, setClubs] = useState(() => {
+    const savedClubs = JSON.parse(localStorage.getItem("clubs"));
+    return savedClubs ? savedClubs : [{ clubsId: uuidv4() }];
   });  
   
   //추가하기 버튼 클릭시 고유 awardId값을 추가
@@ -42,15 +47,27 @@ export const InfoPage = () => {
     setAwards((prevAwards) => [...prevAwards, { awardId: uuidv4() }]);
   }
 
+  const handleClubsAward = () => {
+    setClubs((prevClubs) => [...prevClubs, { clubsId: uuidv4() }]);
+  }
+
   //제거하기 버튼 클릭시 awards 배열에 특정 awradId 값을 제거
   const handleRemoveAward = (awardId) => {
     setAwards((prevAwards) => prevAwards.filter((award) => award.awardId !== awardId));
+  }
+
+  const handleRemoveClubs = (clubsId) => {
+    setClubs((prevClubs) => prevClubs.filter((club) => club.clubsId !== clubsId));
   }
 
    // 상태 변경 시 localStorage에 동기화
    useEffect(() => {
      localStorage.setItem("awards", JSON.stringify(awards));
  }, [awards]); 
+
+ useEffect(() => {
+  localStorage.setItem("clubs", JSON.stringify(clubs));
+}, [clubs]); 
 
 
 
@@ -77,9 +94,6 @@ export const InfoPage = () => {
 
           <InfoCard title="수상">
             {awards.map((award,index) => (
-              //key= 고유값으로 컴포넌트 리렌더링 조절
-              //awardId = 수상 컴포넌트 고유 Id
-              //index = 번호를 주어 2번째 수상칸부터 제거하기 기능 활성화
                 <AwardsInfo key={award.awardId} awardId={award.awardId} handleRemoveAward={handleRemoveAward} index={index}/>
             ))}
             <CustomButton fullWidth onClick={handleAddAward}>
@@ -88,8 +102,10 @@ export const InfoPage = () => {
           </InfoCard>
 
           <InfoCard title="동아리/대외활동">
-            <ClubInfo />
-            <CustomButton fullWidth>
+          {clubs.map((club,index) => (
+                <ClubInfo key={club.clubsId} clubsId={club.clubsId} handleRemoveClubs={handleRemoveClubs} index={index}/>
+            ))}
+            <CustomButton fullWidth onClick={handleClubsAward}>
               <Add sx={{ color: "green", fontWeight: "bold" }} /> 추가하기
             </CustomButton>
           </InfoCard>

@@ -5,18 +5,45 @@ import { DatePickerInput } from "../common/InputComponent.jsx";
 import React, { useState } from "react";
 import { InfoTitle } from "./InfoTitle.jsx";
 
-export const ClubInfo = () => {
+export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
   //완료 버튼
   const [state, setState] = useState(true);
+
+
   const changeState = () => {
     setState(!state);
+
+    //수정완료시 데이터 저장
+    if(!state){
+      const data={
+
+      }
+      localStorage.setItem(`clubsInfo_${clubsId}`,JSON.stringify(data));
+    }
+
   };
+
+
+  //페이지 호출시 저장된값 불러오기
+  // useEffect(()=> {
+  //   try{
+  //     const savedData = JSON.parse(localStorage.getItem(`clubsInfo_${clubsId}`));
+
+  //   }catch(e){
+
+  //   }
+  // },[])
+
+
+
   return (
     <>
       <InfoTitle
         title={"동아리/대외활동"}
         state={state}
         setState={changeState}
+        componentId={index}
+        handleRemoveAward={() => handleRemoveClubs(clubsId)}
       />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Grid container spacing={2} alignItems="center">
