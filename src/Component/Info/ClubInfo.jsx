@@ -2,13 +2,20 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Grid, TextField, Typography } from "@mui/material";
 import { DatePickerInput } from "../common/InputComponent.jsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InfoTitle } from "./InfoTitle.jsx";
+import dayjs from "dayjs";
 
 export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
   //완료 버튼
   const [state, setState] = useState(true);
 
+
+  const [organizationName,setOrganizationName] = useState("");
+  const [startDate,setStartDate] = useState(dayjs(null));
+  const [endDate,setEndDate] = useState(dayjs(null));
+  const [role,setRole] = useState("");
+  const [remarks,setRemarks] = useState("");
 
   const changeState = () => {
     setState(!state);
@@ -16,24 +23,33 @@ export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
     //수정완료시 데이터 저장
     if(!state){
       const data={
-
+        organizationName:organizationName,
+        startDate:startDate,
+        endDate:endDate,
+        role:role,
+        remarks:remarks
       }
       localStorage.setItem(`clubsInfo_${clubsId}`,JSON.stringify(data));
     }
 
   };
 
+  useEffect(() => {
+    try{
+      const savedData = JSON.parse(localStorage.getItem(`clubsInfo_${clubsId}`));
+      console.log(clubsId,"090");
+      
+      setOrganizationName(savedData.organizationName);
+      setStartDate(dayjs(savedData.startDate));
+      setEndDate(dayjs(savedData.endDate));
+      setRole(savedData.role);
+      setRemarks(savedData.remarks);
 
-  //페이지 호출시 저장된값 불러오기
-  // useEffect(()=> {
-  //   try{
-  //     const savedData = JSON.parse(localStorage.getItem(`clubsInfo_${clubsId}`));
+      console.log(organizationName,"889");
+    }catch(e){
 
-  //   }catch(e){
-
-  //   }
-  // },[])
-
+    }
+  },[])
 
 
   return (
@@ -55,6 +71,8 @@ export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
               fullWidth
               placeholder="기관명"
               margin="normal"
+              value={organizationName}
+              onChange={(e) => setOrganizationName(e.target.value)}
               disabled={state}
             />
           </Grid>
@@ -63,11 +81,21 @@ export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
             <Typography>활동일</Typography>
           </Grid>
           <Grid item xs={12} sm={2}>
-            <DatePickerInput label={"시작일"} disabled={state} />
+            <DatePickerInput 
+              label={"시작일"} 
+              disabled={state} 
+              value={startDate}
+              onChange={setStartDate}
+              />
           </Grid>
 
           <Grid item xs={12} sm={2}>
-            <DatePickerInput label={"종료일"} disabled={state} />
+            <DatePickerInput 
+              label={"종료일"} 
+              disabled={state} 
+              value={endDate}
+              onChange={setEndDate}
+              />
           </Grid>
 
           <Grid item xs={12} sm={2}>
@@ -78,6 +106,8 @@ export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
               fullWidth
               placeholder="역할"
               margin="normal"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
               disabled={state}
             />
           </Grid>
@@ -90,6 +120,8 @@ export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
               fullWidth
               placeholder="비고"
               margin="normal"
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)}
               disabled={state}
             />
           </Grid>
