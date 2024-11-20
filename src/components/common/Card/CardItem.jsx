@@ -116,7 +116,7 @@ export const CardItem = ({
         }}
       >
         {/* 상단에 검정색 배경과 텍스트 배치 */}
-        {"mode" === "search" && (
+        {mode === "search" && (
           <Box
             sx={{
               position: "absolute",
