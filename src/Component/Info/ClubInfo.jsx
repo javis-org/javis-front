@@ -71,7 +71,7 @@ export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
         state={state}
         setState={changeState}
         componentId={index}
-        handleRemoveAward={() => handleRemoveClick()}
+        handleRemove={() => handleRemoveClick()}
       />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Grid container spacing={2} alignItems="center">
