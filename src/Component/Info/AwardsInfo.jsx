@@ -6,11 +6,14 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { InfoTitle } from "./InfoTitle.jsx";
 
-export const AwardsInfo = ( {awardId, handleRemoveAward }) => {
+export const AwardsInfo = ( {awardId, index,handleRemoveAward}) => {
+  
   // 완료 버튼 상태 관리
   const [state, setState] = useState(true);
   const changeState = () => {
     setState(!state);
+
+    //수정완료시 데이터 저장
     if(!state){
       const data={
         awardName: awardName,
@@ -34,6 +37,7 @@ export const AwardsInfo = ( {awardId, handleRemoveAward }) => {
   useEffect(()=> {
     try{
       const savedData = JSON.parse(localStorage.getItem(`awardsInfo_${awardId}`));
+
       setAwardName(savedData.awardName);
       setAwardingInstitution(savedData.awardingInstitution);
       setAwardDate(dayjs(savedData.awardDate));
@@ -46,7 +50,7 @@ export const AwardsInfo = ( {awardId, handleRemoveAward }) => {
 
   return (
     <>
-      <InfoTitle title={"수상"} state={state} setState={changeState} componentId={awardId} handleRemoveAward={() => handleRemoveAward(awardId)}/>
+      <InfoTitle title={"수상"} state={state} setState={changeState} componentId={index} handleRemoveAward={() => handleRemoveAward(awardId)}/>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Grid container spacing={2} alignItems="center">
           {/* 수상명 */}

@@ -24,6 +24,8 @@ export const ServiceStatusButtonGroup = ({
 };
 
 export const AutoCompleteInput = ({ options, value, setValue, disabled }) => {
+  console.log(options,value,"233");
+  
   return (
     <Autocomplete
       value={value}

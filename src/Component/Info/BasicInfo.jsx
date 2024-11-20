@@ -16,12 +16,28 @@ export const BasicInfo = () => {
 
   const changeState = () => {
     setState(!state);
+
+    //수정완료시 데이터 저장
+    if(!state){
+      const data={
+        koreanName:koreanName,
+        englishName:englishName,
+        chineseName:chineseName
+      }
+      localStorage.setItem("basicInfo",JSON.stringify(data));
+    }
   };
 
+  //렌더링시 저장된값 불러오기
   useEffect(() => {
-    setKoreanName(localStorage.getItem("savedKoreanName"));
-    setEnglishName(localStorage.getItem("savedEnglishName"));
-    setChineseName(localStorage.getItem("savedChineseName"));
+    try{
+      const savedData = JSON.parse(localStorage.getItem(`basicInfo`));
+      setKoreanName(savedData.koreanName);
+      setEnglishName(savedData.englishName);
+      setChineseName(savedData.chineseName);
+    }catch(e){
+
+    }
   },[]);
 
   return (
@@ -39,8 +55,7 @@ export const BasicInfo = () => {
             value={koreanName} // 상태 변수로 관리
             onChange={(e) => {
               setKoreanName(e.target.value)
-              localStorage.setItem("savedKoreanName",e.target.value)
-            }} //localStorage를 이용하여 데이터 표시
+            }}
             disabled={state}
           />
         </Grid>
@@ -56,7 +71,6 @@ export const BasicInfo = () => {
             margin="normal"
             value={englishName} // 상태 변수로 관리
             onChange={(e) => {
-              localStorage.setItem("savedEnglishName",e.target.value);
               setEnglishName(e.target.value)
             }}
             disabled={state}
@@ -75,7 +89,6 @@ export const BasicInfo = () => {
             margin="normal"
             value={chineseName} // 상태 변수로 관리
             onChange={(e) => {
-              localStorage.setItem("savedChineseName",e.target.value);
               setChineseName(e.target.value)            
             }}
             disabled={state}

@@ -15,7 +15,24 @@ export const MilitaryInfo = () => {
   const [state, setState] = useState(true);
   const changeState = () => {
     setState(!state);
+
+    //수정완료시 데이터를 localStorage로 저장
+    if(!state){
+      const data={
+        serviceStatus:serviceStatus,
+        militaryType:militaryType,
+        militaryClasses:militaryClasses,
+        militaryRanks:militaryRanks,
+        startDate:startDate,
+        endDate:endDate,
+        retireMilitary:retireMilitary
+      }
+      localStorage.setItem("militaryInfo",JSON.stringify(data));
+      console.log(JSON.parse(localStorage.getItem("militaryInfo")));
+    }
   };
+
+
   // 병역 구분
   const [serviceStatus, setServiceStatus] = useState();
   const militaryStatusOptions = ["비대상", "군필", "미필", "면제", "복무중"];
@@ -48,9 +65,21 @@ export const MilitaryInfo = () => {
   ];
   console.log(retireMilitary);
 
-
+  //페이지 렌더링시 저장된값 불러오기
   useEffect(() => {
-    // setServiceStatus(localStorage.getItem("savedServiceStatus"));
+    try{
+      const savedData = JSON.parse(localStorage.getItem(`militaryInfo`));
+      
+      setServiceStatus(savedData.serviceStatus);
+      setMilitaryType(savedData.militaryType);
+      setMilitaryClasses(savedData.militaryClasses);
+      setMilitaryRanks(savedData.militaryRanks);
+      setRetireMilitary(savedData.retireMilitary);
+      setStartDate(dayjs(savedData.startDate));
+      setEndDate(dayjs(savedData.endDate));
+    }catch(e){
+
+    }
   },[]);
 
   return (
@@ -73,6 +102,7 @@ export const MilitaryInfo = () => {
               selectedOption={serviceStatus}
               onChange={setServiceStatus}
               disabled={state}
+              defaultValue={militaryType}
             />
           </Grid>
         </Grid>
