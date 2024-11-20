@@ -11,12 +11,23 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
-import { generateSupportStatuses } from "../../Recoil.jsx";
-import { useRecoilValue } from "recoil";
+import { generateSupportStatuses, updateAtom } from "../../Recoil.jsx";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { TransformDeadline } from "./RecruitItemPage/TransformDeadline.jsx";
+import { client } from "../../api.js";
 
-export const RecruitCard = () => {
+export const RecruitCard = ({
+  id,
+  title,
+  yearHalf,
+  state = "지원 준비",
+  deadline,
+  url,
+}) => {
+  const [update, setUpdate] = useRecoilState(updateAtom);
+
   const [anchorEl, setAnchorEl] = useState(null);
-  const [status, setStatus] = useState("지원 준비");
+  const [status, setStatus] = useState(state);
   const navi = useNavigate();
   const supportStatus = useRecoilValue(generateSupportStatuses); // `setSupportStatus` 대신 `useRecoilValue`만 사용
 
@@ -32,22 +43,43 @@ export const RecruitCard = () => {
     setAnchorEl(null);
   };
 
+  const deleteRecruit = async () => {
+    try {
+      await client.delete(`/Recruit/${id}`);
+      setUpdate(!update);
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  };
   // 삭제 메뉴 클릭 핸들러
-  const handleDelete = () => {
+  const handleDelete = async () => {
     console.log("삭제됨");
+    await deleteRecruit();
     handleClose(); // 메뉴 닫기
   };
 
+  //상태 변경시 통신
+  const updateState = async (state) => {
+    try {
+      await client.put(`/Recruit/state/${id}`, { state });
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  };
+
   // 상태 변경 핸들러
-  const handleStatusChange = (event) => {
+  const handleStatusChange = async (event) => {
     event.stopPropagation(); // 이벤트 전파 중지
     setStatus(event.target.value);
+    await updateState(event.target.value);
   };
 
   // Box 클릭 핸들러
   const handleCardClick = (event) => {
     event.stopPropagation(); // 클릭 시 전파 방지
-    navi("1");
+    navi(`${id}`);
   };
 
   return (
@@ -89,12 +121,12 @@ export const RecruitCard = () => {
             color="textSecondary"
             sx={{ marginRight: "16px" }}
           >
-            2024 하반기
+            {yearHalf}
           </Typography>
 
           {/* Status Chip */}
           <Chip
-            label="1차 면접 D-2"
+            label={TransformDeadline(deadline)}
             color="primary"
             sx={{
               backgroundColor: "#000", // Black background for the chip
@@ -106,7 +138,7 @@ export const RecruitCard = () => {
 
           {/* 공고 제목 */}
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            공고 제목
+            {title}
           </Typography>
         </Box>
 

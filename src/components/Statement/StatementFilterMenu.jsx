@@ -1,7 +1,5 @@
 import { Box, Button, styled } from "@mui/material";
 import { AddCardComponent } from "../common/Card/AddCardComponent.jsx";
-import { useEffect, useState } from "react";
-import { client } from "../../api.js";
 
 const CustomButton = styled(Button)`
   color: ${(props) => (props.isSelected ? "black" : "gray")};
@@ -32,26 +30,28 @@ const CountBox = styled(Box)`
  * @param {Function} props.select - 사용자가 필터를 선택했을 때 호출되는 함수, 선택된 메뉴 항목을 전달함
  */
 export const StatementFilterMenu = ({
-  menus,
+  menus = [],
   selectMenu,
   setSelectMenu,
   modalBody,
 }) => {
   return (
     <Box sx={{ display: "flex" }}>
-      {menus.length > 0 &&
-        menus.map((menu, index) => (
-          <CustomButton
-            key={index}
-            onClick={() => setSelectMenu(menu.type)}
-            isSelected={selectMenu === menu.type}
-          >
-            {menu.type}
-            <CountBox isSelected={selectMenu === menu.type}>
-              {menu.count}
-            </CountBox>
-          </CustomButton>
-        ))}
+      <Box sx={{ visibility: menus.length === 0 ? "hidden" : "visible" }}>
+        {menus.length > 0 &&
+          menus.map((menu, index) => (
+            <CustomButton
+              key={index}
+              onClick={() => setSelectMenu(menu.type)}
+              isSelected={selectMenu === menu.type}
+            >
+              {menu.type}
+              <CountBox isSelected={selectMenu === menu.type}>
+                {menu.count}
+              </CountBox>
+            </CustomButton>
+          ))}
+      </Box>
       <AddCardComponent modalBody={modalBody} />
     </Box>
   );

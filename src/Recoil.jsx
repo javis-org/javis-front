@@ -13,7 +13,10 @@ export const isExpandValue = atom({
   key: "isExpandValue",
   default: false,
 });
-
+export const updateAtom = atom({
+  key: "update",
+  default: false,
+});
 export const selfIntroductionList = selector({
   key: "selfIntroductionList",
   get: async ({ get }) => {

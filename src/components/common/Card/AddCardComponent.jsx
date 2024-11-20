@@ -1,18 +1,13 @@
 import { Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import ModalComponent from "../ModalComponent.jsx";
-import { useState } from "react";
 
-export const AddCardComponent = ({ modalBody }) => {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleOpen = () => {
-    setShow(true);
-  };
-
+export const AddCardComponent = ({
+  modalBody,
+  handleOpen,
+  handleClose,
+  show,
+}) => {
   return (
     <>
       <Button
