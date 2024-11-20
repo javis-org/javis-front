@@ -63,11 +63,11 @@ export const InfoPage = () => {
    // 상태 변경 시 localStorage에 동기화
    useEffect(() => {
      localStorage.setItem("awards", JSON.stringify(awards));
- }, [awards]); 
+  }, [awards]); 
 
- useEffect(() => {
-  localStorage.setItem("clubs", JSON.stringify(clubs));
-}, [clubs]); 
+  useEffect(() => {
+    localStorage.setItem("clubs", JSON.stringify(clubs));
+  }, [clubs]); 
 
 
 

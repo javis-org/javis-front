@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Typography } from "@mui/material";
 import React from "react";
 
-export const InfoTitle = ({ title, state = false, setState , componentId = 0 , handleRemoveAward}) => {
+export const InfoTitle = ({ title, state = false, setState , componentId = 0 , handleRemove}) => {
   return (
     <Box
       sx={{
@@ -31,7 +31,7 @@ export const InfoTitle = ({ title, state = false, setState , componentId = 0 , h
           {state ? "수정" : "완료"}
         </Button>
 
-        {/* 수상과 동아리의 경우 추가하기를 눌렀을경우 2번쨰칸부터는 제거하기버튼 생성 */}
+        {/* 2번쨰칸부터는 제거하기버튼 생성 */}
         {componentId >= 1 ? <Button
           sx={{
             position: "relative",
@@ -43,7 +43,7 @@ export const InfoTitle = ({ title, state = false, setState , componentId = 0 , h
               backgroundColor: "gray", // 호버 시 연한 회색 배경
             },
           }}
-          onClick={handleRemoveAward}
+          onClick={handleRemove}
           variant="outlined"
           >제거</Button> : <></>
         }

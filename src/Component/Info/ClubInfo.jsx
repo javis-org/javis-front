@@ -51,6 +51,18 @@ export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
     }
   },[])
 
+  //제거하기 클릭시 저장된값이 있다면 확인 받는 팝업
+  const handleRemoveClick = () => {
+    const savedData = localStorage.getItem(`clubsInfo_${clubsId}`);
+    if (savedData) {
+      const confirmed = window.confirm("저장된 데이터가 있습니다. 정말 삭제하시겠습니까?");
+      if (!confirmed) return; 
+    }
+
+    localStorage.removeItem(`clubsInfo_${clubsId}`);
+    handleRemoveClubs(clubsId);
+  };
+
 
   return (
     <>
@@ -59,7 +71,7 @@ export const ClubInfo = ({clubsId,handleRemoveClubs,index}) => {
         state={state}
         setState={changeState}
         componentId={index}
-        handleRemoveAward={() => handleRemoveClubs(clubsId)}
+        handleRemoveAward={() => handleRemoveClick()}
       />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Grid container spacing={2} alignItems="center">

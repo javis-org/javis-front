@@ -48,9 +48,21 @@ export const AwardsInfo = ( {awardId, index,handleRemoveAward}) => {
     }
   },[])
 
+  //제거하기 클릭시 저장된값이 있다면 확인 받는 팝업
+  const handleRemoveClick = () => {
+    const savedData = localStorage.getItem(`awardsInfo_${awardId}`);
+    if (savedData) {
+      const confirmed = window.confirm("저장된 데이터가 있습니다. 정말 삭제하시겠습니까?");
+      if (!confirmed) return; 
+    }
+
+    localStorage.removeItem(`awardsInfo_${awardId}`);
+    handleRemoveAward(awardId);
+  };
+
   return (
     <>
-      <InfoTitle title={"수상"} state={state} setState={changeState} componentId={index} handleRemoveAward={() => handleRemoveAward(awardId)}/>
+      <InfoTitle title={"수상"} state={state} setState={changeState} componentId={index} handleRemove={handleRemoveClick}/>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Grid container spacing={2} alignItems="center">
           {/* 수상명 */}
