@@ -8,6 +8,7 @@ import {
   DatePickerInput,
   ServiceStatusButtonGroup,
 } from "../common/InputComponent.jsx";
+
 import { InfoTitle } from "./InfoTitle.jsx";
 
 export const MilitaryInfo = () => {
@@ -67,20 +68,20 @@ export const MilitaryInfo = () => {
 
   //페이지 렌더링시 저장된값 불러오기
   useEffect(() => {
-    try{
+    try {
       const savedData = JSON.parse(localStorage.getItem(`militaryInfo`));
+  
+      setServiceStatus(savedData?.serviceStatus || "");
+      setMilitaryType(savedData?.militaryType || "");
+      setMilitaryClasses(savedData?.militaryClasses || "");
+      setMilitaryRanks(savedData?.militaryRanks || "");
+      setRetireMilitary(savedData?.retireMilitary || "");
+      setStartDate(dayjs(savedData?.startDate || null));
+      setEndDate(dayjs(savedData?.endDate || null));
+    } catch (e) {
       
-      setServiceStatus(savedData.serviceStatus);
-      setMilitaryType(savedData.militaryType);
-      setMilitaryClasses(savedData.militaryClasses);
-      setMilitaryRanks(savedData.militaryRanks);
-      setRetireMilitary(savedData.retireMilitary);
-      setStartDate(dayjs(savedData.startDate));
-      setEndDate(dayjs(savedData.endDate));
-    }catch(e){
-
     }
-  },[]);
+  }, []);
 
   return (
     <>
