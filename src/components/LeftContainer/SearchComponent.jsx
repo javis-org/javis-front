@@ -13,6 +13,7 @@ import {
 import React, { useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
+import { client } from "../../api.js";
 import { CardList } from "../Statement/CardList.jsx";
 
 // 모든 태그 예시 (역량 태그와 인성 태그 포함)
@@ -55,14 +56,48 @@ export const SearchComponent = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const cardRef = useRef(null);
-
+  const [statement, setStatement] = useState([]);
+  const [recruit, setRecruit] = useState([]);
+  console.log(selectedTags);
   const handleClear = () => {
     setSearchText("");
     setSelectedTags([]);
     setIsFocused(true); // Clear 후 포커스 가능하도록 설정
   };
 
-  const handleSearch = () => {
+  const searchData = async () => {
+    try {
+      const response = await client.get(`/Search/tag`, {
+        params: {
+          data: JSON.stringify(selectedTags), // 객체 배열을 JSON 문자열로 변환
+        },
+      });
+      console.log("respousasdlf", response.data);
+      setStatement(response.data.statement);
+      setRecruit(response.data.recruit);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const searchTextData = async () => {
+    try {
+      const response = await client.get(`/Search?text=${searchText}`);
+      console.log("respousasdlf", response.data);
+      setStatement(response.data.statement);
+      setRecruit(response.data.recruit);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSearch = async () => {
+    if (selectedTags.length > 0) {
+      await searchData();
+    } else {
+      await searchTextData();
+    }
+    setIsFocused(false);
     console.log("검색:", searchText, selectedTags);
   };
 
@@ -109,7 +144,7 @@ export const SearchComponent = () => {
     <Box
       sx={{
         width: "1200px",
-        minHeight: "500px",
+        minHeight: "400px",
         maxHeight: "800px",
         position: "relative",
         padding: "0 10px",
@@ -313,7 +348,7 @@ export const SearchComponent = () => {
           overflowY: "auto",
           // maxHeight: "calc(100% - 60px)",
           paddingTop: "20px",
-          height: "650px",
+          height: "100%",
           "&::-webkit-scrollbar": {
             width: "8px",
           },
@@ -325,13 +360,27 @@ export const SearchComponent = () => {
         }}
       >
         <Box sx={{ marginTop: "20px" }}>
-          내 자소서
-          <CardList mode={"search"} />
-        </Box>
-        <Divider sx={{ marginTop: "30px" }} />
-        <Box sx={{ marginTop: "20px" }}>
-          내 공고
-          <CardList mode={"searchRecruit"} />
+          {statement.length === 0 && recruit.length === 0 ? (
+            <>검색 내용이 없습니다.</>
+          ) : (
+            <>
+              {statement.length > 0 && (
+                <>
+                  <div>내 자소서</div>
+                  <CardList cardList={statement} search={"search"} />
+                </>
+              )}
+              {statement.length > 0 && recruit.length > 0 && (
+                <Divider sx={{ marginTop: "30px" }} />
+              )}
+              {recruit.length > 0 && (
+                <Box sx={{ marginTop: "20px" }}>
+                  <div>내 공고</div>
+                  <CardList cardList={recruit} search={"searchRecruit"} />
+                </Box>
+              )}
+            </>
+          )}
         </Box>
       </Box>
     </Box>

@@ -127,7 +127,7 @@ export const RecruitItemFilterMenu = () => {
               onChange={setTitle}
               onBlur={(e) => updateTitle(e.target.value)}
             />
-            {/*url */}
+            {/* url */}
             <Tooltip
               placement="top"
               open={urlOpen}

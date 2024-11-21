@@ -12,24 +12,32 @@ import { useParams } from "react-router-dom";
 
 export function RecruitItemPage() {
   const [menus, setMenus] = useState([]);
+  const [cardList, setCardList] = useState([]);
   const [update, setUpdate] = useRecoilState(updateAtom);
+  const [selectMenu, setSelectMenu] = useState("경험정리");
   const handleUpdate = () => {
     setUpdate(!update);
   };
   const { id } = useParams();
   const mode = "recruit";
+  const fetchCount = async () => {
+    const response = await client.get(`/Card/recruit/count/${id}?mode=${mode}`);
+    setMenus(response.data);
+    console.log("갯수", response.data);
+  };
+  const fetchRecruitCard = async () => {
+    const response = await client.get(
+      `/Card/recruit/${id}?mode=${mode}&type=${selectMenu}`,
+    );
+    setCardList(response.data);
+    console.log("값", response.data);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await client.get(
-        `/Card/recruit/count/${id}?mode=${mode}`,
-      );
-      setMenus(response.data);
-      console.log("갯수", response.data);
-    };
-    fetchData();
-  }, [update]);
+    fetchCount();
+    fetchRecruitCard();
+  }, [update, selectMenu]);
   //cardList 부분
-  const [selectMenu, setSelectMenu] = useState("경험정리");
+
   return (
     <BaseComponent>
       <RecruitItemFilterMenu />
@@ -42,10 +50,9 @@ export function RecruitItemPage() {
           setSelectMenu={setSelectMenu}
         />
         <CardList
-          mode={mode}
-          selectMenu={selectMenu}
-          update={update}
           handleUpdate={handleUpdate}
+          cardList={cardList}
+          setCardList={setCardList}
         />
       </PageContent>
     </BaseComponent>

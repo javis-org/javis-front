@@ -1,8 +1,5 @@
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
-import { client } from "../../api.js";
 import { CardItem } from "../common/Card/CardItem.jsx";
-import { useParams } from "react-router-dom";
 
 const tags = [
   { tag: "최적화", type: "competency" },
@@ -38,30 +35,7 @@ const tags = [
   { tag: "소통", type: "personal" },
   { tag: "협업 능력", type: "personal" },
 ];
-export const CardList = ({ mode, side, selectMenu, update, handleUpdate }) => {
-  const [cardList, setCardList] = useState([]);
-  const fetchCard = async () => {
-    const response = await client.get(
-      `/Card/All?mode=${mode}&type=${selectMenu}`,
-    );
-    setCardList(response.data);
-    console.log("card data", response.data);
-  };
-  const { id } = useParams();
-  const fetchRecruitCard = async () => {
-    const response = await client.get(
-      `/Card/recruit/${id}?mode=${mode}&type=${selectMenu}`,
-    );
-    setCardList(response.data);
-  };
-  useEffect(() => {
-    if (mode === "statement") {
-      fetchCard();
-    } else {
-      fetchRecruitCard();
-    }
-  }, [selectMenu, update]);
-  console.log(mode);
+export const CardList = ({ side, handleUpdate, cardList = [], search }) => {
   return (
     <Box
       sx={{
@@ -77,6 +51,7 @@ export const CardList = ({ mode, side, selectMenu, update, handleUpdate }) => {
       {cardList.map((item, index) => {
         return (
           <CardItem
+            search={search}
             handleUpdate={handleUpdate}
             mode={item.mode}
             title={item.title}
@@ -85,6 +60,7 @@ export const CardList = ({ mode, side, selectMenu, update, handleUpdate }) => {
             tags={item.tags}
             key={index}
             id={item.id}
+            recruitId={item.recruit_id}
           />
         );
       })}

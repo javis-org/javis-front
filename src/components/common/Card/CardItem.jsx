@@ -3,19 +3,15 @@ import {
   Box,
   Card,
   Chip,
-  FormControl,
   IconButton,
   Menu,
   MenuItem,
-  Select,
   styled,
   Tooltip,
   Typography,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { generateSupportStatuses } from "../../../Recoil.jsx";
 import { client } from "../../../api.js";
 import { KoreanDateTime } from "../../util/KoreanDateTime.js";
 
@@ -34,9 +30,10 @@ export const CardItem = ({
   text,
   date,
   tags,
-  mode,
   id,
   handleUpdate,
+  search,
+  recruitId,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const iconButtonRef = useRef(null);
@@ -65,6 +62,11 @@ export const CardItem = ({
   };
 
   const handleClickCard = (id) => {
+    {
+      search === "search"
+        ? navi("/statement")
+        : navi(`/recruits-page/${recruitId}`);
+    }
     navi(`/statement/editor/${id}`);
   };
 
@@ -92,15 +94,14 @@ export const CardItem = ({
   const truncatedText =
     textOnly.length > 200 ? text.substring(0, 50) + "..." : textOnly;
 
-  const [status, setStatus] = useState("지원 준비");
-
-  // 상태 변경 핸들러
-  const handleStatusChange = (event) => {
-    event.stopPropagation(); // 이벤트 전파 중지
-    setStatus(event.target.value);
+  const handleTopClick = (e) => {
+    e.stopPropagation();
+    {
+      search === "search"
+        ? navi("/statement")
+        : navi(`/recruits-page/${recruitId}`);
+    }
   };
-  const supportStatus = useRecoilValue(generateSupportStatuses);
-  console.log("mode체킈:", mode);
   return (
     <>
       <CustomCard
@@ -116,7 +117,7 @@ export const CardItem = ({
         }}
       >
         {/* 상단에 검정색 배경과 텍스트 배치 */}
-        {mode === "search" && (
+        {search && (
           <Box
             sx={{
               position: "absolute",
@@ -127,7 +128,7 @@ export const CardItem = ({
               backgroundColor: "black",
               borderTopLeftRadius: "17px",
               borderTopRightRadius: "17px",
-              display: mode ? "flex" : "none",
+              display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "white",
@@ -135,8 +136,9 @@ export const CardItem = ({
               fontWeight: "bold",
               padding: "5px 0",
             }}
+            onClick={handleTopClick}
           >
-            {mode === "search" ? "내 자소서 / 경험정리" : "서류마감 D-DAY"}
+            {search === "search" ? "내 자소서 / 경험정리" : "서류마감 D-DAY"}
           </Box>
         )}
 
@@ -148,7 +150,8 @@ export const CardItem = ({
             position: "absolute",
             top: 10,
             right: 10,
-            display: mode === "search" && "none",
+            display:
+              (search === "search" || search === "searchRecruit") && "none",
           }}
         >
           <MoreVertIcon />
@@ -169,122 +172,70 @@ export const CardItem = ({
           <MenuItem onClick={cardDelete}>🗑️삭제</MenuItem>
         </Menu>
 
-        {mode === "searchRecruit" ? (
-          <Box sx={{ marginTop: "35px" }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              {/* 좌측에 Chip 배치 */}
+        <Tooltip title={<TooltipText />}>
+          <Box
+            sx={{
+              fontSize: "12px",
+              color: "gray",
+              marginTop:
+                search === "search" || search === "searchRecruit"
+                  ? "35px"
+                  : "none",
+            }}
+          >
+            {KoreanDateTime(date)}
+          </Box>
+          <Box
+            sx={{
+              marginTop: "10px",
+              fontWeight: "700",
+              fontSize: "18px",
+              flexWrap: "nowrap",
+              display: "flex",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {truncatedTitle}
+          </Box>
+          <Box
+            sx={{
+              marginTop: "10px",
+              fontWeight: "400",
+              fontSize: "14px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {truncatedText}
+          </Box>
+          {/* 태그 한 줄로 */}
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "nowrap",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              marginTop: "10px",
+            }}
+          >
+            {tags.map((tagObj, index) => (
               <Chip
-                label="1차 면접 D-2"
-                color="primary"
+                key={index}
+                label={tagObj.tag}
                 sx={{
-                  backgroundColor: "#000", // Black background for the chip
-                  color: "#00FF7F", // Light green text color
-                  fontWeight: "bold",
+                  backgroundColor:
+                    tagObj.type === "competency" ? "#e3f2ff" : "#f6e2ff",
+                  color: tagObj.type === "competency" ? "#57788c" : "#b659b9",
+                  marginRight: "5px",
+                  marginBottom: "10px",
                 }}
               />
-
-              {/* 우측에 Select 배치 */}
-              <FormControl sx={{ minWidth: 120 }}>
-                <Select
-                  variant="outlined"
-                  value={status}
-                  onChange={handleStatusChange}
-                  onClick={(event) => event.stopPropagation()} // Select 클릭 시 전파 방지
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                  sx={{
-                    ".MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                    minWidth: "120px", // Select 컴포넌트의 최소 너비 설정
-                  }}
-                >
-                  {supportStatus.map((status, index) => (
-                    <MenuItem value={status} key={index}>
-                      {status}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-
-            {/* 공고 제목을 별도의 줄로 배치 */}
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: "bold", marginTop: "10px" }}
-            >
-              공고 제목
-            </Typography>
+            ))}
           </Box>
-        ) : (
-          <Tooltip title={<TooltipText />}>
-            <Box
-              sx={{
-                fontSize: "12px",
-                color: "gray",
-                marginTop: mode === "search" ? "35px" : "none",
-              }}
-            >
-              {KoreanDateTime(date)}
-            </Box>
-            <Box
-              sx={{
-                marginTop: "10px",
-                fontWeight: "700",
-                fontSize: "18px",
-                flexWrap: "nowrap",
-                display: "flex",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {truncatedTitle}
-            </Box>
-            <Box
-              sx={{
-                marginTop: "10px",
-                fontWeight: "400",
-                fontSize: "14px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {truncatedText}
-            </Box>
-            {/* 태그 한 줄로 */}
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "nowrap",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                marginTop: "10px",
-              }}
-            >
-              {tags.map((tagObj, index) => (
-                <Chip
-                  key={index}
-                  label={tagObj.tag}
-                  sx={{
-                    backgroundColor:
-                      tagObj.type === "competency" ? "#e3f2ff" : "#f6e2ff",
-                    color: tagObj.type === "competency" ? "#57788c" : "#b659b9",
-                    marginRight: "5px",
-                    marginBottom: "10px",
-                  }}
-                />
-              ))}
-            </Box>
-          </Tooltip>
-        )}
+        </Tooltip>
       </CustomCard>
     </>
   );
