@@ -1,7 +1,7 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Typography } from "@mui/material";
 import React from "react";
 
-export const InfoTitle = ({ title, state = false, setState }) => {
+export const InfoTitle = ({ title, state = false, setState , componentId = 0 , handleRemove}) => {
   return (
     <Box
       sx={{
@@ -14,21 +14,40 @@ export const InfoTitle = ({ title, state = false, setState }) => {
       <Typography variant="h5" component="div">
         {title}
       </Typography>
-      <Button
-        sx={{
-          position: "relative",
-          right: 0,
-          color: "white", // 텍스트 색상
-          background: "black",
-          "&:hover": {
-            backgroundColor: "gray", // 호버 시 연한 회색 배경
-          },
-        }}
-        variant="outlined"
-        onClick={setState}
-      >
-        {state ? "수정" : "완료"}
-      </Button>
+      <div>
+        <Button
+          sx={{
+            position: "relative",
+            right: 0,
+            color: "white", // 텍스트 색상
+            background: "black",
+            "&:hover": {
+              backgroundColor: "gray", // 호버 시 연한 회색 배경
+            },
+          }}
+          variant="outlined"
+          onClick={setState}
+          >
+          {state ? "수정" : "완료"}
+        </Button>
+
+        {/* 2번쨰칸부터는 제거하기버튼 생성 */}
+        {componentId >= 1 ? <Button
+          sx={{
+            position: "relative",
+            right: 0,
+            left: 3,
+            color: "white", // 텍스트 색상
+            background: "black",
+            "&:hover": {
+              backgroundColor: "gray", // 호버 시 연한 회색 배경
+            },
+          }}
+          onClick={handleRemove}
+          variant="outlined"
+          >제거</Button> : <></>
+        }
+      </div>
     </Box>
   );
 };

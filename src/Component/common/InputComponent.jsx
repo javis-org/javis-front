@@ -24,11 +24,11 @@ export const ServiceStatusButtonGroup = ({
 };
 
 export const AutoCompleteInput = ({ options, value, setValue, disabled }) => {
+  
   return (
     <Autocomplete
-      value={value}
-      onChange={(event, newValue) => setValue(newValue)} // newValue로 값을 업데이트
-      onBlur={(event) => setValue(event.target.value)} // 입력된 값으로 업데이트
+      value={value || ""}
+      onChange={(event, newValue) => setValue(newValue || "")} // newValue로 값을 업데이트
       freeSolo={true}
       options={options}
       renderInput={(params) => (

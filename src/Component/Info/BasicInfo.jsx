@@ -1,5 +1,5 @@
 import { FormLabel, Grid, styled, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InfoTitle } from "./InfoTitle.jsx";
 
 const CustomLabel = styled(FormLabel)`
@@ -16,7 +16,29 @@ export const BasicInfo = () => {
 
   const changeState = () => {
     setState(!state);
+
+    //수정완료시 데이터 저장
+    if(!state){
+      const data={
+        koreanName:koreanName,
+        englishName:englishName,
+        chineseName:chineseName
+      }
+      localStorage.setItem("basicInfo",JSON.stringify(data));
+    }
   };
+
+  //렌더링시 저장된값 불러오기
+  useEffect(() => {
+    try{
+      const savedData = JSON.parse(localStorage.getItem(`basicInfo`));
+      setKoreanName(savedData.koreanName);
+      setEnglishName(savedData.englishName);
+      setChineseName(savedData.chineseName);
+    }catch(e){
+
+    }
+  },[]);
 
   return (
     <>
@@ -31,7 +53,9 @@ export const BasicInfo = () => {
             fullWidth
             margin="normal"
             value={koreanName} // 상태 변수로 관리
-            onChange={(e) => setKoreanName(e.target.value)}
+            onChange={(e) => {
+              setKoreanName(e.target.value)
+            }}
             disabled={state}
           />
         </Grid>
@@ -46,7 +70,9 @@ export const BasicInfo = () => {
             fullWidth
             margin="normal"
             value={englishName} // 상태 변수로 관리
-            onChange={(e) => setEnglishName(e.target.value)}
+            onChange={(e) => {
+              setEnglishName(e.target.value)
+            }}
             disabled={state}
           />
         </Grid>
@@ -62,7 +88,9 @@ export const BasicInfo = () => {
             fullWidth
             margin="normal"
             value={chineseName} // 상태 변수로 관리
-            onChange={(e) => setChineseName(e.target.value)}
+            onChange={(e) => {
+              setChineseName(e.target.value)            
+            }}
             disabled={state}
           />
         </Grid>
