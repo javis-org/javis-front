@@ -13,6 +13,8 @@ import ChatIcon from "@mui/icons-material/Chat";
 import { CommentList } from "./CommentList.jsx";
 import { useParams } from "react-router-dom";
 import { client } from "../../api.js";
+import { useRecoilState } from "recoil";
+import { updateAtom } from "../../Recoil.jsx";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -25,6 +27,7 @@ export const EditorPage = () => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [update, setUpdate] = useRecoilState(updateAtom);
   const quilRef = useRef();
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +41,7 @@ export const EditorPage = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [update]);
 
   const fetchData = async () => {
     try {

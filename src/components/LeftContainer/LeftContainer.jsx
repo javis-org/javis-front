@@ -1,52 +1,31 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  IconButton,
-  Typography,
-} from "@mui/material";
-import IntroductionList from "./IntroductionList.jsx";
+import React, { useState } from "react";
+import { Box, Button, ButtonGroup, IconButton } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { isExpandValue, memberIdValue } from "../../Recoil.jsx";
-import { Add } from "@mui/icons-material";
+import {
+  isExpandValue,
+  memberIdValue,
+  sideSelected,
+  updateAtom,
+} from "../../Recoil.jsx";
 import SearchIcon from "@mui/icons-material/Search.js";
 import MenuIcon from "@mui/icons-material/Menu.js";
 import ModalComponent from "../common/ModalComponent.jsx";
 import { SearchComponent } from "./SearchComponent.jsx";
-import { CardList } from "../Statement/CardList.jsx";
+import { LeftStatement } from "./LeftStatement.jsx";
+import { LeftRecruit } from "./LeftRecruit.jsx";
 
 export const LeftContainer = () => {
-  const [data, setData] = useState([]);
   const memberId = useRecoilValue(memberIdValue);
   const [isExpanded, setIsExpanded] = useRecoilState(isExpandValue);
   const [openSearch, setOpenSearch] = useState(false);
-  const [selected, setSelected] = useState("statement");
-
+  const [selected, setSelected] = useRecoilState(sideSelected);
+  const [update, setUpdate] = useRecoilState(updateAtom);
+  const handleUpdate = () => {
+    setUpdate(!update);
+  };
   const handleExpandToggle = () => {
     setIsExpanded(!isExpanded);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // const response = await client.get(`jobPostings?memberId=${memberId}`);
-      // setData(response.data);
-    };
-    fetchData();
-  }, [memberId]);
-
-  const handleAddCompany = () => {
-    setData([
-      ...data,
-      {
-        id: data.length + 1,
-        title: "이름없음",
-        description: null,
-        isModified: true,
-      },
-    ]);
-  };
-
   return (
     <Box
       sx={{
@@ -187,94 +166,9 @@ export const LeftContainer = () => {
 
         {isExpanded &&
           (selected === "statement" ? (
-            <>
-              <Typography
-                variant="h6"
-                sx={{
-                  marginTop: "30px",
-                  marginBottom: "10px",
-                  width: "100%",
-                  textAlign: "center",
-                  color: "white",
-                }}
-              >
-                💼 내 자소서
-              </Typography>
-              <Box
-                className="side"
-                sx={{
-                  flexGrow: 1,
-                  width: "100%",
-                  overflowY: "auto",
-                  padding: "0 20px",
-                  paddingRight: "10px",
-                  "&::-webkit-scrollbar": {
-                    width: "8px",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                    backgroundColor: "#888",
-                    borderRadius: "10px",
-                  },
-                  "&::-webkit-scrollbar-thumb:hover": {
-                    backgroundColor: "#555",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                    backgroundColor: "#f1f1f1",
-                  },
-                }}
-              >
-                <CardList side={true} />
-              </Box>
-            </>
+            <LeftStatement handleUpdate={handleUpdate} />
           ) : (
-            <>
-              <Typography
-                variant="h6"
-                sx={{
-                  marginTop: "30px",
-                  marginBottom: "10px",
-                  width: "100%",
-                  textAlign: "center",
-                  color: "white",
-                }}
-              >
-                💼 내 공고
-              </Typography>
-              <Box
-                className="side"
-                sx={{
-                  flexGrow: 1,
-                  width: "100%",
-                  overflowX: "hidden",
-                  overflowY: "auto",
-                  padding: "0 10px",
-                  paddingRight: "10px",
-                  "&::-webkit-scrollbar": {
-                    width: "8px",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                    backgroundColor: "#888",
-                    borderRadius: "10px",
-                  },
-                  "&::-webkit-scrollbar-thumb:hover": {
-                    backgroundColor: "#555",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                    backgroundColor: "#f1f1f1",
-                  },
-                }}
-              >
-                <Button
-                  onClick={handleAddCompany}
-                  sx={{ width: "100%", marginBottom: "10px", color: "white" }}
-                >
-                  <Add fontSize="small" /> 추가
-                </Button>
-                {data.map((item, index) => (
-                  <IntroductionList item={item} key={item.id} index={index} />
-                ))}
-              </Box>
-            </>
+            <LeftRecruit handleUpdate={handleUpdate} />
           ))}
       </Box>
       <ModalComponent

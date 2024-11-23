@@ -13,7 +13,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
 import { generateSupportStatuses, updateAtom } from "../../Recoil.jsx";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { TransformDeadline } from "./RecruitItemPage/TransformDeadline.jsx";
+import { TransformDeadline } from "../util/TransformDeadline.js";
 import { client } from "../../api.js";
 
 export const RecruitCard = ({

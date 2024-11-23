@@ -1,40 +1,17 @@
-import { Box, Menu, MenuItem } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState } from "react";
+import { Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-export const IntroductionItem = ({ section }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(null);
+export const IntroductionItem = ({ card, handleUpdate }) => {
+  const navi = useNavigate();
 
-  const open = Boolean(anchorEl);
-
-  const handleMoreVertClick = (event, index) => {
-    event.stopPropagation();
-    setAnchorEl(event.currentTarget);
-    setCurrentIndex(index);
+  console.log("왼쪽:", card);
+  const handleMove = (id) => {
+    navi(`/statement/editor/${id}`);
+    handleUpdate();
   };
-
-  const handleClose = (event) => {
-    event.stopPropagation();
-    setAnchorEl(null);
-  };
-
-  const handleDelete = (event) => {
-    event.stopPropagation();
-    console.log("삭제 버튼 클릭됨");
-    handleClose();
-  };
-
-  const handleChangeName = (event) => {
-    event.stopPropagation();
-  };
-
-  // Check if section and section.items are valid
-  const items = section?.items || [];
-
   return (
     <>
-      {items.map((item, itemIndex) => (
+      {card.map((item, itemIndex) => (
         <Box
           key={itemIndex}
           sx={{
@@ -58,38 +35,10 @@ export const IntroductionItem = ({ section }) => {
               opacity: 1,
             },
           }}
+          onClick={() => handleMove(item.id)}
         >
           <Box sx={{ display: "inline-block", mr: "5px" }}>📜</Box>
           <Box sx={{ display: "inline-block" }}>{item.title || "No Title"}</Box>
-          <Box
-            className="more-vert-icon"
-            sx={{
-              ml: "auto",
-              visibility: "hidden", // 기본적으로 숨김
-              opacity: 0, // 기본적으로 숨김
-              transition: "visibility 0s, opacity 0.3s linear", // 부드러운 전환
-            }}
-          >
-            <MoreVertIcon
-              onClick={(event) => handleMoreVertClick(event, itemIndex)}
-            />
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl) && currentIndex === itemIndex}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-            >
-              <MenuItem onClick={handleChangeName}>이름 변경</MenuItem>
-              <MenuItem onClick={handleDelete}>삭제</MenuItem>
-            </Menu>
-          </Box>
         </Box>
       ))}
     </>

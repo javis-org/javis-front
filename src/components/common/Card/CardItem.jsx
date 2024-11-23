@@ -14,6 +14,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
 import { client } from "../../../api.js";
 import { KoreanDateTime } from "../../util/KoreanDateTime.js";
+import { TransformDeadline } from "../../util/TransformDeadline.js";
 
 const CustomCard = styled(Card)`
   min-height: 80px;
@@ -62,11 +63,12 @@ export const CardItem = ({
   };
 
   const handleClickCard = (id) => {
-    {
-      search === "search"
-        ? navi("/statement")
-        : navi(`/recruits-page/${recruitId}`);
+    if (search === "search") {
+      navi("/statement");
+    } else if (search === "searchRecruit") {
+      navi(`/recruits-page/${recruitId}`);
     }
+
     navi(`/statement/editor/${id}`);
   };
 
@@ -102,11 +104,13 @@ export const CardItem = ({
         : navi(`/recruits-page/${recruitId}`);
     }
   };
+  console.log(date);
   return (
     <>
       <CustomCard
         onClick={() => {
           handleClickCard(id);
+          handleUpdate();
         }}
         sx={{
           minHeight: "80px",
@@ -138,7 +142,9 @@ export const CardItem = ({
             }}
             onClick={handleTopClick}
           >
-            {search === "search" ? "내 자소서 / 경험정리" : "서류마감 D-DAY"}
+            {search === "search"
+              ? "내 자소서 / 경험정리"
+              : `마감 ${TransformDeadline(date)}`}
           </Box>
         )}
 

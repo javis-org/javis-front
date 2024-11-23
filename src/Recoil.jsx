@@ -17,6 +17,15 @@ export const updateAtom = atom({
   key: "update",
   default: false,
 });
+export const sideSelected = atom({
+  key: "sideSelected",
+  default: "statement",
+});
+export const sideSelectMenu = atom({
+  key: "sideSelectMenu",
+  default: "경험정리",
+});
+
 export const selfIntroductionList = selector({
   key: "selfIntroductionList",
   get: async ({ get }) => {
@@ -38,8 +47,8 @@ export const generatePeriods = atom({
   default: (() => {
     const periods = [];
     for (let year = 2024; year <= currentYear + 1; year++) {
-      periods.push({ label: `${year} 상반기`, value: `${year}-H1` });
-      periods.push({ label: `${year} 하반기`, value: `${year}-H2` });
+      periods.push({ label: `${year} 상반기`, value: `${year} 상반기` });
+      periods.push({ label: `${year} 하반기`, value: `${year} 하반기` });
     }
     return periods.reverse();
   })(),
