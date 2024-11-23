@@ -1,4 +1,8 @@
 import { Box, Button, styled } from "@mui/material";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+import { mapMenuToQuery } from "../util/mapMenuToQuery.js";
+import { mapQueryToMenu } from "../util/mapQueryToMenu.js";
 
 const CountBox = styled(Box)(({ isSide, isSelected }) => ({
   width: isSide ? "24px" : "24px", // 정사각형 너비
@@ -21,8 +25,25 @@ const CustomButton = styled(Button)(({ isSelected, isSide }) => ({
     background: "none",
   },
 }));
+const url = ["experience-summary", "personal-statement", "interview-questions"];
 const sideMenu = ["경험", "자소서", "면접"];
 export const TypeMenu = ({ menus, selectMenu, setSelectMenu, isSide }) => {
+  const navigate = useNavigate();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => {
+    const menuFromQuery = searchParams.get("menu");
+    console.log("선택한 메뉴", selectMenu);
+    if (menuFromQuery) {
+      const selMenu = mapQueryToMenu(menuFromQuery);
+      setSelectMenu(selMenu);
+    }
+  }, []);
+
+  const handleMenuClick = (menuType, index) => {
+    setSelectMenu(menuType); // 상태 업데이트
+    !isSide && navigate(`?menu=${mapMenuToQuery(menuType)}`); // URL 변경
+  };
   return (
     <Box
       sx={{
@@ -35,7 +56,7 @@ export const TypeMenu = ({ menus, selectMenu, setSelectMenu, isSide }) => {
           <CustomButton
             side={isSide}
             key={index}
-            onClick={() => setSelectMenu(menu.type)}
+            onClick={() => handleMenuClick(menu.type, index)}
             isSelected={selectMenu === menu.type}
           >
             {isSide ? sideMenu[index] : menu.type}

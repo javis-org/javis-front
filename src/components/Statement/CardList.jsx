@@ -35,6 +35,7 @@ const tags = [
   { tag: "소통", type: "personal" },
   { tag: "협업 능력", type: "personal" },
 ];
+
 export const CardList = ({ side, handleUpdate, cardList = [], search }) => {
   return (
     <Box
@@ -60,6 +61,8 @@ export const CardList = ({ side, handleUpdate, cardList = [], search }) => {
             tags={item.tags}
             key={index}
             id={item.id}
+            side={side}
+            type={item.type}
             recruitId={item.recruit_id}
           />
         );

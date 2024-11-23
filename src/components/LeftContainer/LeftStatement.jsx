@@ -79,7 +79,7 @@ export const LeftStatement = ({ handleUpdate }) => {
           },
         }}
       >
-        <CardList side={true} handleUpdate={handleUpdate} cardList={data} />
+        <CardList handleUpdate={handleUpdate} cardList={data} side={true} />
       </Box>
     </>
   );

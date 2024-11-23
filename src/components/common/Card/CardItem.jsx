@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { client } from "../../../api.js";
 import { KoreanDateTime } from "../../util/KoreanDateTime.js";
 import { TransformDeadline } from "../../util/TransformDeadline.js";
+import { mapMenuToQuery } from "../../util/mapMenuToQuery.js";
 
 const CustomCard = styled(Card)`
   min-height: 80px;
@@ -33,7 +34,9 @@ export const CardItem = ({
   tags,
   id,
   handleUpdate,
+  side,
   search,
+  type,
   recruitId,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -61,12 +64,12 @@ export const CardItem = ({
     event.stopPropagation();
     setAnchorEl(null);
   };
-
+  // 검색 카드용
   const handleClickCard = (id) => {
-    if (search === "search") {
-      navi("/statement");
+    if (search === "search" || side) {
+      navi(`/statement?menu=${mapMenuToQuery(type)}`);
     } else if (search === "searchRecruit") {
-      navi(`/recruits-page/${recruitId}`);
+      navi(`/recruits-page/${recruitId}?menu=${mapMenuToQuery(type)}`);
     }
 
     navi(`/statement/editor/${id}`);

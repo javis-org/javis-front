@@ -6,6 +6,7 @@ export const IntroductionItem = ({ card, handleUpdate }) => {
 
   console.log("왼쪽:", card);
   const handleMove = (id) => {
+    navi(`/recruits-page`);
     navi(`/statement/editor/${id}`);
     handleUpdate();
   };
