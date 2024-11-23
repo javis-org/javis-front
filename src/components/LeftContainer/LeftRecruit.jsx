@@ -53,6 +53,7 @@ export const LeftRecruit = ({ handleUpdate }) => {
       >
         {data.map((item, index) => (
           <IntroductionList
+            recruitId={item.id}
             item={item}
             key={item.id}
             index={index}

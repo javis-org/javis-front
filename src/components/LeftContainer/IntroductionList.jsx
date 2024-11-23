@@ -14,7 +14,7 @@ import { memo, useState } from "react";
 import { IntroductionItem } from "./IntroductionItem.jsx";
 import { useNavigate } from "react-router-dom";
 
-const IntroductionList = ({ item, index, handleUpdate }) => {
+const IntroductionList = ({ item, index, handleUpdate, recruitId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [isModiTitle] = useState(!!item.isModified);
@@ -22,6 +22,7 @@ const IntroductionList = ({ item, index, handleUpdate }) => {
   const navi = useNavigate();
   const handleTitleClick = (e) => {
     e.stopPropagation();
+    navi(`/recruits-page`);
     navi(`/recruits-page/${item.id}`);
     handleUpdate();
   };
@@ -66,7 +67,11 @@ const IntroductionList = ({ item, index, handleUpdate }) => {
               />
             </AccordionSummary>
             <Divider />
-            <IntroductionItem card={item.cards} handleUpdate={handleUpdate} />
+            <IntroductionItem
+              card={item.cards}
+              handleUpdate={handleUpdate}
+              recruitId={recruitId}
+            />
 
             <Box
               sx={{

@@ -1,12 +1,13 @@
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { mapMenuToQuery } from "../util/mapMenuToQuery.js";
 
-export const IntroductionItem = ({ card, handleUpdate }) => {
+export const IntroductionItem = ({ card, handleUpdate, recruitId }) => {
   const navi = useNavigate();
 
   console.log("왼쪽:", card);
-  const handleMove = (id) => {
-    navi(`/recruits-page`);
+  const handleMove = (id, type) => {
+    navi(`/recruits-page/${recruitId}?menu=${mapMenuToQuery(type)}`);
     navi(`/statement/editor/${id}`);
     handleUpdate();
   };
@@ -36,7 +37,7 @@ export const IntroductionItem = ({ card, handleUpdate }) => {
               opacity: 1,
             },
           }}
-          onClick={() => handleMove(item.id)}
+          onClick={() => handleMove(item.id, item.type)}
         >
           <Box sx={{ display: "inline-block", mr: "5px" }}>📜</Box>
           <Box sx={{ display: "inline-block" }}>{item.title || "No Title"}</Box>
