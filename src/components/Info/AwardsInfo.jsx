@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Grid, TextField, Typography, IconButton, Button } from "@mui/material";
 import { InfoTitle } from "./InfoTitle.jsx";
 import { DatePickerInput } from "../common/InputComponent.jsx";
 import { Delete, Add } from "@mui/icons-material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import styled from "styled-components";
 import { client } from "../../api.js";
@@ -21,7 +21,7 @@ const CustomButton = styled(Button)`
   }
 `;
 
-const AwardForm = ({ onDelete, isFirst, state, awardName, awardingInstitution, awardDate, remarks, awardDetails, setAwardName, setAwardingInstitution, setAwardDate, setRemarks, setAwardDetails }) => {
+const AwardForm = ({ formData, onUpdate, onDelete, isFirst, state }) => {
   return (
     <Grid
       container
@@ -52,8 +52,8 @@ const AwardForm = ({ onDelete, isFirst, state, awardName, awardingInstitution, a
           fullWidth
           placeholder="수상명"
           margin="normal"
-          value={awardName}
-          onChange={(e) => setAwardName(e.target.value)}
+          value={formData.awardName}
+          onChange={(e) => onUpdate("awardName", e.target.value)}
           disabled={state}
         />
       </Grid>
@@ -69,8 +69,8 @@ const AwardForm = ({ onDelete, isFirst, state, awardName, awardingInstitution, a
           fullWidth
           placeholder="수여 기관"
           margin="normal"
-          value={awardingInstitution}
-          onChange={(e) => setAwardingInstitution(e.target.value)}
+          value={formData.awardingInstitution}
+          onChange={(e) => onUpdate("awardingInstitution", e.target.value)}
           disabled={state}
         />
       </Grid>
@@ -82,10 +82,8 @@ const AwardForm = ({ onDelete, isFirst, state, awardName, awardingInstitution, a
       <Grid item xs={12} sm={3}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePickerInput
-            placeholder="수상 일자"
-            value={awardDate}
-            onChange={setAwardDate}
-            fullWidth
+            value={formData.awardDate}
+            onChange={(date) => onUpdate("awardDate", date)}
             disabled={state}
           />
         </LocalizationProvider>
@@ -102,8 +100,8 @@ const AwardForm = ({ onDelete, isFirst, state, awardName, awardingInstitution, a
           fullWidth
           placeholder="비고"
           margin="normal"
-          value={remarks}
-          onChange={(e) => setRemarks(e.target.value)}
+          value={formData.remarks}
+          onChange={(e) => onUpdate("remarks", e.target.value)}
           disabled={state}
         />
       </Grid>
@@ -119,8 +117,8 @@ const AwardForm = ({ onDelete, isFirst, state, awardName, awardingInstitution, a
           margin="normal"
           multiline
           rows={4}
-          value={awardDetails}
-          onChange={(e) => setAwardDetails(e.target.value)}
+          value={formData.awardDetails}
+          onChange={(e) => onUpdate("awardDetails", e.target.value)}
           disabled={state}
         />
       </Grid>
@@ -131,7 +129,15 @@ const AwardForm = ({ onDelete, isFirst, state, awardName, awardingInstitution, a
 export const AwardsInfo = () => {
   const [state, setState] = useState(true);
   const { showAlert } = useAlert();
-  const [forms, setForms] = useState([{ id: 0, awardName: "", awardingInstitution: "", awardDate: dayjs(null), remarks: "", awardDetails: "" }]);
+  const [forms, setForms] = useState([
+    { id: 0, awardName: "", awardingInstitution: "", awardDate: null, remarks: "", awardDetails: "" }
+  ]);
+
+  const updateForm = (id, field, value) => {
+    setForms(forms.map(form => 
+      form.id === id ? { ...form, [field]: value } : form
+    ));
+  };
 
   const changeState = () => {
     if (state) {
@@ -144,8 +150,9 @@ export const AwardsInfo = () => {
         remarks: form.remarks,
         awardDetails: form.awardDetails
       }));
+      console.log(awardsData);
 
-      client.put("/AwardsInfo", awardsData)
+      client.put("/AwardInfo", awardsData)
         .then(() => {
           showAlert("수상 정보가 성공적으로 저장되었습니다.");
           setState(true);
@@ -158,12 +165,20 @@ export const AwardsInfo = () => {
   };
 
   const addForm = () => {
-    const newId = forms.length > 0 ? Math.max(...forms.map((f) => f.id)) + 1 : 0;
-    setForms([...forms, { id: newId, awardName: "", awardingInstitution: "", awardDate: dayjs(null), remarks: "", awardDetails: "" }]);
+    const newId = forms.length > 0 ? Math.max(...forms.map(f => f.id)) + 1 : 0;
+    setForms([...forms, { 
+      id: newId, 
+      awardName: "", 
+      awardingInstitution: "", 
+      awardDate: null, 
+      remarks: "", 
+      awardDetails: "" 
+    }]);
   };
 
-  const deleteForm = (id) => {
-    setForms(forms.filter((form) => form.id !== id));
+  const deleteForm = async (id) => {
+    setForms(forms.filter(form => form.id !== id));
+    await client.delete(`/AwardInfo/${id}`);
   };
 
   return (
@@ -172,19 +187,11 @@ export const AwardsInfo = () => {
       {forms.map((form, index) => (
         <AwardForm
           key={form.id}
+          formData={form}
+          onUpdate={(field, value) => updateForm(form.id, field, value)}
           isFirst={index === 0}
           onDelete={() => deleteForm(form.id)}
           state={state}
-          awardName={form.awardName}
-          awardingInstitution={form.awardingInstitution}
-          awardDate={form.awardDate}
-          remarks={form.remarks}
-          awardDetails={form.awardDetails}
-          setAwardName={(value) => setForms(forms.map(f => f.id === form.id ? { ...f, awardName: value } : f))}
-          setAwardingInstitution={(value) => setForms(forms.map(f => f.id === form.id ? { ...f, awardingInstitution: value } : f))}
-          setAwardDate={(value) => setForms(forms.map(f => f.id === form.id ? { ...f, awardDate: value } : f))}
-          setRemarks={(value) => setForms(forms.map(f => f.id === form.id ? { ...f, remarks: value } : f))}
-          setAwardDetails={(value) => setForms(forms.map(f => f.id === form.id ? { ...f, awardDetails: value } : f))}
         />
       ))}
       {!state && (
