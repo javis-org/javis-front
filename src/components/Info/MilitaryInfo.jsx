@@ -75,8 +75,8 @@ export const MilitaryInfo = () => {
       militaryType,
       militaryClasses,
       militaryRanks,
-      startDate: startDate.isValid() ? startDate.toISOString() : null,
-      endDate: endDate.isValid() ? endDate.toISOString() : null,
+      startDate: startDate.isValid() ? startDate.toISOString() : "",
+      endDate: endDate.isValid() ? endDate.toISOString() : "",
       retireMilitary,
     };
 

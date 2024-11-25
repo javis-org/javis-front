@@ -29,8 +29,8 @@ export const AcademicInformation = () => {
   const handleSave = async () => {
     const academicData = {
       schoolName,
-      studyStartDate: studyStartDate.isValid() ? studyStartDate.toISOString() : null,
-      studyEndDate: studyEndDate.isValid() ? studyEndDate.toISOString() : null,
+      studyStartDate: studyStartDate.isValid() ? studyStartDate.toISOString() : "",
+      studyEndDate: studyEndDate.isValid() ? studyEndDate.toISOString() : "",
       graduationStatus,
       totalCredits,
       majorCredits,

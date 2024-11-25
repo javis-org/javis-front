@@ -27,7 +27,7 @@ export const InfoTitle = ({ title, state = false, setState }) => {
         variant="outlined"
         onClick={setState}
       >
-        {state ? "수정" : "완료"}
+        {state ? "수정" : "저장"}
       </Button>
     </Box>
   );
