@@ -5,13 +5,15 @@ import { DatePickerInput } from "../common/InputComponent.jsx";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { client } from "../../api.js";
+import { useAlert } from "./InfoPage";
 
 export const AcademicInformation = () => {
   // 완료 버튼 상태
   const [state, setState] = useState(true);
-  const changeState = () => {
-    setState(!state);
-  };
+  const { showAlert } = useAlert();
+
+  const userId = "testUser"; // TODO: 실제 사용자 ID로 변경 필요
 
   // 각 필드에 대한 상태 변수 추가
   const [schoolName, setSchoolName] = useState("");
@@ -23,6 +25,37 @@ export const AcademicInformation = () => {
   const [acquiredCredits, setAcquiredCredits] = useState("");
   const [acquiredMajorCredits, setAcquiredMajorCredits] = useState("");
   const [remarks, setRemarks] = useState("");
+
+  const handleSave = async () => {
+    const academicData = {
+      schoolName,
+      studyStartDate: studyStartDate.isValid() ? studyStartDate.toISOString() : null,
+      studyEndDate: studyEndDate.isValid() ? studyEndDate.toISOString() : null,
+      graduationStatus,
+      totalCredits,
+      majorCredits,
+      acquiredCredits,
+      acquiredMajorCredits,
+      remarks,
+    };
+
+    try {
+      await client.put(`/AcademicInfo`, academicData);
+      showAlert("학적 정보가 성공적으로 저장되었습니다.");
+      setState(true);
+    } catch (error) {
+      console.error("Error saving academic info:", error);
+      showAlert("학적 정보 저장에 실패했습니다.", "error");
+    }
+  };
+
+  const changeState = () => {
+    if (state) {
+      setState(false);
+    } else {
+      handleSave();
+    }
+  };
 
   return (
     <>
@@ -149,10 +182,10 @@ export const AcademicInformation = () => {
           <Grid item xs={12} sm={1} />
 
           {/* 비고 */}
-          <Grid item xs={12} sm={2}>
+          <Grid item xs={12} sm={12}>
             <Typography>비고</Typography>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={12}>
             <TextField
               fullWidth
               placeholder="비고"
@@ -160,6 +193,8 @@ export const AcademicInformation = () => {
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
               disabled={state}
+              multiline
+              rows={4}
             />
           </Grid>
         </Grid>

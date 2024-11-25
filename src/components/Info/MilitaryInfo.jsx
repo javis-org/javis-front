@@ -1,7 +1,7 @@
+import { Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Grid, TextField, Typography } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"; // dayjs 어댑터 사용
 import dayjs from "dayjs";
 import {
   AutoCompleteInput,
@@ -9,44 +9,94 @@ import {
   ServiceStatusButtonGroup,
 } from "../common/InputComponent.jsx";
 import { InfoTitle } from "./InfoTitle.jsx";
+import { client } from "../../api.js";
+import { useAlert } from "./InfoPage";
 
 export const MilitaryInfo = () => {
-  //완료 버튼
   const [state, setState] = useState(true);
-  const changeState = () => {
-    setState(!state);
-  };
+  const { showAlert } = useAlert();
+
   // 병역 구분
   const [serviceStatus, setServiceStatus] = useState();
   const militaryStatusOptions = ["비대상", "군필", "미필", "면제", "복무중"];
-  console.log(serviceStatus);
 
-  //군별
-  const [militaryType, setMilitaryType] = useState();
-  const militaryBranches = ["육군", "해군", "공군", "해병대"];
-  console.log(militaryType);
+  // 군별
+  const [militaryType, setMilitaryType] = useState("");
+  const militaryTypeOptions = ["육군", "해군", "공군", "해병", "의경", "공익", "기타"];
 
-  //병과
-  const [militaryClasses, setMilitaryClasses] = useState();
-  console.log(militaryClasses);
+  // 군별 계급
+  const [militaryRanks, setMilitaryRanks] = useState("");
+  const militaryRanksOptions = [
+    "이병",
+    "일병",
+    "상병",
+    "병장",
+    "하사",
+    "중사",
+    "상사",
+    "원사",
+    "준위",
+    "소위",
+    "중위",
+    "대위",
+    "소령",
+    "중령",
+    "대령",
+  ];
 
-  //계급
-  const [militaryRanks, setMilitaryRanks] = useState();
-  console.log(militaryRanks);
-  //복무기간
-  const [startDate, setStartDate] = useState(dayjs(null)); // dayjs로 상태 초기화
+  // 복무 기간
+  const [startDate, setStartDate] = useState(dayjs(null));
   const [endDate, setEndDate] = useState(dayjs(null));
-  //제대 구분
-  const [retireMilitary, setRetireMilitary] = useState();
-  const retireList = [
+
+  // 군별 병과
+  const [militaryClasses, setMilitaryClasses] = useState("");
+  const militaryClassesOptions = ["보병", "포병", "기갑", "공병", "통신", "기타"];
+
+  // 제대 구분
+  const [retireMilitary, setRetireMilitary] = useState("");
+  const retireMilitaryOptions = [
     "만기 제대",
+    "의가 제대",
     "의병 제대",
-    "특전 제대",
-    "전역 취소",
+    "전역",
+    "소집 해제",
+    "제적",
+    "면제",
+    "제대",
+    "근무 연장",
+    "기타",
     "중도 제대",
     "병역 면제",
   ];
-  console.log(retireMilitary);
+
+  const handleSave = async () => {
+    const militaryData = {
+      serviceStatus,
+      militaryType,
+      militaryClasses,
+      militaryRanks,
+      startDate: startDate.isValid() ? startDate.toISOString() : null,
+      endDate: endDate.isValid() ? endDate.toISOString() : null,
+      retireMilitary,
+    };
+
+    try {
+      await client.put("/MilitaryInfo", militaryData);
+      showAlert("병역 정보가 성공적으로 저장되었습니다.");
+      setState(true);
+    } catch (error) {
+      console.error("Error saving military info:", error);
+      showAlert("병역 정보 저장에 실패했습니다.", "error");
+    }
+  };
+
+  const changeState = () => {
+    if (state) {
+      setState(false);
+    } else {
+      handleSave();
+    }
+  };
 
   return (
     <>
@@ -79,7 +129,7 @@ export const MilitaryInfo = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <AutoCompleteInput
-              options={militaryBranches}
+              options={militaryTypeOptions}
               value={militaryType}
               setValue={setMilitaryType}
               disabled={state}
@@ -90,11 +140,10 @@ export const MilitaryInfo = () => {
             <Typography>병과</Typography>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <TextField
-              fullWidth
-              margin="normal"
+            <AutoCompleteInput
+              options={militaryClassesOptions}
               value={militaryClasses}
-              onChange={(e) => setMilitaryClasses(e.target.value)}
+              setValue={setMilitaryClasses}
               disabled={state}
             />
           </Grid>
@@ -106,11 +155,10 @@ export const MilitaryInfo = () => {
             <Typography>계급</Typography>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <TextField
-              fullWidth
-              margin="normal"
+            <AutoCompleteInput
+              options={militaryRanksOptions}
               value={militaryRanks}
-              onChange={(e) => setMilitaryRanks(e.target.value)}
+              setValue={setMilitaryRanks}
               disabled={state}
             />
           </Grid>
@@ -144,7 +192,7 @@ export const MilitaryInfo = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <AutoCompleteInput
-              options={retireList}
+              options={retireMilitaryOptions}
               value={retireMilitary}
               setValue={setRetireMilitary}
               disabled={state}

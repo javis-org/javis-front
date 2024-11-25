@@ -1,6 +1,8 @@
 import { FormLabel, Grid, styled, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { InfoTitle } from "./InfoTitle.jsx";
+import { client } from "../../api.js";
+import { useAlert } from "./InfoPage";
 
 const CustomLabel = styled(FormLabel)`
   font-weight: 600;
@@ -8,14 +10,30 @@ const CustomLabel = styled(FormLabel)`
 
 export const BasicInfo = () => {
   const [state, setState] = useState(true);
+  const { showAlert } = useAlert();
 
   // 각 필드에 대한 상태 변수 추가
   const [koreanName, setKoreanName] = useState("");
   const [englishName, setEnglishName] = useState("");
   const [chineseName, setChineseName] = useState("");
 
+  const handleSave = async () => {
+    try {
+      await client.put("/BasicInfo", { koreanName, englishName, chineseName });
+      showAlert("기본 정보가 성공적으로 저장되었습니다.");
+      setState(true);
+    } catch (error) {
+      console.error("Error saving basic info:", error);
+      showAlert("기본 정보 저장에 실패했습니다.", "error");
+    }
+  };
+
   const changeState = () => {
-    setState(!state);
+    if (state) {
+      setState(false);
+    } else {
+      handleSave();
+    }
   };
 
   return (

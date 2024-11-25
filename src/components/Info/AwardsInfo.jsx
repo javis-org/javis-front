@@ -89,6 +89,9 @@ export const AwardsInfo = () => {
           </Grid>
 
           {/* 수상 내역 */}
+          <Grid item xs={12} sm={2}>
+            <Typography>수상 내역</Typography>
+          </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth

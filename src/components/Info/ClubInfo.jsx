@@ -55,12 +55,14 @@ export const ClubInfo = () => {
             />
           </Grid>
           <Grid item xs={12} sm={1} />
-          <Grid item xs={12} sm={2}>
+          <Grid item xs={12} sm={12}>
             <Typography>비고</Typography>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={12}>
             <TextField
               fullWidth
+              multiline
+              rows={4}
               placeholder="비고"
               margin="normal"
               disabled={state}
