@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -12,7 +12,7 @@ import { InfoTitle } from "./InfoTitle.jsx";
 import { client } from "../../api.js";
 import { useAlert } from "./InfoPage";
 
-export const MilitaryInfo = () => {
+export const MilitaryInfo = ({ militaryInfo = [] }) => {
   const [state, setState] = useState(true);
   const { showAlert } = useAlert();
 
@@ -22,7 +22,15 @@ export const MilitaryInfo = () => {
 
   // 군별
   const [militaryType, setMilitaryType] = useState("");
-  const militaryTypeOptions = ["육군", "해군", "공군", "해병", "의경", "공익", "기타"];
+  const militaryTypeOptions = [
+    "육군",
+    "해군",
+    "공군",
+    "해병",
+    "의경",
+    "공익",
+    "기타",
+  ];
 
   // 군별 계급
   const [militaryRanks, setMilitaryRanks] = useState("");
@@ -50,7 +58,14 @@ export const MilitaryInfo = () => {
 
   // 군별 병과
   const [militaryClasses, setMilitaryClasses] = useState("");
-  const militaryClassesOptions = ["보병", "포병", "기갑", "공병", "통신", "기타"];
+  const militaryClassesOptions = [
+    "보병",
+    "포병",
+    "기갑",
+    "공병",
+    "통신",
+    "기타",
+  ];
 
   // 제대 구분
   const [retireMilitary, setRetireMilitary] = useState("");
@@ -97,7 +112,17 @@ export const MilitaryInfo = () => {
       handleSave();
     }
   };
-
+  useEffect(() => {
+    if (militaryInfo) {
+      setServiceStatus(militaryInfo.serviceStatus || "");
+      setMilitaryType(militaryInfo.militaryType || "");
+      setMilitaryClasses(militaryInfo.militaryClasses || "");
+      setMilitaryRanks(militaryInfo.militaryRanks || "");
+      setStartDate(militaryInfo.startDate ? dayjs(militaryInfo.startDate) : null);
+      setEndDate(militaryInfo.endDate ? dayjs(militaryInfo.endDate) : null);
+      setRetireMilitary(militaryInfo.retireMilitary || "");
+    }
+  }, [militaryInfo]);
   return (
     <>
       <InfoTitle title="병역사항" state={state} setState={changeState} />

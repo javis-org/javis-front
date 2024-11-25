@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, TextField, Typography, IconButton, Button } from "@mui/material";
 import { InfoTitle } from "./InfoTitle.jsx";
 import { DatePickerInput } from "../common/InputComponent.jsx";
@@ -29,7 +29,7 @@ const AwardForm = ({ formData, onUpdate, onDelete, isFirst, state }) => {
       alignItems="center"
       sx={{ position: "relative", mt: isFirst ? 0 : 2 }}
     >
-      {!isFirst && (
+      {!isFirst &&!state&& (
         <IconButton
           onClick={onDelete}
           sx={{
@@ -117,7 +117,7 @@ const AwardForm = ({ formData, onUpdate, onDelete, isFirst, state }) => {
           margin="normal"
           multiline
           rows={4}
-          value={formData.awardDetails}
+          value={formData.awardDetail}
           onChange={(e) => onUpdate("awardDetails", e.target.value)}
           disabled={state}
         />
@@ -126,12 +126,24 @@ const AwardForm = ({ formData, onUpdate, onDelete, isFirst, state }) => {
   );
 };
 
-export const AwardsInfo = () => {
+export const AwardsInfo = ({awardInfo=[]}) => {
   const [state, setState] = useState(true);
   const { showAlert } = useAlert();
   const [forms, setForms] = useState([
     { id: 0, awardName: "", awardingInstitution: "", awardDate: null, remarks: "", awardDetails: "" }
   ]);
+  useEffect(() => {
+    if (awardInfo,awardInfo.length>0) {
+      // awardInfo에 id 추가하고 날짜를 dayjs 객체로 변환
+      const updatedAwardInfo = awardInfo.map((item, index) => ({
+        ...item,
+        id: index,
+        awardDate: item.awardDate ? dayjs(item.awardDate) : null
+      }));
+      setForms(updatedAwardInfo);
+    }
+      
+  }, [awardInfo]); 
 
   const updateForm = (id, field, value) => {
     setForms(forms.map(form => 
@@ -189,7 +201,7 @@ export const AwardsInfo = () => {
           key={form.id}
           formData={form}
           onUpdate={(field, value) => updateForm(form.id, field, value)}
-          isFirst={index === 0}
+          isFirst={forms.length === 1}
           onDelete={() => deleteForm(form.id)}
           state={state}
         />

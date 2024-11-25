@@ -1,5 +1,5 @@
 import { FormLabel, Grid, styled, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InfoTitle } from "./InfoTitle.jsx";
 import { client } from "../../api.js";
 import { useAlert } from "./InfoPage";
@@ -8,7 +8,7 @@ const CustomLabel = styled(FormLabel)`
   font-weight: 600;
 `;
 
-export const BasicInfo = () => {
+export const BasicInfo = ({basicInfo=[]}) => {
   const [state, setState] = useState(true);
   const { showAlert } = useAlert();
 
@@ -17,6 +17,13 @@ export const BasicInfo = () => {
   const [englishName, setEnglishName] = useState("");
   const [chineseName, setChineseName] = useState("");
 
+  useEffect(()=>{
+    if(basicInfo){
+    setKoreanName(basicInfo.koreanName);
+    setEnglishName(basicInfo.englishName);
+    setChineseName(basicInfo.chineseName);
+  }
+  },[basicInfo])
   const handleSave = async () => {
     try {
       await client.put("/BasicInfo", { koreanName, englishName, chineseName });

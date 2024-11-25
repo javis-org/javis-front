@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, TextField, Typography, IconButton, Button } from "@mui/material";
 import { InfoTitle } from "./InfoTitle.jsx";
 import { DatePickerInput } from "../common/InputComponent.jsx";
@@ -29,7 +29,7 @@ const ClubForm = ({ formData, onUpdate, onDelete, isFirst, state }) => {
       alignItems="center"
       sx={{ position: "relative", mt: isFirst ? 0 : 2 }}
     >
-      {!isFirst && (
+      {!isFirst && !state && (
         <IconButton
           onClick={onDelete}
           sx={{
@@ -123,7 +123,7 @@ const ClubForm = ({ formData, onUpdate, onDelete, isFirst, state }) => {
   );
 };
 
-export const ClubInfo = () => {
+export const ClubInfo = ({clubInfo}) => {
   const [state, setState] = useState(true);
   const { showAlert } = useAlert();
   const [forms, setForms] = useState([
@@ -135,6 +135,19 @@ export const ClubInfo = () => {
       form.id === id ? { ...form, [field]: value } : form
     ));
   };
+  useEffect(() => {
+    if (clubInfo && clubInfo.length > 0) {
+      // clubInfo에 id 추가하고 날짜를 dayjs 객체로 변환
+      const updatedClubInfo = clubInfo.map((item, index) => ({
+        ...item,
+        id: index,
+        startDate: item.startDate ? dayjs(item.startDate) : null,
+        endDate: item.endDate ? dayjs(item.endDate) : null
+      }));
+      console.log("변환된 동아리 정보:", updatedClubInfo);
+      setForms(updatedClubInfo);
+    }
+  }, [clubInfo]);
 
   const changeState = () => {
     if (state) {
@@ -180,7 +193,7 @@ export const ClubInfo = () => {
           formData={form}
           onUpdate={(field, value) => updateForm(form.id, field, value)}
           onDelete={() => deleteForm(form.id)}
-          isFirst={index === 0}
+          isFirst={forms.length === 1}
           state={state}
         />
       ))}

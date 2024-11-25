@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import {
   Box,
   Card,
@@ -11,8 +11,9 @@ import { PageContent } from "../common/PageContent.jsx";
 import { BasicInfo } from "./BasicInfo.jsx";
 import { MilitaryInfo } from "./MilitaryInfo.jsx";
 import { ClubInfo } from "./ClubInfo.jsx";
-import { AcademicInformation } from "./AcademicInformation.jsx";
+import { AcademicInfo } from "./AcademicInfo.jsx";
 import { AwardsInfo } from "./AwardsInfo.jsx";
+import { client } from "../../api.js";
 
 // Alert Context 생성
 export const AlertContext = createContext();
@@ -54,6 +55,15 @@ export const InfoPage = () => {
     setAlert({ ...alert, open: false });
   };
 
+  const [data, setData] = useState([]);
+  const fetchInfo= async () => {
+    const response = await client.get("/UserInfo");
+    setData(response.data);
+    console.log("UserInfo", response.data);
+  };
+  useEffect(() => {
+    fetchInfo();
+    },[]);
   return (
     <AlertContext.Provider value={{ showAlert }}>
       <BaseComponent>
@@ -68,23 +78,23 @@ export const InfoPage = () => {
             }}
           >
             <InfoCard>
-              <BasicInfo />
+              <BasicInfo basicInfo={data.basicInfo} />
             </InfoCard>
 
             <InfoCard>
-              <MilitaryInfo />
+              <MilitaryInfo militaryInfo={data.militaryInfo}/>
             </InfoCard>
 
             <InfoCard title="수상">
-              <AwardsInfo />
+              <AwardsInfo  awardInfo={data.awardInfo}/>
             </InfoCard>
 
             <InfoCard title="동아리/대외활동">
-              <ClubInfo />
+              <ClubInfo clubInfo={data.clubInfo} />
             </InfoCard>
 
             <InfoCard title="학적사항">
-              <AcademicInformation />
+              <AcademicInfo  academicInfo={data.academicInfo}/>
             </InfoCard>
           </Box>
         </PageContent>
