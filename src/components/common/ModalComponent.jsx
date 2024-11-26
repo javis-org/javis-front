@@ -37,7 +37,7 @@ const ModalComponent = ({
   confirmVariant = "primary",
   backdrop = "",
   centered = false,
-  headerCloseBtn = false,
+  headerCloseBtn,
   maxWidth = "sm",
 }) => (
   <Dialog

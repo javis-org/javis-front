@@ -10,6 +10,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { client } from "../../../api.js";
 import dayjs from "dayjs";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { updateAtom } from "../../../Recoil.jsx";
 
 export const RecruitItemFilterMenu = () => {
   const { id } = useParams();
@@ -21,22 +23,21 @@ export const RecruitItemFilterMenu = () => {
   const tooltipRef = useRef(null);
   const [deadline, setDeadline] = useState("");
   const navi = useNavigate();
+  const update= useRecoilValue(updateAtom);
+
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
         const response = await client.get(`/Recruit/${id}`);
         console.log(response.data);
         setRecruit(response.data);
         setTitle(response.data.title);
         setUrl(response.data.url);
         setDeadline(dayjs(response.data.deadline));
-      } catch (error) {
-        console.log(error);
-      }
+    
     };
     fetchData();
-  }, []);
+  }, [update]);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget); // 메뉴를 열 때 기준점 설정
   };

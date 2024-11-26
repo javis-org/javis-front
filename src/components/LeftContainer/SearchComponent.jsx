@@ -51,7 +51,7 @@ const allTags = [
   "커리어 계획",
 ];
 
-export const SearchComponent = () => {
+export const SearchComponent = ({ setOpenSearch }) => {
   const [searchText, setSearchText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -376,7 +376,7 @@ export const SearchComponent = () => {
               {recruit.length > 0 && (
                 <Box sx={{ marginTop: "20px" }}>
                   <div>내 공고</div>
-                  <CardList cardList={recruit} search={"searchRecruit"} />
+                  <CardList cardList={recruit} search={"searchRecruit"} setOpenSearch={setOpenSearch}/>
                 </Box>
               )}
             </>

@@ -174,7 +174,7 @@ export const LeftContainer = () => {
       <ModalComponent
         show={openSearch}
         headerCloseBtn={() => setOpenSearch(false)}
-        body={<SearchComponent />}
+        body={<SearchComponent setOpenSearch={setOpenSearch} />}
       />
     </Box>
   );

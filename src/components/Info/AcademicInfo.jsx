@@ -13,8 +13,6 @@ export const AcademicInfo = ({academicInfo}) => {
   const [state, setState] = useState(true);
   const { showAlert } = useAlert();
 
-  const userId = "testUser"; // TODO: 실제 사용자 ID로 변경 필요
-
   // 각 필드에 대한 상태 변수 추가
   const [schoolName, setSchoolName] = useState("");
   const [studyStartDate, setStudyStartDate] = useState(dayjs(null));

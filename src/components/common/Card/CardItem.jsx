@@ -38,6 +38,7 @@ export const CardItem = ({
   search,
   type,
   recruitId,
+  setOpenSearch
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const iconButtonRef = useRef(null);
@@ -68,8 +69,10 @@ export const CardItem = ({
   const handleClickCard = (id) => {
     if (search === "search" || side) {
       navi(`/statement?menu=${mapMenuToQuery(type)}`);
+      setOpenSearch();
     } else if (search === "searchRecruit") {
       navi(`/recruits-page/${recruitId}?menu=${mapMenuToQuery(type)}`);
+      setOpenSearch();
     }
 
     navi(`/statement/editor/${id}`);
