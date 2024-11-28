@@ -1,14 +1,19 @@
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { client } from "../../api.js";
 import IntroductionList from "./IntroductionList.jsx";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 export const LeftRecruit = ({ handleUpdate }) => {
   const [data, setData] = useState([]);
+  const {fetchData} = useFetchData();
   const fetchRecruitData = async () => {
-    const response = await client.get("/Recruit/side");
+    try {
+      const response = await fetchData("/Recruit/side");
     console.log("dlrjdjadf", response.data);
-    setData(response.data);
+    setData(response.data||[]);
+  }catch (error) {
+    console.error("Error fetching data:", error);
+  }
   };
   useEffect(() => {
     fetchRecruitData();

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -11,7 +11,9 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { KoreanDateTime } from "../util/KoreanDateTime.js";
-import { client } from "../../api.js";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
+import { useRecoilValue } from "recoil";
+import { updateAtom } from "../../Recoil.jsx";
 
 const CustomCard = styled(Card)`
   min-height: 80px;
@@ -24,12 +26,13 @@ const CustomCard = styled(Card)`
   }
 `;
 
-export const Comment = ({ text, date, id, handleUpdate }) => {
+export const Comment = ({ text, date, id,handleUpdate }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [commentText, setCommentText] = useState(text);
   const iconButtonRef = useRef(null);
   const cardRef = useRef(null);
+  const {fetchData}=useFetchData();
   console.log("댓글 id:", id);
   const handleClick = (event) => {
     event.stopPropagation();
@@ -41,6 +44,8 @@ export const Comment = ({ text, date, id, handleUpdate }) => {
     setAnchorEl(null);
   };
 
+
+
   const handleEdit = () => {
     setIsEditing(true);
     setAnchorEl(null);
@@ -49,9 +54,7 @@ export const Comment = ({ text, date, id, handleUpdate }) => {
 
   const updateData = async () => {
     try {
-      await client.put(`/Comment/${id}`, {
-        text: commentText,
-      });
+      await fetchData(`/Comment/${id}`, 'PUT',{text:commentText});
     } catch (error) {
       console.error(error);
     }
@@ -59,7 +62,7 @@ export const Comment = ({ text, date, id, handleUpdate }) => {
   };
   const deleteData = async () => {
     try {
-      await client.delete(`/Comment/${id}`);
+      await fetchData(`/Comment/${id}`, 'DELETE');  
       handleUpdate();
     } catch (error) {
       console.error(error);

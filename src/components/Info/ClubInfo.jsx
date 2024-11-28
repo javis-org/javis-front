@@ -7,8 +7,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import styled from "styled-components";
-import { client } from "../../api.js";
 import { useAlert } from "./InfoPage";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 const CustomButton = styled(Button)`
   background-color: black;
@@ -123,17 +123,25 @@ const ClubForm = ({ formData, onUpdate, onDelete, isFirst, state }) => {
   );
 };
 
-export const ClubInfo = ({clubInfo}) => {
+export const ClubInfo = ({ clubInfo }) => {
   const [state, setState] = useState(true);
+  const { fetchData } = useFetchData();
   const { showAlert } = useAlert();
   const [forms, setForms] = useState([
-    { id: 0, clubName: "", role: "", startDate: null, endDate: null, remarks: "" }
+    {
+      id: 0,
+      clubName: "",
+      role: "",
+      startDate: null,
+      endDate: null,
+      remarks: "",
+    },
   ]);
 
   const updateForm = (id, field, value) => {
-    setForms(forms.map(form => 
-      form.id === id ? { ...form, [field]: value } : form
-    ));
+    setForms(
+      forms.map((form) => (form.id === id ? { ...form, [field]: value } : form))
+    );
   };
   useEffect(() => {
     if (clubInfo && clubInfo.length > 0) {
@@ -142,51 +150,71 @@ export const ClubInfo = ({clubInfo}) => {
         ...item,
         id: index,
         startDate: item.startDate ? dayjs(item.startDate) : null,
-        endDate: item.endDate ? dayjs(item.endDate) : null
+        endDate: item.endDate ? dayjs(item.endDate) : null,
       }));
       console.log("변환된 동아리 정보:", updatedClubInfo);
       setForms(updatedClubInfo);
     }
   }, [clubInfo]);
 
-  const changeState = () => {
+  const changeState = async () => {
     if (state) {
       setState(false);
     } else {
-      const clubData = forms.map(form => ({
+      const clubData = forms.map((form) => ({
         clubName: form.clubName,
         role: form.role,
-        startDate: form.startDate && form.startDate.isValid() ? form.startDate.toISOString() : "",
-        endDate: form.endDate && form.endDate.isValid() ? form.endDate.toISOString() : "",
-        remarks: form.remarks
+        startDate:
+          form.startDate && form.startDate.isValid()
+            ? form.startDate.toISOString()
+            : "",
+        endDate:
+          form.endDate && form.endDate.isValid()
+            ? form.endDate.toISOString()
+            : "",
+        remarks: form.remarks,
       }));
       console.log(clubData);
 
-      client.put("/ClubInfo", clubData)
-        .then(() => {
-          showAlert("동아리/대외활동 정보가 성공적으로 저장되었습니다.");
-          setState(true);
-        })
-        .catch((error) => {
-          console.error("Error saving club info:", error);
-          showAlert("동아리/대외활동 정보 저장에 실패했습니다.", "error");
-        });
+      try {
+        await fetchData("/ClubInfo", "PUT", clubData);
+        showAlert("동아리/대외활동 정보가 성공적으로 저장되었습니다.");
+        setState(true);
+      } catch (error) {
+        console.error("Error saving club info:", error);
+        showAlert("동아리/대외활동 정보 저장에 실패했습니다.", "error");
+      }
     }
   };
 
   const addForm = () => {
-    const newId = forms.length > 0 ? Math.max(...forms.map((f) => f.id)) + 1 : 0;
-    setForms([...forms, { id: newId, clubName: "", role: "", startDate: null, endDate: null, remarks: "" }]);
+    const newId =
+      forms.length > 0 ? Math.max(...forms.map((f) => f.id)) + 1 : 0;
+    setForms([
+      ...forms,
+      {
+        id: newId,
+        clubName: "",
+        role: "",
+        startDate: null,
+        endDate: null,
+        remarks: "",
+      },
+    ]);
   };
 
-  const deleteForm = async(id) => {
+  const deleteForm = async (id) => {
     setForms(forms.filter((form) => form.id !== id));
-   await client.delete(`/ClubInfo/${id}`);
+    await fetchData(`/ClubInfo/${id}`, "DELETE");
   };
 
   return (
     <>
-      <InfoTitle title={"동아리/대외활동"} state={state} setState={changeState} />
+      <InfoTitle
+        title={"동아리/대외활동"}
+        state={state}
+        setState={changeState}
+      />
       {forms.map((form, index) => (
         <ClubForm
           key={form.id}

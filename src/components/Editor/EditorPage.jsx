@@ -12,9 +12,9 @@ import { BaseComponent } from "../common/BaseComponent.jsx";
 import ChatIcon from "@mui/icons-material/Chat";
 import { CommentList } from "./CommentList.jsx";
 import { useParams } from "react-router-dom";
-import { client } from "../../api.js";
 import { useRecoilState } from "recoil";
 import { updateAtom } from "../../Recoil.jsx";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -29,10 +29,11 @@ export const EditorPage = () => {
   const [text, setText] = useState("");
   const [update, setUpdate] = useRecoilState(updateAtom);
   const quilRef = useRef();
+  const { fetchData } = useFetchData();
   useEffect(() => {
-    const fetchData = async () => {
+    const getData = async () => {
       try {
-        const response = await client.get(`/Card?id=${id}`);
+        const response = await fetchData(`/Card?id=${id}`);
         setTitle(response.data.title);
         setText(response.data.text);
         console.log(response.data);
@@ -40,12 +41,12 @@ export const EditorPage = () => {
         alert(error);
       }
     };
-    fetchData();
+    getData();
   }, [update]);
 
-  const fetchData = async () => {
+  const getData = async () => {
     try {
-      await client.put(`/card/${id}`, { title, text });
+      await  fetchData(`/card/${id}`, "PUT",{ title, text })
     } catch (error) {
       alert(error);
       console.error(error);
@@ -57,7 +58,7 @@ export const EditorPage = () => {
 
       // 통신 코드 임시
       console.log("통신 시작");
-      await fetchData();
+      await getData();
       setSave("저장완료");
       console.log("통신 완료");
     }, 1000);

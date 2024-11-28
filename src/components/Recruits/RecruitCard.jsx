@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { generateSupportStatuses, updateAtom } from "../../Recoil.jsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { TransformDeadline } from "../util/TransformDeadline.js";
-import { client } from "../../api.js";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 export const RecruitCard = ({
   id,
@@ -30,7 +30,7 @@ export const RecruitCard = ({
   const [status, setStatus] = useState(state);
   const navi = useNavigate();
   const supportStatus = useRecoilValue(generateSupportStatuses); // `setSupportStatus` 대신 `useRecoilValue`만 사용
-
+  const {fetchData}=useFetchData();
   // Dots menu 열기 핸들러
   const handleClick = (event) => {
     event.stopPropagation(); // 이벤트 전파 중지
@@ -45,7 +45,7 @@ export const RecruitCard = ({
 
   const deleteRecruit = async () => {
     try {
-      await client.delete(`/Recruit/${id}`);
+      await fetchData(`/Recruit/${id}`,"DELETE");
       setUpdate(!update);
     } catch (error) {
       console.log(error);
@@ -62,7 +62,8 @@ export const RecruitCard = ({
   //상태 변경시 통신
   const updateState = async (state) => {
     try {
-      await client.put(`/Recruit/state/${id}`, { state });
+      await 
+      fetchData(`/Recruit/state/${id}`,"PUT", { state });
     } catch (error) {
       console.log(error);
       alert(error);

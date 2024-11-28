@@ -13,8 +13,8 @@ import {
 import React, { useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
-import { client } from "../../api.js";
 import { CardList } from "../Statement/CardList.jsx";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 // 모든 태그 예시 (역량 태그와 인성 태그 포함)
 const allTags = [
@@ -59,22 +59,23 @@ export const SearchComponent = ({ setOpenSearch }) => {
   const [statement, setStatement] = useState([]);
   const [recruit, setRecruit] = useState([]);
   console.log(selectedTags);
+  const { fetchData } = useFetchData();
   const handleClear = () => {
     setSearchText("");
     setSelectedTags([]);
     setIsFocused(true); // Clear 후 포커스 가능하도록 설정
   };
 
+  console.log("recruit아왜",recruit)
   const searchData = async () => {
     try {
-      const response = await client.get(`/Search/tag`, {
-        params: {
-          data: JSON.stringify(selectedTags), // 객체 배열을 JSON 문자열로 변환
-        },
-      });
-      console.log("respousasdlf", response.data);
-      setStatement(response.data.statement);
-      setRecruit(response.data.recruit);
+      const tags = encodeURIComponent(JSON.stringify(selectedTags));
+      const response = await fetchData(`/Search/tag?tags=${tags}`);
+      console.log("searchResponse", response.data);
+      setStatement(response.data.statement || []);
+      setRecruit(response.data.recruit || []);
+      console.log("statement", response.data.statement);
+      console.log("recruit", response.data.recruit);
     } catch (error) {
       console.error(error);
     }
@@ -82,8 +83,7 @@ export const SearchComponent = ({ setOpenSearch }) => {
 
   const searchTextData = async () => {
     try {
-      const response = await client.get(`/Search?text=${searchText}`);
-      console.log("respousasdlf", response.data);
+      const response = await fetchData(`/Search?text=${searchText}`);
       setStatement(response.data.statement);
       setRecruit(response.data.recruit);
     } catch (error) {

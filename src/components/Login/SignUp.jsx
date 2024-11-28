@@ -9,13 +9,14 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
-import { client } from "../../api";
+import { useFetchData } from "../../hooks/useFetchData";
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navi = useNavigate();
+  const {fetchData} = useFetchData();
   const handleSubmit = (event) => {
     event.preventDefault();
     // 회원가입 처리 로직을 여기에 추가합니다.
@@ -27,7 +28,7 @@ export default function SignUp() {
     };
     const handleSignUp = async () => {
       try {
-        const res = await client.post("/SignUp", signUpData);
+        const res = await fetchData("/SignUp","POST", signUpData);
         console.log(res.data);
         alert("회원가입 성공");
         navi("/");

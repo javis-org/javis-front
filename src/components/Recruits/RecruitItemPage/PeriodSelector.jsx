@@ -4,13 +4,14 @@ import CheckIcon from "@mui/icons-material/Check.js";
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { generatePeriods } from "../../../Recoil.jsx";
-import { client } from "../../../api.js";
 import { useParams } from "react-router-dom";
+import { useFetchData } from "../../../hooks/useFetchData.jsx";
 
 export const PeriodSelector = ({ yearHalf }) => {
   const periods = useRecoilValue(generatePeriods); // useRecoilValue로 atom 값 가져오기
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("");
+  const {fetchData}=useFetchData();
   const { id } = useParams();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget); // 클릭한 아이콘을 기준으로 메뉴 띄움
@@ -27,7 +28,7 @@ export const PeriodSelector = ({ yearHalf }) => {
 
   const updateYearHalf = async (newYearHaf) => {
     try {
-      await client.put(`/Recruit/yearHalf/${id}`, {
+      await fetchData(`/Recruit/yearHalf/${id}`, "PUT", {
         yearHalf: newYearHaf,
       });
     } catch (error) {

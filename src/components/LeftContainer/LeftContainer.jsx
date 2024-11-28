@@ -3,7 +3,6 @@ import { Box, Button, ButtonGroup, IconButton } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   isExpandValue,
-  memberIdValue,
   sideSelected,
   updateAtom,
 } from "../../Recoil.jsx";
@@ -15,7 +14,6 @@ import { LeftStatement } from "./LeftStatement.jsx";
 import { LeftRecruit } from "./LeftRecruit.jsx";
 
 export const LeftContainer = () => {
-  const memberId = useRecoilValue(memberIdValue);
   const [isExpanded, setIsExpanded] = useRecoilState(isExpandValue);
   const [openSearch, setOpenSearch] = useState(false);
   const [selected, setSelected] = useRecoilState(sideSelected);

@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
-import { client } from "../../../api.js";
 import { KoreanDateTime } from "../../util/KoreanDateTime.js";
 import { TransformDeadline } from "../../util/TransformDeadline.js";
 import { mapMenuToQuery } from "../../util/mapMenuToQuery.js";
+import { useFetchData } from "../../../hooks/useFetchData.jsx";
 
 const CustomCard = styled(Card)`
   min-height: 80px;
@@ -43,6 +43,7 @@ export const CardItem = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const iconButtonRef = useRef(null);
   const navi = useNavigate();
+  const { fetchData } = useFetchData();
 
   const handleClick = (event) => {
     event.stopPropagation();
@@ -53,7 +54,7 @@ export const CardItem = ({
     event.stopPropagation();
     setAnchorEl(null);
     try {
-      await client.delete(`/Card/${id}`);
+      await fetchData(`/Card/${id}`, 'DELETE');
       handleUpdate();
     } catch (error) {
       console.error(error);

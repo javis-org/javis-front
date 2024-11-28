@@ -3,12 +3,12 @@ import { Remove } from "@mui/icons-material";
 import { Comment } from "./Comment.jsx";
 import { CustomButton } from "../common/Button/CustomButton.jsx";
 import { useEffect, useState } from "react";
-import { client } from "../../api.js";
 import { useParams } from "react-router-dom";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 export const CommentList = ({ setIsDrawerOpen }) => {
   const [update, setUpdate] = useState();
-
+  const { fetchData } = useFetchData();
   const [comments, setComments] = useState([]);
   const [value, setValue] = useState("");
   const { id } = useParams();
@@ -19,23 +19,24 @@ export const CommentList = ({ setIsDrawerOpen }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const getData = async () => {
       try {
-        const response = await client.get(`/Comment?cardId=${id}`);
+        const response = await fetchData(`/Comment?cardId=${id}`);
         console.log("comment", response.data);
         setComments(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData();
-  }, [update]);
+    getData();
+  }, [update,id]);
   const handleAddComment = async () => {
     try {
-      await client.post("/Comment", {
+      await fetchData(`/Comment`, "POST", {
         text: value,
         cardId: id,
       });
+
       setValue("");
       handleUpdate();
     } catch (error) {

@@ -1,13 +1,17 @@
-import { atom, selector } from "recoil";
-import { client } from "./api";
+import { atom } from "recoil";
+
+export const accessTokenAtom = atom({
+  key: "accessTokenAtom",
+  default: "",
+});
 
 export const loginAtom = atom({
   key: "loginAtom",
   default: false,
 });
-export const memberIdValue = atom({
-  key: "memberIdValue",
-  default: localStorage.getItem("memberId"),
+export const userIdValue = atom({
+  key: "userIdValue",
+  default: localStorage.getItem("userIdValue"),
 });
 export const isExpandValue = atom({
   key: "isExpandValue",
@@ -26,18 +30,18 @@ export const sideSelectMenu = atom({
   default: "경험정리",
 });
 
-export const selfIntroductionList = selector({
-  key: "selfIntroductionList",
-  get: async ({ get }) => {
-    try {
-      const memberId = get(memberIdValue); // memberIdValue atom에서 값을 가져옴
-      const response = await client.get(`jobPostings?memberId=${memberId}`);
-      return response.data;
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
-  },
-});
+// export const selfIntroductionList = selector({
+//   key: "selfIntroductionList",
+//   get: async ({ get }) => {
+//     try {
+//       const memberId = get(memberIdValue); // memberIdValue atom에서 값을 가져옴
+//       const response = await client.get(`jobPostings?memberId=${memberId}`);
+//       return response.data;
+//     } catch (error) {
+//       console.log(error.response.data.message);
+//     }
+//   },
+// });
 
 // 2024년부터 현재 연도 + 1년까지 상반기, 하반기 생성
 const currentYear = new Date().getFullYear();

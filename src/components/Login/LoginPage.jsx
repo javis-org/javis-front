@@ -12,34 +12,29 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { loginAtom } from "../../Recoil.jsx";
-import { client } from "../../api";
+import { loginAtom } from "../../Recoil";
+import { useLogin } from "../../hooks/useLogin";
 
 export default function LoginPage() {
   const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navi = useNavigate();
+  const { login, loading } = useLogin();
 
   const [, setIsLogin] = useRecoilState(loginAtom);
-  const handleSignUp = () => {
-    const loginData = { id: Email, password: password };
-    const fetchLogin = async () => {
-      try {
-        const res = await client.post("/Login", loginData);
-        console.log(res.data);
-        localStorage.setItem("memberId", res.data);
-        setIsLogin(true);
 
-        localStorage.setItem("user", Email);
-        navi("/main");
-      } catch (error) {
-        console.log(error);
-        alert("로그인에 실패하였습니다.");
-      }
-    };
-
-    fetchLogin();
+  const handleSubmit = async () => {
+    try {
+      await login(Email, password);
+      setIsLogin(true);
+      localStorage.setItem("user", Email);
+      navi("/main");
+    } catch (error) {
+      console.log(error);
+      alert("로그인에 실패하였습니다.");
+    }
   };
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -84,11 +79,10 @@ export default function LoginPage() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={() => {
-              handleSignUp();
-            }}
+            onClick={handleSubmit}
+            disabled={loading}
           >
-            로그인
+            {loading ? "로그인 중..." : "로그인"}
           </Button>
           <Link
             component={RouterLink}

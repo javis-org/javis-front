@@ -13,9 +13,9 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"; // dayjs 어댑터 사용
 import LinkIcon from "@mui/icons-material/Link";
-import { client } from "../../api.js";
 import { useRecoilState } from "recoil";
 import { updateAtom } from "../../Recoil.jsx";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 // dayjs 플러그인 활성화
 dayjs.extend(customParseFormat);
@@ -28,6 +28,7 @@ const RecruitAddCardBody = ({ handleClose }) => {
   const currentYear = dayjs().year(); // 현재 연도
   const today = dayjs(); // 오늘 날짜
   const [update, setUpdate] = useRecoilState(updateAtom);
+  const{fetchData} = useFetchData();
   // 2024년부터 현재 연도 + 1년까지 상반기, 하반기 생성
   const generatePeriods = () => {
     const periods = [];
@@ -48,7 +49,7 @@ const RecruitAddCardBody = ({ handleClose }) => {
 
   const handleAddRecruit = async () => {
     try {
-      await client.post("/Recruit", {
+      await fetchData("/Recruit","POST", {
         title: recruit,
         yearHalf: semester,
         state: "지원 준비",

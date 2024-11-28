@@ -5,10 +5,10 @@ import { DatePickerInput } from "../common/InputComponent.jsx";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { client } from "../../api.js";
 import { useAlert } from "./InfoPage.jsx";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
-export const AcademicInfo = ({academicInfo}) => {
+export const AcademicInfo = ({ academicInfo }) => {
   // 완료 버튼 상태
   const [state, setState] = useState(true);
   const { showAlert } = useAlert();
@@ -23,7 +23,7 @@ export const AcademicInfo = ({academicInfo}) => {
   const [acquiredCredits, setAcquiredCredits] = useState("");
   const [acquiredMajorCredits, setAcquiredMajorCredits] = useState("");
   const [remarks, setRemarks] = useState("");
-
+  const { fetchData } = useFetchData();
 
   useEffect(() => {
     if (academicInfo) {
@@ -37,11 +37,13 @@ export const AcademicInfo = ({academicInfo}) => {
       setAcquiredMajorCredits(academicInfo.acquiredMajorCredits);
       setRemarks(academicInfo.remarks);
     }
-  },[academicInfo])
+  }, [academicInfo]);
   const handleSave = async () => {
     const academicData = {
       schoolName,
-      studyStartDate: studyStartDate.isValid() ? studyStartDate.toISOString() : "",
+      studyStartDate: studyStartDate.isValid()
+        ? studyStartDate.toISOString()
+        : "",
       studyEndDate: studyEndDate.isValid() ? studyEndDate.toISOString() : "",
       graduationStatus,
       totalCredits,
@@ -50,9 +52,8 @@ export const AcademicInfo = ({academicInfo}) => {
       acquiredMajorCredits,
       remarks,
     };
-
     try {
-      await client.put(`/AcademicInfo`, academicData);
+      await fetchData(`/AcademicInfo`, "PUT", academicData);
       showAlert("학적 정보가 성공적으로 저장되었습니다.");
       setState(true);
     } catch (error) {

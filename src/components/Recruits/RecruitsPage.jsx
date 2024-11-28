@@ -7,15 +7,15 @@ import { RecruitCard } from "./RecruitCard.jsx";
 import RecruitAddCardBody from "./RecruitAddCardBody.jsx";
 import { AddCardComponent } from "../common/Card/AddCardComponent.jsx";
 import { useEffect, useState } from "react";
-import { client } from "../../api.js";
 import { KoreanDateTime } from "../util/KoreanDateTime.js";
 import { useRecoilState } from "recoil";
 import { updateAtom } from "../../Recoil.jsx";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 export const RecruitsPage = () => {
   const [show, setShow] = useState(false);
   const [update, setUpdate] = useRecoilState(updateAtom);
-
+  const { fetchData } = useFetchData();
   const handleClose = () => {
     setShow(false);
   };
@@ -24,9 +24,9 @@ export const RecruitsPage = () => {
   };
   const [recruits, setRecruits] = useState([]);
 
-  const fetchData = async () => {
+  const getData = async () => {
     try {
-      const response = await client.get("/Recruit");
+      const response = await fetchData("/Recruit");
 
       // 데이터를 변환
       const transformedData = response.data.map((item) => {
@@ -47,7 +47,7 @@ export const RecruitsPage = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    getData();
   }, [update]);
   return (
     <BaseComponent className={"test"}>

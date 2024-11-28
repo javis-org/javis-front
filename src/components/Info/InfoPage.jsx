@@ -1,11 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Box, Card, CardContent, Snackbar, Alert } from "@mui/material";
 import { BaseComponent } from "../common/BaseComponent.jsx";
 import { PageContent } from "../common/PageContent.jsx";
 import { BasicInfo } from "./BasicInfo.jsx";
@@ -13,7 +7,7 @@ import { MilitaryInfo } from "./MilitaryInfo.jsx";
 import { ClubInfo } from "./ClubInfo.jsx";
 import { AcademicInfo } from "./AcademicInfo.jsx";
 import { AwardsInfo } from "./AwardsInfo.jsx";
-import { client } from "../../api.js";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 // Alert Context 생성
 export const AlertContext = createContext();
@@ -42,7 +36,7 @@ export const InfoPage = () => {
     message: "",
     severity: "success",
   });
-
+  const { fetchData } = useFetchData();
   const showAlert = (message, severity = "success") => {
     setAlert({
       open: true,
@@ -55,15 +49,38 @@ export const InfoPage = () => {
     setAlert({ ...alert, open: false });
   };
 
-  const [data, setData] = useState([]);
-  const fetchInfo= async () => {
-    const response = await client.get("/UserInfo");
-    setData(response.data);
-    console.log("UserInfo", response.data);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchInfo = async () => {
+    try {
+      setLoading(true);
+      const response = await fetchData("/UserInfo");
+      setData(response.data);
+      console.log("UserInfo", response.data);
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
   useEffect(() => {
     fetchInfo();
-    },[]);
+  }, []);
+
+  if (loading) {
+    return (
+      <BaseComponent>
+        <PageContent>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            Loading...
+          </Box>
+        </PageContent>
+      </BaseComponent>
+    );
+  }
+
   return (
     <AlertContext.Provider value={{ showAlert }}>
       <BaseComponent>
@@ -78,23 +95,23 @@ export const InfoPage = () => {
             }}
           >
             <InfoCard>
-              <BasicInfo basicInfo={data.basicInfo} />
+              <BasicInfo basicInfo={data?.basicInfo || {}} />
             </InfoCard>
 
             <InfoCard>
-              <MilitaryInfo militaryInfo={data.militaryInfo}/>
+              <MilitaryInfo militaryInfo={data?.militaryInfo || {}} />
             </InfoCard>
 
             <InfoCard title="수상">
-              <AwardsInfo  awardInfo={data.awardInfo}/>
+              <AwardsInfo awardInfo={data?.awardInfo || {}} />
             </InfoCard>
 
             <InfoCard title="동아리/대외활동">
-              <ClubInfo clubInfo={data.clubInfo} />
+              <ClubInfo clubInfo={data?.clubInfo || {}} />
             </InfoCard>
 
             <InfoCard title="학적사항">
-              <AcademicInfo  academicInfo={data.academicInfo}/>
+              <AcademicInfo academicInfo={data?.academicInfo || {}} />
             </InfoCard>
           </Box>
         </PageContent>

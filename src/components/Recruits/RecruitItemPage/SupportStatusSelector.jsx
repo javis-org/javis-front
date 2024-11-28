@@ -4,14 +4,15 @@ import { generateSupportStatuses } from "../../../Recoil.jsx";
 import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown.js";
 import CheckIcon from "@mui/icons-material/Check.js";
-import { client } from "../../../api.js";
 import { useParams } from "react-router-dom";
+import { useFetchData } from "../../../hooks/useFetchData.jsx";
 
 export const SupportStatusSelector = ({ status }) => {
   const supportStatuses = useRecoilValue(generateSupportStatuses); // 지원 상태 리스트 가져오기
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSupportStatus, setSelectedSupportStatus] = useState(status);
   const { id } = useParams();
+  const {fetchData}=useFetchData();
   useEffect(() => {
     setSelectedSupportStatus(status);
   }, [status]);
@@ -25,7 +26,7 @@ export const SupportStatusSelector = ({ status }) => {
 
   const updateStatus = async (status) => {
     try {
-      await client.put(`/Recruit/state/${id}`, { state: status });
+      await fetchData(`/Recruit/state/${id}`,"PUT", { state: status });
     } catch (error) {
       console.error(error);
     }

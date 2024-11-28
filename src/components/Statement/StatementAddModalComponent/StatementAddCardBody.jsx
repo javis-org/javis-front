@@ -3,14 +3,14 @@ import { Box, Button, Typography } from "@mui/material";
 import { TagSelector } from "./TagSelector.jsx";
 import { TextTypeSelector } from "./TextTypeSelector.jsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { client } from "../../../api.js";
+import { useFetchData } from "../../../hooks/useFetchData.jsx";
 
 const StatementAddCardBody = ({ mode }) => {
   const navigate = useNavigate();
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedType, setSelectedType] = useState([]);
   // selectedTags가 배열일 경우 JSON.stringify로 변환하여 전달
-
+  const {fetchData} = useFetchData();
   const handleTypeChange = (event, newTags) => {
     setSelectedType(newTags);
   };
@@ -26,7 +26,7 @@ const StatementAddCardBody = ({ mode }) => {
     console.log("selectedTags", selectedTags);
     console.log("type", selectedType[0].tag);
     try {
-      const response = await client.post("/Card", {
+      const response = await fetchData("/Card","POST", {
         title: "제목없음",
         tags: selectedTags,
         mode,

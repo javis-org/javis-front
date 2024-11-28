@@ -8,10 +8,10 @@ import { RecruitDeadLineCalandar } from "./RecruitDeadLineCalandar.jsx";
 import MoreVertIcon from "@mui/icons-material/MoreVert.js";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { client } from "../../../api.js";
 import dayjs from "dayjs";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { updateAtom } from "../../../Recoil.jsx";
+import { useFetchData } from "../../../hooks/useFetchData.jsx";
 
 export const RecruitItemFilterMenu = () => {
   const { id } = useParams();
@@ -24,11 +24,11 @@ export const RecruitItemFilterMenu = () => {
   const [deadline, setDeadline] = useState("");
   const navi = useNavigate();
   const update= useRecoilValue(updateAtom);
-
+  const {fetchData}=useFetchData();
 
   useEffect(() => {
-    const fetchData = async () => {
-        const response = await client.get(`/Recruit/${id}`);
+    const getRecruitData = async () => {
+        const response = await fetchData(`/Recruit/${id}`);
         console.log(response.data);
         setRecruit(response.data);
         setTitle(response.data.title);
@@ -36,7 +36,7 @@ export const RecruitItemFilterMenu = () => {
         setDeadline(dayjs(response.data.deadline));
     
     };
-    fetchData();
+    getRecruitData();
   }, [update]);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget); // 메뉴를 열 때 기준점 설정
@@ -48,7 +48,7 @@ export const RecruitItemFilterMenu = () => {
 
   const deleteRecruit = async () => {
     try {
-      await client.delete(`/Recruit/${id}`);
+      await fetchData(`/Recruit/${id}`,"DELETE");
     } catch (error) {
       console.error(error);
     }
@@ -62,14 +62,14 @@ export const RecruitItemFilterMenu = () => {
 
   const updateTitle = async (value) => {
     try {
-      await client.put(`/Recruit/title/${id}`, { title: value });
+      await fetchData(`/Recruit/title/${id}`,"PUT", { title: value });
     } catch (error) {
       console.error(error);
     }
   };
   const updateUrl = async (url) => {
     try {
-      await client.put(`/Recruit/url/${id}`, { url });
+      await fetchData(`/Recruit/url/${id}`,"PUT", { url });
     } catch (error) {
       console.error(error);
     }
@@ -77,7 +77,7 @@ export const RecruitItemFilterMenu = () => {
   console.log("urlOpen", urlOpen);
   const updateDeadline = async (value) => {
     try {
-      await client.put(`/Recruit/deadline/${id}`, { deadline: value });
+      await fetchData(`/Recruit/deadline/${id}`,"PUT", { deadline: value });
     } catch (error) {
       console.error(error);
     }

@@ -16,10 +16,12 @@ import { useNavigate } from "react-router-dom";
 
 const IntroductionList = ({ item, index, handleUpdate, recruitId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [expanded, setExpanded] = useState(false);
   const open = Boolean(anchorEl);
   const [isModiTitle] = useState(!!item.isModified);
   console.log(isModiTitle);
   const navi = useNavigate();
+
   const handleTitleClick = (e) => {
     e.stopPropagation();
     navi(`/recruits-page`);
@@ -28,7 +30,16 @@ const IntroductionList = ({ item, index, handleUpdate, recruitId }) => {
   };
 
   const handleAccordionClick = (event) => {
-    event.stopPropagation();
+    // 아이콘 클릭 시 Accordion 토글 방지
+    if (event.target.closest('.navigate-icon')) {
+      event.stopPropagation();
+      return;
+    }
+    setExpanded(!expanded);
+  };
+
+  const handleAccordionChange = (event, isExpanded) => {
+    setExpanded(isExpanded);
   };
 
   const CustomCardContent = styled(CardContent)`
@@ -49,7 +60,10 @@ const IntroductionList = ({ item, index, handleUpdate, recruitId }) => {
         }}
       >
         <CustomCardContent className="side">
-          <Accordion>
+          <Accordion 
+            expanded={expanded}
+            onChange={handleAccordionChange}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls={`panel${index}-content`}
@@ -62,7 +76,8 @@ const IntroductionList = ({ item, index, handleUpdate, recruitId }) => {
               </Typography>
               <Typography variant="body1">{item.title}</Typography>
               <FlipToFrontIcon
-                sx={{ ml: "auto", cursor: "pointer", fontSize: "20px" }} // 클릭 가능하도록 포인터 커서 추가
+                className="navigate-icon"
+                sx={{ ml: "auto", cursor: "pointer", fontSize: "20px" }}
                 onClick={handleTitleClick}
               />
             </AccordionSummary>
@@ -88,5 +103,4 @@ const IntroductionList = ({ item, index, handleUpdate, recruitId }) => {
   );
 };
 
-// React.memo로 IntroductionList 컴포넌트를 최적화
-export default memo(IntroductionList);
+export default IntroductionList;

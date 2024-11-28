@@ -5,27 +5,26 @@ import { StatementFilterMenu } from "./StatementFilterMenu.jsx";
 import { CardList } from "./CardList.jsx";
 import StatementAddCardBody from "./StatementAddModalComponent/StatementAddCardBody.jsx";
 import { useEffect, useState } from "react";
-import { client } from "../../api.js";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 export const MyStatementPage = () => {
   const [cardList, setCardList] = useState([]);
   const [menus, setMenus] = useState([]);
   const [selectMenu, setSelectMenu] = useState("경험정리");
   const [update, setUpdate] = useState(true);
+  const {fetchData} = useFetchData();
   const handleUpdate = () => {
     setUpdate(!update);
   };
   const mode = "statement";
 
   const fetchCard = async () => {
-    const response = await client.get(
-      `/Card/All?mode=${mode}&type=${selectMenu}`,
-    );
+    const response = await fetchData(`/Card/All?mode=${mode}&type=${selectMenu}`);
     setCardList(response.data);
     console.log("card data", response.data);
   };
   const fetchCount = async () => {
-    const response = await client.get(`/Card/count?mode=${mode}`);
+    const response = await fetchData(`/Card/count?mode=${mode}`);
     setMenus(response.data);
     console.log("갯수", response.data);
   };

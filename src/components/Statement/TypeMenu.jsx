@@ -25,9 +25,9 @@ const CustomButton = styled(Button)(({ isSelected, isSide }) => ({
     background: "none",
   },
 }));
-const url = ["experience-summary", "personal-statement", "interview-questions"];
+// const url = ["experience-summary", "personal-statement", "interview-questions"];
 const sideMenu = ["경험", "자소서", "면접"];
-export const TypeMenu = ({ menus, selectMenu, setSelectMenu, isSide }) => {
+export const TypeMenu = ({ menus=[], selectMenu, setSelectMenu, isSide }) => {
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();

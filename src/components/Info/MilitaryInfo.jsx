@@ -9,13 +9,13 @@ import {
   ServiceStatusButtonGroup,
 } from "../common/InputComponent.jsx";
 import { InfoTitle } from "./InfoTitle.jsx";
-import { client } from "../../api.js";
 import { useAlert } from "./InfoPage";
+import { useFetchData } from "../../hooks/useFetchData.jsx";
 
 export const MilitaryInfo = ({ militaryInfo = [] }) => {
   const [state, setState] = useState(true);
   const { showAlert } = useAlert();
-
+  const { fetchData } = useFetchData();
   // 병역 구분
   const [serviceStatus, setServiceStatus] = useState();
   const militaryStatusOptions = ["비대상", "군필", "미필", "면제", "복무중"];
@@ -96,7 +96,7 @@ export const MilitaryInfo = ({ militaryInfo = [] }) => {
     };
 
     try {
-      await client.put("/MilitaryInfo", militaryData);
+      await fetchData("/MilitaryInfo", "PUT", militaryData);
       showAlert("병역 정보가 성공적으로 저장되었습니다.");
       setState(true);
     } catch (error) {
