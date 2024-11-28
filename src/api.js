@@ -2,7 +2,7 @@ import axios from "axios";
 
 //todo:통신 코드들 전부 훅으로 변경하기
 export const client = axios.create({
-  baseURL: import.meta.env.VITE_BASEURL,
+  baseURL: "https://javisbackend.duckdns.org",
   withCredentials: true,
   headers: {
     "ngrok-skip-browser-warning": true,
