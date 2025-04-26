@@ -2,12 +2,12 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { loginAtom, userIdValue } from "../../Recoil.jsx";
-import Javis from "../../assets/Javis.png";
-import { Typography } from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useRecoilState} from "recoil";
+import {loginAtom, userIdValue} from "../../Recoil.jsx";
+import Javis from "../../assets/LOGO.png";
+import {Typography} from "@mui/material";
 
 const pages = [" 내정보", "내 자소서", "내 공고"];
 const url = ["info", "statement", "recruits-page"];
