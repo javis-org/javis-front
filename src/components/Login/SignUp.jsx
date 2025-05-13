@@ -1,22 +1,15 @@
 import { useState } from "react";
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  TextField,
-  Typography,
-} from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useFetchData } from "../../hooks/useFetchData";
+import Logo from "../../assets/LOGO.png";
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navi = useNavigate();
-  const {fetchData} = useFetchData();
+  const { fetchData } = useFetchData();
   const handleSubmit = (event) => {
     event.preventDefault();
     // 회원가입 처리 로직을 여기에 추가합니다.
@@ -28,7 +21,7 @@ export default function SignUp() {
     };
     const handleSignUp = async () => {
       try {
-        const res = await fetchData("/SignUp","POST", signUpData);
+        const res = await fetchData("/SignUp", "POST", signUpData);
         console.log(res.data);
         alert("회원가입 성공");
         navi("/");
@@ -59,11 +52,15 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <img
+            src={Logo}
+            width={50}
+            height={50}
+            style={{ borderRadius: 25 }}
+            alt="로고"
+          />
           <Typography component="h1" variant="h5">
-            Sign Up
+            회원가입
           </Typography>
           <Box
             component="form"
@@ -76,8 +73,8 @@ export default function SignUp() {
               required
               fullWidth
               id="name"
-              label="Name"
-              name="name"
+              label="이름"
+              name="이름"
               autoComplete="name"
               autoFocus
               value={name}
@@ -87,9 +84,9 @@ export default function SignUp() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email"
-              name="email"
+              id="이메일"
+              label="이메일"
+              name="이메일"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -98,8 +95,8 @@ export default function SignUp() {
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
+              name="비밀번호"
+              label="비밀번호"
               type="password"
               id="password"
               autoComplete="current-password"

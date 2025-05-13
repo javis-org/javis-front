@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Container,
@@ -7,8 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-// 테스트
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Logo from "/src/assets/LOGO.png";
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -45,19 +43,23 @@ export default function LoginPage() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <img
+          src={Logo}
+          width={50}
+          height={50}
+          style={{ borderRadius: 25 }}
+          alt="로고"
+        />
         <Typography component="h1" variant="h5">
-          Sign in
+          로그인
         </Typography>
         <Box noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             fullWidth
             id="Email"
-            label="Email"
-            name="Email"
+            label="이메일"
+            name="이메일"
             autoComplete="Email"
             autoFocus
             value={Email}
@@ -66,8 +68,8 @@ export default function LoginPage() {
           <TextField
             margin="normal"
             fullWidth
-            name="password"
-            label="Password"
+            name="비밀번호"
+            label="비밀번호"
             type="password"
             id="password"
             autoComplete="current-password"

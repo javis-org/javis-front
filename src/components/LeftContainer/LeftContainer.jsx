@@ -1,17 +1,13 @@
-import React, { useState } from "react";
-import { Box, Button, ButtonGroup, IconButton } from "@mui/material";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  isExpandValue,
-  sideSelected,
-  updateAtom,
-} from "../../Recoil.jsx";
+import React, {useState} from "react";
+import {Box, Button, ButtonGroup, IconButton} from "@mui/material";
+import {useRecoilState} from "recoil";
+import {isExpandValue, sideSelected, updateAtom,} from "../../Recoil.jsx";
 import SearchIcon from "@mui/icons-material/Search.js";
 import MenuIcon from "@mui/icons-material/Menu.js";
 import ModalComponent from "../common/ModalComponent.jsx";
-import { SearchComponent } from "./SearchComponent.jsx";
-import { LeftStatement } from "./LeftStatement.jsx";
-import { LeftRecruit } from "./LeftRecruit.jsx";
+import {SearchComponent} from "./SearchComponent.jsx";
+import {LeftStatement} from "./LeftStatement.jsx";
+import {LeftRecruit} from "./LeftRecruit.jsx";
 
 export const LeftContainer = () => {
   const [isExpanded, setIsExpanded] = useRecoilState(isExpandValue);
@@ -41,7 +37,7 @@ export const LeftContainer = () => {
         sx={{
           position: "absolute",
           top: "10px",
-          right: isExpanded ? "-50px" : "10px",
+          right: isExpanded ? "-60px" : "10px",
           zIndex: 1000,
           backgroundColor: "white",
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
@@ -61,7 +57,7 @@ export const LeftContainer = () => {
             sx={{
               position: "absolute",
               top: "60px",
-              left: "10px",
+              left: "7px",
             }}
             onClick={() => setOpenSearch(true)}
           >
@@ -75,7 +71,7 @@ export const LeftContainer = () => {
               position: "absolute",
 
               top: "110px",
-              left: "10px",
+              left: "7px",
               color: "black",
             }}
             onClick={() => {
@@ -89,7 +85,7 @@ export const LeftContainer = () => {
             sx={{
               position: "absolute",
               top: "170px",
-              left: "10px",
+              left: "7px",
               color: "black",
             }}
             onClick={() => {

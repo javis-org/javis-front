@@ -44,7 +44,7 @@ export const EditorPage = () => {
     getData();
   }, [update]);
 
-  const getData = async () => {
+  const putData = async () => {
     try {
       await  fetchData(`/card/${id}`, "PUT",{ title, text })
     } catch (error) {
@@ -54,19 +54,13 @@ export const EditorPage = () => {
   };
   useEffect(() => {
     const delayDebounceTimer = setTimeout(async () => {
-      console.log("디바운스 후 실행되는 작업:", text);
-
-      // 통신 코드 임시
-      console.log("통신 시작");
-      await getData();
+      await putData();
       setSave("저장완료");
-      console.log("통신 완료");
     }, 1000);
 
     // Quill 인스턴스에서 텍스트 길이 가져오기
     if (quilRef.current) {
       const editorInstance = quilRef.current.getEditor();
-      console.log("글자인가?", editorInstance.innerText);
       const length = editorInstance.getLength();
       setTextLength(length - 1);
     }
